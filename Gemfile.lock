@@ -149,6 +149,9 @@ GEM
     devise-guests (0.3.3)
       devise
     diff-lcs (1.2.5)
+    dotenv (1.0.2)
+    dotenv-rails (1.0.2)
+      dotenv (= 1.0.2)
     dropbox-sdk (1.6.4)
       json
     ebnf (0.3.6)
@@ -596,6 +599,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   devise
   devise-guests (~> 0.3)
+  dotenv-rails
   jbuilder (~> 2.0)
   jettywrapper
   jquery-rails

@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 
 
+# Use dotenv to manage settings instead of fiddling with things across
+# lots of files
+gem 'dotenv-rails', groups: [:development, :test]
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use sqlite3 as the database for Active Record
