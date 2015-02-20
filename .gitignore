@@ -31,6 +31,7 @@ pickle-email-*.html
 /jetty
 
 # Do not accidentally put live configuration files into the repo (!)
+.env
 config/analytics.yml
 config/fedora.yml
 config/jetty.yml
@@ -38,7 +39,10 @@ config/redis.yml
 config/resque-pool.yml
 config/role_map.yml
 config/secrets.yml
+config/solr.yml
 config/initializers/secret_token.rb
+config/initializers/blacklight_initializer.rb
+config/initializers/devise.rb
 
 # These should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
