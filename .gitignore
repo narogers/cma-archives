@@ -6,6 +6,16 @@
 
 # Ignore bundler config.
 /.bundle
+/vendor/bundle
+/.bundle
+capybara-*.html
+.rspec
+/public/system
+/coverage/
+/spec/tmp
+**.orig
+rerun.txt
+pickle-email-*.html
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -21,6 +31,7 @@
 /jetty
 
 # Do not accidentally put live configuration files into the repo (!)
+.env
 config/analytics.yml
 config/database.yml
 config/fedora.yml
@@ -30,3 +41,12 @@ config/resque-pool.yml
 config/role_map.yml
 config/secrets.yml
 config/solr.yml
+config/initializers/secret_token.rb
+config/initializers/blacklight_initializer.rb
+config/initializers/devise.rb
+
+# These should all be checked in to normalise the environment:
+# Gemfile.lock, .ruby-version, .ruby-gemset
+
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
