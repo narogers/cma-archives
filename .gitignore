@@ -22,6 +22,7 @@
 
 # Do not accidentally put live configuration files into the repo (!)
 config/analytics.yml
+config/database.yml
 config/fedora.yml
 config/jetty.yml
 config/redis.yml
