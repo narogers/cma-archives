@@ -40,6 +40,7 @@ group :development, :test do
   gem 'capistrano'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
+  gem 'capistrano-passenger'
   gem 'highline'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
