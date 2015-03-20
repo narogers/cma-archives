@@ -50,7 +50,7 @@ group :development, :test do
   #gem 'spring'
 end
 
-gem 'sufia', '6.0.0.rc3'
+gem 'sufia', '~> 6.0.0.rc4'
 gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'
 
 gem 'unicorn'

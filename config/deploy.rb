@@ -24,12 +24,15 @@ set :log_level, :debug
 
 # Default value for :linked_files is []
 set :linked_files, fetch(:linked_files, []).push(
+	'config/browse_everything_providers.yml',
 	'config/database.yml', 
 	'config/fedora.yml',
 	'config/redis.yml',
 	'config/resque-pool.yml',
 	'config/secrets.yml',
-	'config/solr.yml')
+	'config/solr.yml',
+	'config/initializers/hydra_derivatives.rb',
+	'config/initializers/resque_admin.rb',)
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push(
