@@ -38,4 +38,14 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Rotate the logs every 2MB to keep debugging manageable and only
+  # maintain the last 5
+  config.logger = Logger.new(Rails.root.join("log", 
+    Rails.env + ".log"), 5, 2*1024*1024)
+  # Reroute STDERR to a log file in the same directory for easier
+  # troubleshooting instead of having it swallowed by the Apache
+  # logs
+  Deprecation.default_deprecation_behavior = :log
+
 end
