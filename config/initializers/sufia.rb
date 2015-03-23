@@ -98,7 +98,7 @@ Sufia.config do |config|
   rescue Errno::ENOENT
     config.browse_everything = nil
   end
-
+  #config.enable_local_ingest = true
 end
 
 Date::DATE_FORMATS[:standard] = "%m/%d/%Y"
