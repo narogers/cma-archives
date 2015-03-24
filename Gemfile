@@ -54,7 +54,7 @@ end
 gem 'sufia', '~> 6.0.0.rc4'
 gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'
 gem 'rsolr'
-gem 'browse-everything', path: '~nrogers/browse-everything'
+gem 'browse-everything', github: 'narogers/browse-everything'
 gem 'unicorn'
 
 gem 'devise'
