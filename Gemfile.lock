@@ -7,8 +7,9 @@ GIT
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
 
-PATH
-  remote: ~nrogers/browse-everything
+GIT
+  remote: git://github.com/narogers/browse-everything.git
+  revision: e34a6808e20b7dbf78524d3c8c05bc771157aef0
   specs:
     browse-everything (0.8.1)
       bootstrap-sass
