@@ -12,16 +12,33 @@ class ImportUrlJob < ActiveFedoraPidBasedJob
     uri = Addressable::URI.parse(generic_file.import_url)
 
     spec = {
-      "url" => uri.display_uri,
+      "url" => generic_file.import_url,
       "file_size" => 0,
     }
     
     # Infer the MIME type from the file name since it was not
     # provided by any HTTP headers
-    mime_types = MIME::Types.of(uri.basename)
-    mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
 
-    Tempfile.open(pid.gsub('/', '_')) do |f|
+    # Because of a bug with DNG files we need to coax MiniMagick into
+    # loading the right library. Until a better solution comes along
+    # the way to do this is by forcing an extension onto the file but
+    # only for DNGs
+    #
+    # This is not perfect but it will work with 99% of the cases that
+    # are present
+    tmpfile = [pid.gsub('/', "_")]
+    puts('w00t w00t')
+
+    if (File.extname(uri.basename) == 'dng')
+      mime_type = "image/x-adobe-dng"
+      tmpfile.push('.dng')
+    else
+      mime_types = MIME::Types.of(uri.basename)
+      mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
+      tmpfile.push('')
+    end
+    
+    Tempfile.open(tmpfile) do |f|
       # Use BrowseEverything instead of a built in method
       retriever = BrowseEverything::Retriever.new
       retriever.download(spec, f)
