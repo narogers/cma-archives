@@ -1,4 +1,3 @@
-
 # Override the ImportURLJob to support BrowseEverything
 # retrievers rather than home grown code. Eventually this
 # needs to get created as a pull request but this is just a
@@ -27,9 +26,8 @@ class ImportUrlJob < ActiveFedoraPidBasedJob
     # This is not perfect but it will work with 99% of the cases that
     # are present
     tmpfile = [pid.gsub('/', "_")]
-    puts('w00t w00t')
 
-    if (File.extname(uri.basename) == 'dng')
+    if (File.extname(uri.basename) == '.dng')
       mime_type = "image/x-adobe-dng"
       tmpfile.push('.dng')
     else
@@ -43,6 +41,9 @@ class ImportUrlJob < ActiveFedoraPidBasedJob
       retriever = BrowseEverything::Retriever.new
       retriever.download(spec, f)
 
+      # Here is where the MIME TYPE is getting set to image/tiff
+      # instead of image/x-adobe-dng. Fix this and everything will
+      # finally work as expected
       if Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', mime_type)
         message = "The file (#{generic_file.label}) was successfully imported."
         User.batchuser.send_message(user, message, 'File import')

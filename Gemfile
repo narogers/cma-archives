@@ -56,6 +56,9 @@ gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'
 gem 'rsolr'
 gem 'browse-everything', github: 'narogers/browse-everything'
 gem 'unicorn'
+# Use a custom version of hydra-derivatives with a patch
+gem 'hydra-derivatives', path: "~nrogers/hydra-derivatives"
+#gem 'hydra-derivatives', github: 'narogers/hydra-derivatives'
 
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
