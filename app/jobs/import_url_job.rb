@@ -5,7 +5,7 @@
 #
 # It might be wise to only encode if the URL is file:///
 # based.
-class ImportUrlJob < ActiveFedoraPidBasedJob
+class ImportUrlJob < ActiveFedoraIdBasedJob
   def run
     user = User.find_by_user_key(generic_file.depositor)
     uri = Addressable::URI.parse(generic_file.import_url)

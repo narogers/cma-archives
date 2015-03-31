@@ -51,14 +51,13 @@ group :development, :test do
   #gem 'spring'
 end
 
-gem 'sufia', '~> 6.0.0.rc4'
-gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'
-gem 'rsolr'
+gem 'sufia', '~> 6.0'
+gem 'kaminari'
+#gem 'rsolr'
 gem 'browse-everything', github: 'narogers/browse-everything'
 gem 'unicorn'
 # Use a custom version of hydra-derivatives with a patch
-gem 'hydra-derivatives', path: "~nrogers/hydra-derivatives"
-#gem 'hydra-derivatives', github: 'narogers/hydra-derivatives'
+gem 'hydra-derivatives', github: 'narogers/hydra-derivatives'
 
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
@@ -72,3 +71,5 @@ end
 gem 'pry'
 gem 'pry-rails'
 gem 'pry-byebug'
+
+gem 'rsolr', '~> 1.0.6'
