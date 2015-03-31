@@ -6,6 +6,33 @@ Sufia.config do |config|
     file_author: :creator
   }
 
+  # Exif to Dublin Core mappings
+  config.exif_to_desc_mapping = {
+    subject: :subject,
+    hierarchicalSubject: :subject,
+    personInImage: :subject,
+    keywords: :subject,
+    SourceFile: :source,
+    sourcefile: :source,
+    JobID: :identifier,
+    headline: :abstract,
+    description: :description,
+    sublocation: :spatial,
+    location: :spatial,
+    DateTimeOriginal: :date_created,
+    CreateDate: :date_created,
+    datetimecreated: :date_created,
+    DateTime: :date_modified,
+    ModifyDate: :date_modified,
+    datetimemodifed: :date_modified,
+    # These are CMA specific fields
+    #'by-linetitle' => :photographer_title,
+    #AuthorsPosition: :photographer_title,
+    #'by-line' => :photographer,
+    #creator: :photographer,
+    #credit: :creditline
+  }
+
   config.max_days_between_audits = 7
 
   config.max_notifications_for_dashboard = 5

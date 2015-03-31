@@ -52,12 +52,12 @@ group :development, :test do
 end
 
 gem 'sufia', '~> 6.0'
-gem 'kaminari'
+gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 #gem 'rsolr'
 gem 'browse-everything', github: 'narogers/browse-everything'
-gem 'unicorn'
 # Use a custom version of hydra-derivatives with a patch
 gem 'hydra-derivatives', github: 'narogers/hydra-derivatives'
+gem 'mini_exiftool'
 
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
