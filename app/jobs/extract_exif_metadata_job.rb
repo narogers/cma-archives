@@ -34,6 +34,13 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		end
     		pp generic_file[v]
     	end
+
+        # A couple of fields get default values if nothing was set 
+        # from the image itself
+        if generic_file[:rights].nil?
+            generic_file[:rights] = "Copyright, Cleveland Museum of Art"
+        end
+
 		# If there is a little housekeeping to do for some key 
 		# fields it should happen here as needed    	
 		generic_file.save
