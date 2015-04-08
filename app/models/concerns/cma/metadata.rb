@@ -21,6 +21,16 @@ module CMA
     property :provenance, predicate: ::RDF::DC.provenance do |index|
       index.as :stored_searchable
     end
+
+    property :credit_line, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#creditline") do |index|
+      index.as :stored_searchable
+    end
+    property :photographer, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#photographer") do |index|
+      index.as :stored_searchable
+    end
+    property :photographer_title, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#photographerTitle") do |index|
+      index.as :stored_searchable
+    end
   end
 end
 end

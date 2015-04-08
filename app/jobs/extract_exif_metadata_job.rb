@@ -5,6 +5,10 @@
 # If this is not set, or the content is not recognized as an image,
 # then nothing exciting will happen
 class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
+  def queue_name
+    return :exif_metadata
+  end
+  
   def run
     # Set two escape clauses before you go any further
     return unless generic_file.content.has_content?

@@ -26,11 +26,11 @@ Sufia.config do |config|
     ModifyDate: :date_modified,
     datetimemodifed: :date_modified,
     # These are CMA specific fields
-    #'by-linetitle' => :photographer_title,
-    #AuthorsPosition: :photographer_title,
-    #'by-line' => :photographer,
-    #creator: :photographer,
-    #credit: :creditline
+    'by-linetitle' => :photographer_title,
+    AuthorsPosition: :photographer_title,
+    'by-line' => :photographer,
+    creator: :photographer,
+    credit: :credit_line
   }
 
   config.max_days_between_audits = 7
