@@ -1,49 +1,53 @@
+require 'csv'
+
 class BatchIngestJob
 	attr :collection
-	attr :base_directory
+	attr :batch_file
 
 	def queue_name
 		:batch_ingest
 	end
 
 	def run
-		if base_directory.blank?
-			puts '[BATCH INGEST] Warning: unable to proceed with no base directory. Please provide a root path and try again'
+		if !File.exists?(batch_file)
+			puts '[BATCH INGEST] Warning: unable to locate a manifest file'
 			return
 		end
 
-		# TODO: Put in some safeguards to prevent looking at the wrong
-		#       directories
+		root_directory = File.dirname(File.expand_path(batch_file))
+		
+		# Read in the CSV file which should follow the following format
 		#
-		# TODO : Make batches configurable along with
-		#        defining shorcuts for groups and users tied to a
-		#        key such as :editorial, :object, etc
-		#
-		# Expand the path and then grab all files - the filtering will
-		# take place just before it gets send to ImportUrlJob. **/* is
-		# a glob that will ignore just directories
-		root_path = FIle.expand_path(base_directory)
-		Dir.foreach([root_path, "**/*"].join("/") do |f|
-			mime_type = MIME::Types.of(f).first
-			next if mime_type.blank?
+		# [title]
+		# [creator]
+		# [blank line]
+		# [file, collections, tag, tag, ...]
+		# [01.tif, "Collection", nrogers@clevelandart.org, ...]
+		metadata = CSV.read(batch_file, {skip_blank: true})
+	  batch = Batch.new
+	  batch.title =  metadata.shift
+	  batch.creator = metadata.shift
+	  batch.save
 
-			# For now just process images and skip other formats like PDF
-			# or video
-			if ("image" == mime_type.media_type)
-				ingestLocalFile(f)
-			end
-		end
+	  # Drop the first column which is the file name
+	  headers = metadata.shift
+	  headers.shift
+	  # The rest of the file should be a list of files and associated
+	  # properties
+	  metadata.each do |image|
+	  	# TODO: Pick up here Monday with helper methods to create a
+	  	#       generic file, tie it to collections, and then kick off
+	  	#       an importURL job
+	  	gf = create_generic_file(image)
+	  	gf = GenericFile.new
+	  	gf.import_url = "file://#{root_directory}/#{image[0]}"
+	  	gf.depositor = batch.creator
+	  	gf.edit_users = [batch.creator]
+	  	update_collections(gf, )
+	  	gf.save
+
+
+	  end
 	end
 
-	protected
-	def ingestLocalFile(f)
-		generic_file = GenericFile.new
-		generic_file.import_url = "file://" + f
-
-		generic_file.depositor = 'syslib@clevelandart.org'
-		generic_file.edit_users = ['syslib@clevelandart.org']
-		generic_file.collection = [collection] unless collection.blank?
-		generic_file.save
-		Sufia.queue.push(IngestLocalCMAFileJob.new(generic_file.id))
-	end
 end
