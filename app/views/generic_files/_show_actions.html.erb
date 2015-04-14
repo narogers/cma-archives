@@ -1,0 +1,15 @@
+<h2 class="non lower">Actions</h2>
+<p>
+	<%= render_download_link %>
+	<% if can? :edit, @generic_file %>
+    &nbsp;|&nbsp;
+		<% if @generic_file.processing? %>
+			<%= t('sufia.upload.processing') %>
+		<% else %>
+			<%= link_to "Edit", sufia.edit_generic_file_path(@generic_file) %>
+		<% end %>
+	<% end %>
+</p>
+<p>Export to	
+  <%= link_to "Endnote", sufia.generic_file_path(@generic_file, format: 'endnote') %>
+</p>
