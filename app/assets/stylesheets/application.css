@@ -12,4 +12,6 @@
  *
  *= require_self
  *= require sufia
+ *= require settings
+ *= require bootstrap_overrides
  */

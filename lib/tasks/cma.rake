@@ -1,9 +1,7 @@
 namespace :cma do
   namespace :batch do
-	  require "#{Rails.root}/app/jobs/batch_ingest_job"
-
-	  desc "Batch ingest content to CMA standards"
-	  task :ingest, [:base_directory] do |t, args|
+	  desc "Batch ingest content according to CMA standards"
+	  task :ingest, [:base_directory] => :environment do |t, args|
 	  	puts Sufia.queue.default_queue_name
 		# TODO : Invoke the batch ingest job for each
 		#        batch.csv found underneath the root

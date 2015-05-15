@@ -25,6 +25,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     #
     # This is not perfect but it will work with 99% of the cases that
     # are present
+    puts "[IMPORT URL] Preparing file for processing"
     tmpfile = [id.gsub('/', "_")]
 
     if (File.extname(uri.basename) == '.dng')
