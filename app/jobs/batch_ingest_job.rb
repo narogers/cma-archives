@@ -60,20 +60,12 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  	gf.import_url = "file://#{root_directory}/#{resource[0]}"
 	  	gf.depositor = batch.creator.first
 	  	gf.edit_users = batch.creator
-	  	gf.collections << collections
-	  	updateCollections(gf, collections)
+	  	gf.collections = collections
 	  	gf.save
 	  	
 	  	# Kick off the processing step in the background
 	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
 	  end
-	end
-
-	def updateCollections(genericFile, collections)
-		collections.each do |c|
-			c.member_ids << genericFile.id
-			c.save
-		end
 	end
 
 	def createCollection(title)
