@@ -18,7 +18,10 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 		end
 
 		root_directory = File.dirname(File.expand_path(batch_file))
-		
+		File.open("#{root_directory}/.processing", "w") do |f|
+			f.write Time.now
+		end
+
 		# Read in the CSV file which should follow the following format
 		#
 		# [title]
@@ -66,6 +69,11 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  	# Kick off the processing step in the background
 	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
 	  end
+
+	  File.open("#{root_directory}/.processed", "w") do |f|
+			f.write Time.now
+		end
+		File.delete("#{root_directory}/.processing")
 	end
 
 	def createCollection(title)
