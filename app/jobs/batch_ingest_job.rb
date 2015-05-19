@@ -70,10 +70,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
 	  end
 
-	  File.open("#{root_directory}/.processed", "w") do |f|
-			f.write Time.now
-		end
-		File.delete("#{root_directory}/.processing")
+	FileUtils.mv("#{root_directory}/.processing",
+		     "#{root_directory}/processed")
 	end
 
 	def createCollection(title)
