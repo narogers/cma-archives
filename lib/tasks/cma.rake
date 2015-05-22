@@ -7,7 +7,7 @@ namespace :cma do
 	  	
 	  	batches.each do |batch|
 	  		(directory, batch_file) = File.split(batch)
-	  		puts "Processing directory #{directory}"
+	  		puts "Queuing #{directory} for ingest"
 	  		Sufia.queue.push(BatchIngestJob.new(batch))
 	  	end
     end

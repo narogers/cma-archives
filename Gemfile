@@ -54,7 +54,7 @@ end
 gem 'sufia', '~> 6.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 #gem 'rsolr'
-gem 'browse-everything', github: 'narogers/browse-everything'
+#gem 'browse-everything', github: 'narogers/browse-everything'
 # Use a custom version of hydra-derivatives with a patch
 gem 'hydra-derivatives', github: 'narogers/hydra-derivatives'
 gem 'mini_exiftool'

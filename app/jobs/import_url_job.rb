@@ -28,14 +28,11 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     puts "[IMPORT URL] Preparing file for processing"
     tmpfile = [id.gsub('/', "_")]
 
-    if (File.extname(uri.basename) == '.dng')
-      mime_type = "image/x-adobe-dng"
-      tmpfile.push('.dng')
-    else
-      mime_types = MIME::Types.of(uri.basename)
-      mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
-      tmpfile.push('')
-    end
+    mime_types = MIME::Types.of(uri.basename)
+    mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
+    extension = mime_types.empty? ? "" :
+      mime_types.first.extensions.first
+    tmpfile.push(".#{extension}") unless extension.empty?
     
     Tempfile.open(tmpfile) do |f|
       # Use BrowseEverything instead of a built in method

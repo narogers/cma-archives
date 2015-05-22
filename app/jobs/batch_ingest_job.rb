@@ -50,24 +50,28 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  	collection = findCollection(coll)
 	  	if collection.nil?
 	  		collection = createCollection(coll)
-	  	else
-	  		puts "[BATCH] Adding resources to existing collection #{coll}"
-	  	  collections << collection
-	    end
+	  	end
+	  	
+	  	puts "[BATCH] Adding resources to existing collection #{coll}"
+	  	collections << collection
 	  end
+
+	  # Shift off the row of headers so you don't try to process
+	  # "file"
+	  metadata.shift
 
 	  # The rest of the file should be a list of files and associated
 	  # properties
     metadata.each do |resource|
 	  	gf = GenericFile.new
 	  	gf.import_url = "file://#{root_directory}/#{resource[0]}"
-	  	gf.depositor = batch.creator.first
-	  	gf.edit_users = batch.creator
+	  	gf = applyDefaultAccessControls(gf)
 	  	gf.collections = collections
 	  	gf.save
 	  	
 	  	# Kick off the processing step in the background
 	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
+
 	  end
 
 	FileUtils.mv("#{root_directory}/.processing",
@@ -79,8 +83,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
 		collection = Collection.new
 		collection.title = title
-		collection.depositor = self.batch_creator
-		collection.edit_users = [self.batch_creator]
+		collection = applyDefaultAccessControls(collection)
 		collection.save
 
 		return collection
@@ -98,5 +101,18 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 		# If we fall through to here then hang your head in shame and return
 		# nil
 		return nil
+	end
+
+	# Define some default access permissions to the collection
+	# that will make it globally accessible to anyone who is
+	# registered. This works because the next iteration will use the
+	# role map to permit access collection by collection
+	def applyDefaultAccessControls(resource)
+		resource.depositor = batch_creator
+		resource.edit_users = [batch_creator]
+		resource.edit_groups = [:admin]
+		resource.read_groups = [:patron, :archivist]
+
+		return resource
 	end
 end

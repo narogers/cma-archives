@@ -24,6 +24,17 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		# advantage when populating the metadata attributes
     		next if exifdata[k].blank?
 
+            # Clean up the data to cast everything in the
+            # array to text even if it is a date, integer,
+            # or some other value
+            if (exifdata[k].is_a? Array)
+              exifdata[k].each do |value, index|
+                exifdata[index] = value.to_s
+              end
+            else
+               exifdata[k] = exifdata[k].to_s
+            end
+
     		# Here we know that the tag exists and just needs to
     		# be mapped accordingly. We need to determine if it is
     		# multivalued and push an array instead of a scalar value
@@ -46,7 +57,8 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
         end
 
 		# If there is a little housekeeping to do for some key 
-		# fields it should happen here as needed    	
+		# fields it should happen here as needed  
+        #binding.pry  	
 		generic_file.save
     end
   end
