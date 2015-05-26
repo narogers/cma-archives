@@ -29,7 +29,7 @@ set :linked_files, fetch(:linked_files, []).push(
 	'config/fedora.yml',
 	'config/redis.yml',
 	'config/resque-pool.yml',
-	'config/role-map.yml',
+	'config/role_map.yml',
 	'config/secrets.yml',
 	'config/solr.yml',
 	'config/initializers/hydra_derivatives.rb',
