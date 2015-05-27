@@ -27,4 +27,14 @@ class User < ActiveRecord::Base
   def to_s
     email
   end
+
+  # Define the batch user here so you don't need to do it when the ingest
+  # is happening
+  def self.batchuser_key
+    "clio-batches@clevelandart.org"
+  end
+
+  def self.audituser_key
+    "clio-audits@clevelandart.org"
+  end
 end

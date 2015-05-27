@@ -22,6 +22,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 			f.write Time.now
 		end
 
+		# Create two file streams - one for files that completed and
+		# one for failed files. Also open a new Logger instance that
+		# will record all activity since it is now done synchronously
+		success_log = File.open("#{root_directory}/processed_files.log", 'w')
+		failure_log = File.open("#{root_directory}/failed_files.log", 'w')
+		activity_log = Logger.new("#{root_directory}/activity.log")
+
 		# Read in the CSV file which should follow the following format
 		#
 		# [title]
@@ -35,6 +42,11 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
 	  batch.title = metadata.shift
 	  batch.creator = metadata.shift
+	  # Verify that the creator exists or default to the system's
+	  # batch account
+	  if (0 == User.where(email: batch.creator).count)
+	    batch.creator = [User.batchuser.email]
+	  end
 	  batch.save
 
 	  # For use in helper methods save this NOT as an array but as a string
@@ -52,7 +64,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  		collection = createCollection(coll)
 	  	end
 	  	
-	  	puts "[BATCH] Adding resources to existing collection #{coll}"
+	  	activity_log.info "[BATCH] Adding resources to existing collection #{coll}"
 	  	collections << collection
 	  end
 
@@ -69,13 +81,26 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  	gf.collections = collections
 	  	gf.save
 	  	
-	  	# Kick off the processing step in the background
-	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
-
+	  	# Kick off the processing step synchronously so that the batch
+	  	# as a whole will fail at the first bad file. It also makes
+	  	# it easier to do logging
+	  	begin
+	  		activity_log.info "[IMPORT] Attempting to ingest #{resource[0]}"
+	  	  ImportUrlJob.new(gf.id)
+	  		success_log << resource[0]
+	  		success_log << "\r\n"
+	  	rescue => err
+	  		failure_log << resource[0]
+	  		failure_log << "\r\n"
+	  		activity_log.warn("[IMPORT] A problem occurred processing #{resource[0]}")
+	  		activity_log.warn(err)
+	  	end
 	  end
 
-	FileUtils.mv("#{root_directory}/.processing",
-		     "#{root_directory}/processed")
+	  # Close the log files at the end of the process
+	  success_log.close
+	  failure_log.close
+	  FileUtils.rm("#{root_directory}/.processing")
 	end
 
 	def createCollection(title)
