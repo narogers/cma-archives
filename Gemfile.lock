@@ -9,9 +9,9 @@ GIT
 
 GIT
   remote: git://github.com/narogers/hydra-derivatives.git
-  revision: b9bd92c58b9baca817984f491bbb1db5fad778f4
+  revision: 599d2643cc3e43d5c413daa14baa196f3fdf5c34
   specs:
-    hydra-derivatives (1.0.0)
+    hydra-derivatives (1.1.0)
       active-fedora (~> 9.0)
       activesupport (~> 4.0)
       deprecation (~> 0.1)
@@ -163,7 +163,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.2.2)
       activesupport
-    devise (3.4.1)
+    devise (3.5.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -273,7 +273,7 @@ GEM
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (1.8.2)
+    json (1.8.3)
     json-ld (1.1.8)
       rdf (~> 1.1, >= 1.1.7)
     jwt (1.5.0)
@@ -493,7 +493,7 @@ GEM
     rspec-mocks (3.2.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
-    rspec-rails (3.2.1)
+    rspec-rails (3.2.2)
       actionpack (>= 3.0, < 4.3)
       activesupport (>= 3.0, < 4.3)
       railties (>= 3.0, < 4.3)
@@ -508,7 +508,7 @@ GEM
       multipart-post
       oauth2
     rubyzip (1.1.7)
-    sass (3.4.13)
+    sass (3.4.14)
     sass-rails (5.0.3)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
@@ -556,7 +556,7 @@ GEM
     sparql-client (1.1.5)
       net-http-persistent (~> 2.9)
       rdf (~> 1.1)
-    sprockets (3.1.0)
+    sprockets (3.2.0)
       rack (~> 1.0)
     sprockets-rails (2.3.1)
       actionpack (>= 3.0)
