@@ -17,12 +17,13 @@ class CatalogController < ApplicationController
     solr_name('date_modified', :stored_sortable, type: :date)
   end
 
-  configure_blacklight do |config|          config.view.gallery.partials = [:index_header, :index]
-          config.view.masonry.partials = [:index]
-          config.view.slideshow.partials = [:index]
+  configure_blacklight do |config|          
+    config.view.gallery.partials = [:index_header, :index]
+    config.view.masonry.partials = [:index]
+    config.view.slideshow.partials = [:index]
 
-          config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
-          config.show.partials.insert(1, :openseadragon)
+    config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
+    config.show.partials.insert(1, :openseadragon)
 
     #Show gallery view
     config.view.gallery.partials = [:index_header, :index]
@@ -115,13 +116,13 @@ class CatalogController < ApplicationController
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
-      all_names = config.show_fields.values.map{|val| val.field}.join(" ")
-      title_name = solr_name("title", :stored_searchable)
-      field.solr_parameters = {
-        qf: "#{all_names} file_format_tesim all_text_timv",
-        pf: "#{title_name}"
-      }
-    end
+        all_names = config.show_fields.values.map{|val| val.field}.join(" ")
+        title_name = solr_name("title", :stored_searchable)
+        field.solr_parameters = {
+          qf: "#{all_names} file_format_tesim all_text_timv",
+          pf: "#{title_name}"
+        }
+      end
 
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
@@ -307,6 +308,10 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    # Use :post to work around URL requests to Solr becoming
+    # exceedingly long
+    config.http_method = :post
   end
 
 end
