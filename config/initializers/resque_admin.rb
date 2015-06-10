@@ -5,8 +5,7 @@ module Sufia
       return false if current_user.blank?
 
       # TODO code a group here that makes sense
-      admins = ['nrogers@clevelandart.org', 'smiller@clevelandart.org', 
-      	'nkrause@clevelandart.org']
+      admins = ['nrogers', 'shernandez', 'nkrause']
       return admins.include? current_user.name
     end
   end

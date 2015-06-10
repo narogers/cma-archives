@@ -48,7 +48,8 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 end
 
-gem 'sufia', '~> 6.0'
+#gem 'sufia', '~> 6.0'
+gem "sufia", github: 'narogers/sufia'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 #gem 'rsolr'
 #gem 'browse-everything', github: 'narogers/browse-everything'
