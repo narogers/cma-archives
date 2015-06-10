@@ -21,7 +21,7 @@ GIT
 
 GIT
   remote: git://github.com/narogers/sufia.git
-  revision: 5c92a095cf13a531010b42daf10e19b73d8c273a
+  revision: 10cbb21c175ea623114b896f76f182899d57ed88
   specs:
     sufia (6.0.0)
       blacklight (~> 5.12)
