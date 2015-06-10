@@ -4,9 +4,7 @@ module Sufia
       current_user = request.env['warden'].user
       return false if current_user.blank?
 
-      # TODO code a group here that makes sense
-      admins = ['nrogers', 'shernandez', 'nkrause']
-      return admins.include? current_user.name
+      return RoleMapper.roles(current_user).include? :admin.to_s
     end
   end
 end
