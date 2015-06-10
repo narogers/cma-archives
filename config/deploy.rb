@@ -27,6 +27,7 @@ set :linked_files, fetch(:linked_files, []).push(
 	'config/browse_everything_providers.yml',
 	'config/database.yml', 
 	'config/fedora.yml',
+	'config/ldap.yml',
 	'config/redis.yml',
 	'config/resque-pool.yml',
 	'config/role_map.yml',
