@@ -21,7 +21,7 @@ GIT
 
 GIT
   remote: git://github.com/narogers/sufia.git
-  revision: 10cbb21c175ea623114b896f76f182899d57ed88
+  revision: 81884247164e1d2eff9ddd13ef1a9b143a449266
   specs:
     sufia (6.0.0)
       blacklight (~> 5.12)
@@ -86,7 +86,7 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
-    active-fedora (9.1.1)
+    active-fedora (9.1.2)
       active-triples (~> 0.6.0)
       activesupport (>= 4.1.0)
       deprecation
@@ -94,7 +94,6 @@ GEM
       linkeddata
       nom-xml (>= 0.5.1)
       om (~> 3.1)
-      rdf-ldp
       rdf-rdfxml (~> 1.1.0)
       rsolr (~> 1.0.10)
     active-triples (0.6.1)
@@ -185,7 +184,7 @@ GEM
     capistrano-bundler (1.1.4)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-passenger (0.0.5)
+    capistrano-passenger (0.1.0)
       capistrano (~> 3.0)
     capistrano-rails (1.1.3)
       capistrano (~> 3.1)
@@ -337,7 +336,7 @@ GEM
       http_logger
       linkeddata (>= 1.1)
       slop
-    legato (0.5.0)
+    legato (0.5.1)
       multi_json
     libv8 (3.16.14.7)
     link_header (0.0.8)
@@ -473,9 +472,6 @@ GEM
       rdf (>= 1.1)
     rdf-json (1.1.2)
       rdf (~> 1.1)
-    rdf-ldp (0.1.0)
-      deprecation
-      rdf
     rdf-microdata (2.0.1)
       htmlentities (~> 4.3)
       nokogiri (~> 1.6)
