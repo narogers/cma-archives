@@ -20,35 +20,36 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     tmp_service = Hydra::Derivatives::TempfileService.new(generic_file.content)
     tmp_service.tempfile do |f|
     	exifdata = MiniExiftool.new(f.path)
-    	Sufia.config.exif_to_desc_mapping.each_pair do |k, v|
+    	Sufia.config.exif_to_desc_mapping.each_pair do |exif_node, field|
     		# A missing tag returns nil - let's use that to our
     		# advantage when populating the metadata attributes
-    		next if exifdata[k].blank?
+    		next if exifdata[exif_node].blank?
+
+            # We need to change a local copy *NOT* modify the original
+            # image since that will have no impact
+            metadata = exifdata[exif_node]
 
             # Clean up the data to cast everything in the
             # array to text even if it is a date, integer,
             # or some other value
-            if (exifdata[k].is_a? Array)
-              exifdata[k].each do |value, index|
-                exifdata[index] = value.to_s
-              end
+            if (metadata.is_a? Array)
+              metadata.map! { |meta| meta.to_s}
             else
-               exifdata[k] = exifdata[k].to_s
+               metadata = metadata.to_s
             end
 
     		# Here we know that the tag exists and just needs to
     		# be mapped accordingly. We need to determine if it is
     		# multivalued and push an array instead of a scalar value
     		# to prevent errors.
-    		puts '[EXIF] Processing ' + v.to_s
-    		pp exifdata[k]
+    		puts '[EXIF] Processing ' + field.to_s
+    		pp metadata
 
-    		if (generic_file[v].is_a? Array)
-    		  generic_file[v] = (exifdata[k].is_a? Array) ? exifdata[k] : [exifdata[k]]
+    		if (generic_file[field].is_a? Array)
+    		  generic_file[field] = (metadata.is_a? Array) ? metadata : [metadata]
     		else
-    		  generic_file[v] = (exifdata[k].is_a? Array) ? exifdata[k].join(" ") : exifdata[k]
+    		  generic_file[field] = (metadata.is_a? Array) ? metadata.join(" ") : metadata
     		end
-    		pp generic_file[v]
     	end
 
         # A couple of fields get default values if nothing was set 
