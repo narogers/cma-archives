@@ -38,10 +38,10 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
-  gem 'capistrano-passenger'
+  gem 'capistrano-passenger', '~> 0.1.0'
   gem 'highline'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
@@ -49,7 +49,7 @@ group :development, :test do
 end
 
 #gem 'sufia', '~> 6.0'
-gem "sufia", github: 'narogers/sufia'
+gem "sufia", github: 'narogers/sufia' 
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 #gem 'rsolr'
 #gem 'browse-everything', github: 'narogers/browse-everything'
