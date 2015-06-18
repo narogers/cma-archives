@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   # Override the groups method to revert back to using the Role Map. A
   # future iteration might rely directly on LDAP but that can wait 
   # until there are more than a dozen users
-  def self.groups
+  def groups
     RoleMapper.roles(self)
   end
 
