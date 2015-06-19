@@ -18,25 +18,47 @@ module CMA
                 size: '200x150>',
     						datastream: 'thumbnail'
     					}
-    				}, processor: get_image_processor_for(obj)
+    				}, processor: get_image_processor
           end
         end
 
         # The solution for tools constantly resetting the MIME type
         # to image/tiff is to instead check and see if the format
         # contains 'Digital Negative'
-        def get_image_processor_for(image)
-          case image
+        def get_image_processor_for
+          case format_label
             # Put nil first to prevent errors later on with the
             # format label field
             when nil
               nil
-            when image.format_label.include?("Digital Negative")
+            when is_raw_file
               :raw_image
             else
               :image
           end
         end 
+
+        # Can be called as a before_save callback to reset the MIME
+        # type for digital negatives (DNG)
+        def verify_mime_type
+          if is_raw_file
+            self.mime_type = "image/x-adobe-dng"
+          end
+        end
+
+        # Returns true if the image is a Digital Negative
+        #
+        # By doing it this way any variants can be managed in a
+        # single location that can supplemented as needed
+        def is_raw_file
+          @raw_formats ||= ["Digital Negative", "DNG EXIF"]
+          @raw_formats.each do |rf|
+            return true if format_label.include? rf
+          end
+
+          # If you get here no matches were found
+          return false
+        end
       end
     end
   end
