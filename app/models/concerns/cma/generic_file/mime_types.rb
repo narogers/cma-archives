@@ -4,8 +4,8 @@ module CMA
       extend ActiveSupport::Concern
 
       module ClassMethods
-      	def raw_image_mime_types
-      		['image/x-adobe-dng']
+      	def image_mime_types
+      		['image/tiff', 'image/jpeg', 'image/x-adobe-dng']
       	end
       end
     end

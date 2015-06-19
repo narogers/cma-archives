@@ -18,17 +18,25 @@ module CMA
                 size: '200x150>',
     						datastream: 'thumbnail'
     					}
-    				}
-    			when *raw_image_mime_types
-    				obj.transform_file :content, { 
-              thumbnail: { 
-                format: 'jpg',
-    						size: '200x150>',
-    						datastream: 'thumbnail'
-    					}
-    				}, processor: :raw_image
+    				}, processor: get_image_processor_for(obj)
           end
         end
+
+        # The solution for tools constantly resetting the MIME type
+        # to image/tiff is to instead check and see if the format
+        # contains 'Digital Negative'
+        def get_image_processor_for(image)
+          case image
+            # Put nil first to prevent errors later on with the
+            # format label field
+            when nil
+              nil
+            when image.format_label.include?("Digital Negative")
+              :raw_image
+            else
+              :image
+          end
+        end 
       end
     end
   end
