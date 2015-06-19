@@ -21,7 +21,7 @@ GIT
 
 GIT
   remote: git://github.com/narogers/sufia.git
-  revision: 9991cc3135329d8209e65dab0004eebded4e406a
+  revision: ad98e0156344f6b423831703e98fd7081837ea3e
   specs:
     sufia (6.0.0)
       blacklight (~> 5.12)
@@ -219,13 +219,14 @@ GEM
       warden (~> 1.2.3)
     devise-guests (0.3.3)
       devise
-    devise_ldap_authenticatable (0.8.4)
+    devise_ldap_authenticatable (0.8.5)
       devise (>= 3.4.1)
-      net-ldap (>= 0.3.1, < 0.6.0)
+      net-ldap (>= 0.6.0, <= 0.11)
     diff-lcs (1.2.5)
-    dotenv (2.0.1)
-    dotenv-rails (2.0.1)
-      dotenv (= 2.0.1)
+    dotenv (2.0.2)
+    dotenv-rails (2.0.2)
+      dotenv (= 2.0.2)
+      railties (~> 4.0)
     dropbox-sdk (1.6.4)
       json
     ebnf (0.3.9)
@@ -310,7 +311,7 @@ GEM
       hydra-core (= 9.1.4)
       rails (>= 3.2.6)
     i18n (0.7.0)
-    jbuilder (2.2.16)
+    jbuilder (2.3.0)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jettywrapper (2.0.3)
@@ -319,7 +320,7 @@ GEM
       i18n
       logger
       rubyzip
-    jquery-rails (4.0.3)
+    jquery-rails (4.0.4)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
@@ -393,7 +394,7 @@ GEM
     nest (1.1.2)
       redis
     net-http-persistent (2.9.4)
-    net-ldap (0.5.1)
+    net-ldap (0.11)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -430,7 +431,7 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
-    rack (1.6.2)
+    rack (1.6.4)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -535,23 +536,23 @@ GEM
     retriable (1.4.1)
     rsolr (1.0.12)
       builder (>= 2.1.2)
-    rspec-core (3.2.3)
-      rspec-support (~> 3.2.0)
-    rspec-expectations (3.2.1)
+    rspec-core (3.3.1)
+      rspec-support (~> 3.3.0)
+    rspec-expectations (3.3.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.2.0)
-    rspec-mocks (3.2.1)
+      rspec-support (~> 3.3.0)
+    rspec-mocks (3.3.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.2.0)
-    rspec-rails (3.2.3)
+      rspec-support (~> 3.3.0)
+    rspec-rails (3.3.2)
       actionpack (>= 3.0, < 4.3)
       activesupport (>= 3.0, < 4.3)
       railties (>= 3.0, < 4.3)
-      rspec-core (~> 3.2.0)
-      rspec-expectations (~> 3.2.0)
-      rspec-mocks (~> 3.2.0)
-      rspec-support (~> 3.2.0)
-    rspec-support (3.2.2)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
+      rspec-support (~> 3.3.0)
+    rspec-support (3.3.0)
     ruby-box (1.15.0)
       addressable
       json
@@ -642,7 +643,7 @@ GEM
       rack (>= 1.0.0)
     warden (1.2.3)
       rack (>= 1.0)
-    web-console (2.1.2)
+    web-console (2.1.3)
       activemodel (>= 4.0)
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
