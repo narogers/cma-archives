@@ -39,9 +39,6 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
       retriever = BrowseEverything::Retriever.new
       retriever.download(spec, f)
 
-      # Here is where the MIME TYPE is getting set to image/tiff
-      # instead of image/x-adobe-dng. Fix this and everything will
-      # finally work as expected
       if Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', mime_type)
         message = "The file (#{generic_file.label}) was successfully imported."
         User.batchuser.send_message(user, message, 'File import')

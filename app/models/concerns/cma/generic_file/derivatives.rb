@@ -26,22 +26,13 @@ module CMA
         # to image/tiff is to instead check and see if the format
         # contains 'Digital Negative'
         def image_processor
-          case format_label
-            # Put nil first to prevent errors later on with the
-            # format label field
-            when nil
-              nil
-            when is_raw_file
-              :raw_image
-            else
-              :image
-          end
+	  is_raw_file? ? :raw_image : :image
         end 
 
         # Can be called as a before_save callback to reset the MIME
         # type for digital negatives (DNG)
         def verify_mime_type
-          if is_raw_file
+          if is_raw_file?
             self.mime_type = "image/x-adobe-dng"
           end
         end
@@ -50,7 +41,7 @@ module CMA
         #
         # By doing it this way any variants can be managed in a
         # single location that can supplemented as needed
-        def is_raw_file
+        def is_raw_file?
           @raw_formats ||= ["Digital Negative", "DNG EXIF"]
           @raw_formats.each do |rf|
             return true if format_label.include? rf
