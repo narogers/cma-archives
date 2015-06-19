@@ -18,14 +18,14 @@ module CMA
                 size: '200x150>',
     						datastream: 'thumbnail'
     					}
-    				}, processor: get_image_processor
+    				}, processor: image_processor
           end
         end
 
         # The solution for tools constantly resetting the MIME type
         # to image/tiff is to instead check and see if the format
         # contains 'Digital Negative'
-        def get_image_processor_for
+        def image_processor
           case format_label
             # Put nil first to prevent errors later on with the
             # format label field
