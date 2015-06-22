@@ -18,19 +18,12 @@ module CMA
                 size: '200x150>',
     						datastream: 'thumbnail'
     					}
-    				}, processor: image_processor
+    				}, processor: :cma_image
           end
         end
 
-        # The solution for tools constantly resetting the MIME type
-        # to image/tiff is to instead check and see if the format
-        # contains 'Digital Negative'
-        def image_processor
-	  is_raw_file? ? :raw_image : :image
-        end 
-
-        # Can be called as a before_save callback to reset the MIME
-        # type for digital negatives (DNG)
+        # Can be called as a before_save callback to reset the 
+        # MIME type for digital negatives (DNG)
         def verify_mime_type
           if is_raw_file?
             self.mime_type = "image/x-adobe-dng"

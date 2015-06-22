@@ -8,18 +8,6 @@ GIT
       activesupport (>= 3.0.0)
 
 GIT
-  remote: git://github.com/narogers/hydra-derivatives.git
-  revision: 599d2643cc3e43d5c413daa14baa196f3fdf5c34
-  specs:
-    hydra-derivatives (1.1.0)
-      active-fedora (~> 9.0)
-      activesupport (~> 4.0)
-      deprecation (~> 0.1)
-      hydra-file_characterization (~> 0.3)
-      mime-types (< 3)
-      mini_magick (>= 3.2, < 5)
-
-GIT
   remote: git://github.com/narogers/sufia.git
   revision: ad98e0156344f6b423831703e98fd7081837ea3e
   specs:
@@ -299,6 +287,13 @@ GEM
       hydra-access-controls (= 9.1.4)
       jettywrapper (>= 2.0.0)
       rails (~> 4.0)
+    hydra-derivatives (1.0.0)
+      active-fedora (~> 9.0)
+      activesupport (~> 4.0)
+      deprecation (~> 0.1)
+      hydra-file_characterization (~> 0.3)
+      mime-types (~> 2.3)
+      mini_magick (>= 3.2, < 5)
     hydra-editor (1.0.4)
       active-fedora (>= 9.0.0)
       cancancan (~> 1.8)
@@ -668,7 +663,7 @@ DEPENDENCIES
   devise_ldap_authenticatable
   dotenv-rails
   highline
-  hydra-derivatives!
+  hydra-derivatives
   jbuilder (~> 2.0)
   jettywrapper
   jquery-rails
