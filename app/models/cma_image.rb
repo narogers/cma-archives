@@ -1,4 +1,4 @@
-class CMAImage < Hydra::Derivatives::Image
+class CmaImage < Hydra::Derivatives::Image
 	protected
 		# Override the create_resized_image method to use scale() 
 		# which plays nicely with DNG images

@@ -26,20 +26,16 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     # This is not perfect but it will work with 99% of the cases that
     # are present
     puts "[IMPORT URL] Preparing file for processing"
-    tmpfile = [id.gsub('/', "_")]
-
     mime_types = MIME::Types.of(uri.basename)
-    mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
-    extension = mime_types.empty? ? "" :
-      mime_types.first.extensions.first
-    tmpfile.push(".#{extension}") unless extension.empty?
+    generic_file.mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
     
-    Tempfile.open(tmpfile) do |f|
+    Tempfile.open(generic_file.tempfile_name) do |f|
+      puts "[IMPORT URL] Storing temporary copy as #{f.path}"
       # Use BrowseEverything instead of a built in method
       retriever = BrowseEverything::Retriever.new
       retriever.download(spec, f)
 
-      if Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', mime_type)
+      if Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', generic_file.mime_type)
         message = "The file (#{generic_file.label}) was successfully imported."
         User.batchuser.send_message(user, message, 'File import')
       else

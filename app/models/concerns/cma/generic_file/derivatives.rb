@@ -3,11 +3,7 @@ module CMA
 		module Derivatives
 		  extend ActiveSupport::Concern
 
-		  # Override the default MIME types in GenericFile::MimeTypes to
-      # include DNG
       included do
-      	include Sufia::GenericFile::Derivatives
-
       	makes_derivatives do |obj|
           logger.info("[DERIVATIVES] Preparing to convert a(n) #{obj.mime_type}")
     			case obj.mime_type
@@ -17,7 +13,12 @@ module CMA
                 format: 'jpg',    						
                 size: '200x150>',
     						datastream: 'thumbnail'
-    					}
+    					},
+              preview: {
+                format: 'jpg',
+                size: '1000x750>',
+                datastream: 'access'
+              }
     				}, processor: :cma_image
           end
         end
