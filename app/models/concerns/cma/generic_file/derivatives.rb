@@ -9,12 +9,20 @@ module CMA
     			case obj.mime_type
     			when *image_mime_types
     				obj.transform_file :content, { 
-              thumbnail: { 
+              access: { 
                 format: 'jpg',    						
-                size: '200x150>',
-    						datastream: 'thumbnail'
+                size: '1200x1000>',
+    						datastream: 'access'
     					},
+              thumbnail: { 
+                format: 'jpg',                
+                size: '200x150>',
+                datastream: 'thumbnail'
+              },
     				}, processor: obj.image_processor
+            # TODO : Generate the thumbnail from the access
+            #        copy to greatly speed up the conversion
+            #        process
           end
         end
 

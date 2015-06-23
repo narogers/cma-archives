@@ -11,7 +11,6 @@ class GenericFile < ActiveFedora::Base
     include Sufia::GenericFile::Trophies
     include Sufia::GenericFile::Featured
     include Sufia::GenericFile::Metadata
-    include Sufia::GenericFile::Content
     include Sufia::GenericFile::Versions
     include Sufia::GenericFile::ProxyDeposit
     include Hydra::Collections::Collectible
@@ -19,6 +18,7 @@ class GenericFile < ActiveFedora::Base
     include Sufia::GenericFile::FullTextIndexing
     include Sufia::GenericFile::Indexing
 
+    include CMA::GenericFile::Content
     include CMA::GenericFile::Derivatives
     include CMA::GenericFile::MimeTypes
     include CMA::GenericFile::Metadata
