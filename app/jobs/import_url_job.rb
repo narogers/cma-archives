@@ -28,8 +28,13 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     puts "[IMPORT URL] Preparing file for processing"
     mime_types = MIME::Types.of(uri.basename)
     generic_file.mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
-    
-    Tempfile.open(generic_file.tempfile_name) do |f|
+    tmp_file = [id] 
+    tmp_file << ".#{mime_types.first.extensions.first}" unless mime_types.blank?   
+
+    # Can't use TempfileService here because we are trying to
+    # ingest the content into Fedora and that method assumes
+    # that it is already there
+    Tempfile.open(tmp_file) do |f|
       puts "[IMPORT URL] Storing temporary copy as #{f.path}"
       # Use BrowseEverything instead of a built in method
       retriever = BrowseEverything::Retriever.new

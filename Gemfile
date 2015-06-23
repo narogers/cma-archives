@@ -53,9 +53,9 @@ gem "sufia", github: 'narogers/sufia'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 #gem 'rsolr'
 #gem 'browse-everything', github: 'narogers/browse-everything'
-# Use a custom version of hydra-derivatives with a patch
-gem 'hydra-derivatives'
-#gem 'hydra-derivatives', path: "~nrogers/hydra-derivatives"
+# Use a custom version of hydra-derivatives with a patch until
+# RAW image support is baked into the core gem
+gem 'hydra-derivatives', github: 'narogers/hydra-derivatives', branch: 'raw-processor'
 gem 'mini_exiftool'
 
 gem 'devise'

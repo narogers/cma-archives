@@ -22,7 +22,6 @@ class GenericFile < ActiveFedora::Base
     include CMA::GenericFile::Derivatives
     include CMA::GenericFile::MimeTypes
     include CMA::GenericFile::Metadata
-    include CMA::GenericFile::TempfileService
 
     before_save :verify_mime_type
 end
