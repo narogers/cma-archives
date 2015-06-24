@@ -18,7 +18,7 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     # of metadata extraction. This is mostly cribbed directly from
     # the way that the characterization is done for FITS
     Hydra::Derivatives::TempfileService.create(generic_file.content) do |f|
-        puts "[EXIFTOOL] Using temporary file #{f.path}"
+        Rails.logger.info "[EXIFTOOL] Using temporary file #{f.path}"
     	exifdata = MiniExiftool.new(f.path)
     	Sufia.config.exif_to_desc_mapping.each_pair do |exif_node, field|
     		# A missing tag returns nil - let's use that to our
@@ -42,7 +42,7 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		# be mapped accordingly. We need to determine if it is
     		# multivalued and push an array instead of a scalar value
     		# to prevent errors.
-    		puts '[EXIF] Processing ' + field.to_s
+    		Rails.logger.info '[EXIF] Processing ' + field.to_s
     		pp metadata
 
     		if (generic_file[field].is_a? Array)

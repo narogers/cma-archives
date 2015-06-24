@@ -25,7 +25,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     #
     # This is not perfect but it will work with 99% of the cases that
     # are present
-    puts "[IMPORT URL] Preparing file for processing"
+    Rails.logger.info "[IMPORT URL] Preparing file for processing"
     mime_types = MIME::Types.of(uri.basename)
     generic_file.mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
     tmp_file = [id] 
@@ -35,7 +35,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     # ingest the content into Fedora and that method assumes
     # that it is already there
     Tempfile.open(tmp_file) do |f|
-      puts "[IMPORT URL] Storing temporary copy as #{f.path}"
+      Rails.logger.info "[IMPORT URL] Storing temporary copy as #{f.path}"
       # Use BrowseEverything instead of a built in method
       retriever = BrowseEverything::Retriever.new
       retriever.download(spec, f)

@@ -32,10 +32,10 @@ module ActiveFedora
 			# Now adjust the MIME type even if has already been set
 			# by checking the file name against the MIME Type
 			# database
-			puts '[ADD FILE] Adjusting the MIME type for ' + opts[:original_name]
+			Rails.logger.info '[ADD FILE] Adjusting the MIME type for ' + opts[:original_name]
 			new_mime_type = MIME::Types.of(opts[:original_name])
 			new_mime_type = new_mime_type.empty? ? 'application/octet-stream' : new_mime_type.first.content_type
-			puts '[ADD FILE] MIME Type will be set to ' + new_mime_type
+			Rails.logger.info '[ADD FILE] MIME Type will be set to ' + new_mime_type
 			self[opts[:path]].mime_type = new_mime_type
 		end
 	end
