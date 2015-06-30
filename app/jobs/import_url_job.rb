@@ -6,6 +6,10 @@
 # It might be wise to only encode if the URL is file:///
 # based.
 class ImportUrlJob < ActiveFedoraIdBasedJob
+  def queue_name
+    :import
+  end
+
   def run
     user = User.find_by_user_key(generic_file.depositor)
     uri = Addressable::URI.parse(generic_file.import_url)
@@ -40,12 +44,10 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
       retriever = BrowseEverything::Retriever.new
       retriever.download(spec, f)
 
-      if Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', generic_file.mime_type)
-        message = "The file (#{generic_file.label}) was successfully imported."
-        User.batchuser.send_message(user, message, 'File import')
-      else
-        User.batchuser.send_message(user, generic_file.errors.full_messages.join(", "), 'File Import Error')
-      end
+      # Don't pass a message through Mailboxer any more; if the status
+      # fails it can be handled differently in a future refactor of the
+      # jobs workflow
+      Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', generic_file.mime_type)
     end
   end
 end

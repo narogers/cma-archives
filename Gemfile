@@ -67,6 +67,10 @@ group :development, :test do
   gem 'jettywrapper'
 end
 
+# Enhance background job support
+gem 'resque-status' 
+gem 'resque-dynamic-queues'
+
 # Gems for development - not really needed or welcome in production
 # unless there are major problems
 gem 'pry'
