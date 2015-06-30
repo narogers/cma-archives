@@ -43,8 +43,6 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		# multivalued and push an array instead of a scalar value
     		# to prevent errors.
     		Rails.logger.info '[EXIF] Processing ' + field.to_s
-    		pp metadata
-
     		if (generic_file[field].is_a? Array)
     		  generic_file[field] = (metadata.is_a? Array) ? metadata : [metadata]
     		else
@@ -61,6 +59,10 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
 		# If there is a little housekeeping to do for some key 
 		# fields it should happen here as needed    	
 		generic_file.save
+
+        # Null out the metadata reference to free up the file handle so 
+        # that the temporary directory does not get too cluttered
+        exifdata = nil
     end
   end
 end
