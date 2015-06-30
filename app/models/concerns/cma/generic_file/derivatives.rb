@@ -20,6 +20,7 @@ module CMA
                 datastream: 'thumbnail'
               },
     				}, processor: obj.image_processor
+            
             # TODO : Generate the thumbnail from the access
             #        copy to greatly speed up the conversion
             #        process

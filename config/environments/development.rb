@@ -39,8 +39,9 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # Rotate the logs every 2MB to keep debugging manageable and only
-  # maintain the last 5
+  # Rotate the logs daiy to keep debugging manageable
+  config.log_tags = [ :uuid ]
+  config.log_level = :info
   config.logger = Logger.new(Rails.root.join("log", 
     Rails.env + ".log"), 'daily')
   # Reroute STDERR to a log file in the same directory for easier
