@@ -675,7 +675,6 @@ DEPENDENCIES
   highline
   hydra-derivatives!
   jbuilder (~> 2.0)
-  jettywrapper
   jquery-rails
   kaminari!
   mini_exiftool

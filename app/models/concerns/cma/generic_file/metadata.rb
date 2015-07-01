@@ -23,7 +23,7 @@ module CMA
           index.as :stored_searchable
         end
 
-        property :credit_line, predicate: ::RDF::URI.new("http://library.   clevelandart.org/ns#creditline") do |index|
+        property :credit_line, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#creditline") do |index|
           index.as :stored_searchable
         end
         property :photographer, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#photographer") do |index|

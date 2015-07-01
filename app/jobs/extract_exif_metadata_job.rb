@@ -55,14 +55,10 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
         if generic_file[:rights].nil?
             generic_file[:rights] = "Copyright, Cleveland Museum of Art"
         end
-
+        
 		# If there is a little housekeeping to do for some key 
 		# fields it should happen here as needed    	
 		generic_file.save
-
-        # Null out the metadata reference to free up the file handle so 
-        # that the temporary directory does not get too cluttered
-        exifdata = nil
     end
   end
 end

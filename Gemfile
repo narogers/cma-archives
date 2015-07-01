@@ -64,7 +64,6 @@ gem 'devise_ldap_authenticatable'
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'jettywrapper'
 end
 
 # Enhance background job support
