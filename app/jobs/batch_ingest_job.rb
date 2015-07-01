@@ -13,7 +13,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	
 	def run
 		if !File.exists?(batch_file) then
-			Rails.logger.info '[BATCH INGEST] Warning: unable to locate a manifest file'
+			Resque.logger.info '[BATCH INGEST] Warning: unable to locate a manifest file'
 			return
 		end
 
@@ -125,7 +125,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	end
 
 	def create_collection(title)
-		Rails.logger.info "[BATCH] Creating a new collection - #{title}"
+		Resque.logger.info "[BATCH] Creating a new collection - #{title}"
 		collection = Collection.new(title: title)
 		collection = apply_default_acls(collection)
 		collection.save

@@ -66,9 +66,10 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
-# Enhance background job support
+# Enhance background job support and logging of jobs
 gem 'resque-status' 
 gem 'resque-dynamic-queues'
+gem 'buffered-logger'
 
 # Gems for development - not really needed or welcome in production
 # unless there are major problems
