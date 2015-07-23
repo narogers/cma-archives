@@ -9,6 +9,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
 	def initialize(batch_metadata)
 		self.batch_file = batch_metadata
+		@root_directory = File.dirname(File.expand_path(batch_metadata))
 	end
 	
 	def run
@@ -17,27 +18,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 			return
 		end
 
-	  generate_log_files
 		process_batch
-		close_log_files
   end
-
-  def generate_log_files
-		@root_directory = File.dirname(File.expand_path(self.batch_file))
-		FileUtils.touch("#{@root_directory}/.processing")
-
-		# Create two file streams - one for files that completed and
-		# one for failed files. Also open a new Logger instance that
-		# will record all activity since it is now done synchronously
-		@success_log = File.open("#{@root_directory}/processed_files.log", 'w')
-		@failure_log = File.open("#{@root_directory}/failed_files.log", 'w')
-		@activity_log = Logger.new("#{@root_directory}/activity.log")
-  end
-
+	
 	# Read in the CSV file which should follow the following format
 	#
 	# [title]
-  # [creator]
+    # [creator]
 	# [collection|collection|collection]
 	# [blank line]
 	# [file, tag, tag, ...]
@@ -82,7 +69,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  collection_names.each do |coll|
 	  	collection = find_or_create_collection(coll)
 	  	
-	  	@activity_log.info "[BATCH] Adding resources to existing collection #{coll}"
+	  	Resque.logger.info "[BATCH] Adding resources to existing collection #{coll}"
 	  	collections << collection
 	  end
 
@@ -96,6 +83,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  # The rest of the file should be a list of files and associated
 	  # properties
     @metadata.each do |resource|
+    	# TODO : See if a file already exists with the given URL and load
+    	# 			 it instead of creating a new file
 	  	gf = GenericFile.new(
 	  			import_url: "file://#{@root_directory}/#{resource[0]}",
 	  		  collections: collections,
@@ -103,25 +92,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  	gf = apply_default_acls(gf)
 	  	gf.save
 	 	
-	 	  # Kick off the processing step synchronously so that the batch
-	 	  # as a whole will fail at the first bad file. It also makes
-	 	  # it easier to do logging
-	  	begin
-	  		@activity_log.info "[IMPORT] Attempting to ingest #{resource[0]}"
-	  	  ImportUrlJob.new(gf.id).run
-	  		@success_log << "#{resource[0]}\r\n"
-	 	  rescue => err
-	  		@failure_log << "#{resource[0]}\r\n"
-	  		@activity_log.error("[IMPORT] A problem occurred processing #{resource[0]}")
-	  		@activity_log.error(err)
-	  	end
+	 	  # Now that most of the processing problems have been resolved it
+	 	  # should be reasonable to just queue up everything and let the 
+	 	  # import jobs run in the background. If something times out at least
+	 	  # this approach will ensure that the entire collection does not need
+	 	  # to be redone
+	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
 	  end
-	end
-
-	def close_log_files
-	  @success_log.close
-	  @failure_log.close
-	  FileUtils.rm("#{@root_directory}/.processing")
 	end
 
 	def create_collection(title)

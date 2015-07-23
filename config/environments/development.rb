@@ -39,11 +39,10 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # Rotate the logs daiy to keep debugging manageable
   config.log_tags = [ :uuid ]
   config.log_level = :info
-  config.logger = Logger.new(Rails.root.join("log", 
-    Rails.env + ".log"), 'daily')
+  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"))
+
   # Reroute STDERR to a log file in the same directory for easier
   # troubleshooting instead of having it swallowed by the Apache
   # logs
