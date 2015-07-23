@@ -48,14 +48,13 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 end
 
-#gem 'sufia', '~> 6.0'
-gem "sufia", github: 'narogers/sufia' 
+gem 'sufia', '~> 6.1'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
-#gem 'rsolr'
 #gem 'browse-everything', github: 'narogers/browse-everything'
-# Use a custom version of hydra-derivatives with a patch until
-# RAW image support is baked into the core gem
-gem 'hydra-derivatives', github: 'narogers/hydra-derivatives', branch: 'raw-processor'
+# Peg to this version to avoid any future changes as PCDM Implementation
+# continues. This code has the RAW fix merged into the main development
+# branch
+gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: 'faba870'
 gem 'mini_exiftool'
 
 gem 'devise'
