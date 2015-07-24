@@ -97,6 +97,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	 	  # import jobs run in the background. If something times out at least
 	 	  # this approach will ensure that the entire collection does not need
 	 	  # to be redone
+        Resque.logger.info "[BATCH #{@batch.title}] Ingesting #{resource[0]}"
 	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
 	  end
 	end
