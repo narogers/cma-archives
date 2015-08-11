@@ -31,7 +31,7 @@ namespace :cma do
             next unless gf_queues.include? f['queue']
 
             pid = Base64.decode64(f['payload']['args'].first).match(/\w{2}\d{2}\w{2}\d{2}\w/).to_s
-            gf = GenericFile.find(pid)
+            gf = GenericFile.load_instance_from_solr(pid)
             puts "ID: #{gf.id}"
             puts "SOURCE: #{gf.import_url}"
             puts
