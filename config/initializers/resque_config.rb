@@ -4,10 +4,6 @@ Resque.redis = Redis.new(host: config[:host], port: config[:port], thread_safe: 
 Resque.inline = Rails.env.test?
 Resque.redis.namespace = "#{Sufia.config.redis_namespace}:#{Rails.env}"
 
-# Use resque-logger to break down messages by queue for easier and faster
-# troubleshooting
-Resque.logger_config = {
-	folder: File.join(Rails.root, 'log'),
-	class_name: Logger,
-	level: Logger::INFO,
-}
+# Capture all output at the INFO level or higher
+Resque.logger = Logger.new("log/resque.log")
+Resque.logger.level = Logger::INFO

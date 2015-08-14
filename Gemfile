@@ -48,7 +48,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 end
 
-gem 'sufia', '~> 6.1'
+gem 'sufia', '~> 6.3'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 #gem 'browse-everything', github: 'narogers/browse-everything'
 # Peg to this version to avoid any future changes as PCDM Implementation
