@@ -55,6 +55,8 @@ gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 # continues. This code has the RAW fix merged into the main development
 # branch
 gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: 'faba870'
+gem 'active-fedora', '~> 9.4'
+
 # Once Sufia's references are updated use v2.0 instead
 #gem 'hydra-derivatives', '~> 2.0'
 gem 'mini_exiftool'
@@ -65,6 +67,7 @@ gem 'devise_ldap_authenticatable'
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'ruby-prof'
 end
 
 # Enhance background job support and logging of jobs
