@@ -32,10 +32,13 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
             # Clean up the data to cast everything in the
             # array to text even if it is a date, integer,
             # or some other value
+            #
+            # Also strip out any pipes, such as in the :subject
+            # field and replace them with more readable -- dividers
             if (metadata.is_a? Array)
-              metadata.map! { |meta| meta.to_s}
+              metadata.map! { |meta| meta.to_s.gsub("|", " -- ") } 
             else
-               metadata = metadata.to_s
+               metadata = metadata.to_s.gsub("|", " -- ")
             end
 
     		# Here we know that the tag exists and just needs to
@@ -44,7 +47,7 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		# to prevent errors.
     		Resque.logger.info '[EXIF] Processing ' + field.to_s
     		if (generic_file[field].is_a? Array)
-    		  generic_file[field] = (metadata.is_a? Array) ? metadata : [metadata]
+    		  generic_file[field] = (metadata.is_a? Array) ? metadata : metadata
     		else
     		  generic_file[field] = (metadata.is_a? Array) ? metadata.join(" ") : metadata
     		end
@@ -53,9 +56,12 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
         # A couple of fields get default values if nothing was set 
         # from the image itself
         if generic_file[:rights].nil?
-            generic_file[:rights] = "Copyright, Cleveland Museum of Art"
+            generic_file[:rights] = "Copyright, The Cleveland Museum of Art"
         end
-        
+
+        generic_file[:contributor] = "Cleveland Museum of Art"
+        generic_file[:language] = "en"
+		
 		# If there is a little housekeeping to do for some key 
 		# fields it should happen here as needed    	
 		generic_file.save

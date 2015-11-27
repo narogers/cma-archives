@@ -2,13 +2,13 @@ namespace :cma do
     namespace :batch do
         desc "Batch ingest content according to CMA standards"
         task :ingest, [:base_directory] => :environment do |t, args|
-	  	    full_path = File.expand_path(args[:base_directory])
-	  	    batches = FileList.new("#{full_path}/**/batch.csv")
-	  	
-	  	    batches.each do |batch|
-	  		    (directory, batch_file) = File.split(batch)
-	  		    puts "Queuing #{directory} for ingest"
-	  		    Sufia.queue.push(BatchIngestJob.new(batch))
+            full_path = File.expand_path(args[:base_directory])
+            batches = FileList.new("#{full_path}/**/batch.csv")
+	
+            batches.each do |batch|
+                (directory, batch_file) = File.split(batch)
+                puts "Queuing #{directory} for ingest"
+                Sufia.queue.push(BatchIngestJob.new(batch))
 	  	    end
         end
     end
@@ -35,6 +35,27 @@ namespace :cma do
             puts "ID: #{gf.id}"
             puts "SOURCE: #{gf.import_url}"
             puts
+        end
+    end
+
+    desc "Reprocess EXIF metadata for all objects"
+    task :extract_exif_data => :environment do
+        query = "has_model_ssim:GenericFile"
+        limits = {fl: "id, title_tesim", rows: GenericFile.count}
+        solr_results = ActiveFedora::SolrService.query(query, limits)
+        
+        gf_ids = {}
+        solr_results.map do |r| 
+            gf_ids[r["id"]] = 
+              r["title_tesim"].nil? ? 
+                "<Undefined" :
+                r["title_tesim"].first 
+        end
+        
+        gf_ids.each do |id, title|
+            puts "[#{id}] Processing #{title}\n"
+            extraction_job = ExtractExifMetadataJob.new(id)
+            extraction_job.run
         end
     end
 end
