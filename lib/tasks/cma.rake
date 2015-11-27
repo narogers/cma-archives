@@ -54,6 +54,10 @@ namespace :cma do
         
         gf_ids.each do |id, title|
             puts "[#{id}] Processing #{title}\n"
+            if not GenericFile.exists? id
+                puts "WARNING: Could not locate #{id} in Fedora"
+                next
+            end
             extraction_job = ExtractExifMetadataJob.new(id)
             extraction_job.run
         end
