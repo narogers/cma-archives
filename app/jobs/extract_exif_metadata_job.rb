@@ -48,7 +48,11 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		# to prevent errors.
     		Resque.logger.info '[EXIF] Processing ' + field.to_s
     		if (generic_file[field].is_a? Array)
-    		  generic_file[field] = (metadata.is_a? Array) ? metadata : metadata
+              if metadata.is_a? Array
+                metadata.map { |m| generic_file[field] << m }  
+              else
+                generic_file[field] << metadata
+              end
     		else
     		  generic_file[field] = (metadata.is_a? Array) ? metadata.join(" ") : metadata
     		end
