@@ -11,13 +11,14 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
   
   def run
     # Set two escape clauses before you go any further
+    Resque.logger.info "[EXIF] Working with resource #{generic_file.id}"
     return unless generic_file.content.has_content?
     return unless generic_file.image?
 
     # Now with those out of the way we can get down to the business
     # of metadata extraction. This is mostly cribbed directly from
     # the way that the characterization is done for FITS
-    Hydra::Derivatives::RetrieveSourceFileService.(generic_file, :content) do |f|
+    Hydra::Derivatives.config.source_file_service.call(generic_file, :content) do |f|
         Resque.logger.info "[EXIFTOOL] Using temporary file #{f.path}"
     	exifdata = MiniExiftool.new(f.path)
     	Sufia.config.exif_to_desc_mapping.each_pair do |exif_node, field|
@@ -59,11 +60,12 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
             generic_file[:rights] = "Copyright, The Cleveland Museum of Art"
         end
 
-        generic_file[:contributor] = "Cleveland Museum of Art"
-        generic_file[:language] = "en"
+        generic_file[:contributor] << "Cleveland Museum of Art"
+        generic_file[:language] << "en"
 		
 		# If there is a little housekeeping to do for some key 
 		# fields it should happen here as needed    	
+        Resque.logger.info("[EXIF] Saving changes to #{generic_file.id}")
 		generic_file.save
     end
   end
