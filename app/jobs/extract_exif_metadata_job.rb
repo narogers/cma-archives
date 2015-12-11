@@ -38,7 +38,7 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
             # field and replace them with more readable -- dividers
             Resque.logger.info "[EXIF] Before => #{metadata}"
             if (metadata.is_a? Array)
-              metadata.map! { |meta| meta.gsub("|", " -- ") } 
+              metadata.map! { |meta| meta.to_s.gsub("|", " -- ") } 
             else
                metadata = metadata.to_s.gsub("|", " -- ")
             end
