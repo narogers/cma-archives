@@ -36,8 +36,9 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
             #
             # Also strip out any pipes, such as in the :subject
             # field and replace them with more readable -- dividers
+            Resque.logger.info "[EXIF] Before => #{metadata}"
             if (metadata.is_a? Array)
-              metadata.map! { |meta| meta.to_s.gsub("|", " -- ") } 
+              metadata.map! { |meta| meta.gsub("|", " -- ") } 
             else
                metadata = metadata.to_s.gsub("|", " -- ")
             end
@@ -47,12 +48,16 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		# multivalued and push an array instead of a scalar value
     		# to prevent errors.
     		Resque.logger.info '[EXIF] Processing ' + field.to_s
+
     		if (generic_file[field].is_a? Array)
               if metadata.is_a? Array
-                metadata.map { |m| generic_file[field] << m }  
+                generic_file[field] += metadata
               else
-                generic_file[field] << metadata
+                generic_file[field] += [metadata]
               end
+              # Call uniq! since a bug in ActiveFedora prevents usage of the handy
+              # << method
+              generic_file[field].uniq!
     		else
     		  generic_file[field] = (metadata.is_a? Array) ? metadata.join(" ") : metadata
     		end
@@ -64,9 +69,12 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
             generic_file[:rights] = "Copyright, The Cleveland Museum of Art"
         end
 
-        generic_file[:contributor] << "Cleveland Museum of Art"
-        generic_file[:language] << "en"
-		
+        generic_file[:contributor] += ["Cleveland Museum of Art"]
+        generic_file[:contributor].uniq!
+
+        generic_file[:language] += ["en"]
+        generic_file[:language].uniq!		
+
 		# If there is a little housekeeping to do for some key 
 		# fields it should happen here as needed    	
         Resque.logger.info("[EXIF] Saving changes to #{generic_file.id}")
