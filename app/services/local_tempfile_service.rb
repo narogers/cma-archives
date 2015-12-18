@@ -1,5 +1,8 @@
 # Implementation of the service for creating temporary files that
 # assumes the bits are accessible on disk. 
+#
+# Instead of passing GenericFile.content pass the actual GenericFile so we can get at
+# other methods like the import URL
 class LocalTempfileService < Hydra::Derivatives::TempfileService
     # All we have to do is open the source file and copy its
     # contents into the temporary file before we yield

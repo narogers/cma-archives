@@ -18,7 +18,9 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     # Now with those out of the way we can get down to the business
     # of metadata extraction. This is mostly cribbed directly from
     # the way that the characterization is done for FITS
-    Hydra::Derivatives.config.source_file_service.call(generic_file, :content) do |f|
+    #
+    # TODO: Make this work with local files
+    LocalTempfileService.create(generic_file) do |f|
         Resque.logger.info "[EXIFTOOL] Using temporary file #{f.path}"
     	exifdata = MiniExiftool.new(f.path)
     	Sufia.config.exif_to_desc_mapping.each_pair do |exif_node, field|

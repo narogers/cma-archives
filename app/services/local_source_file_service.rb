@@ -3,11 +3,12 @@
 # meant as a generalized solution
     class LocalSourceFileService
         def self.call(object, source_name, &block) 
-            # But override it if :import_url is available and set
+            # This is an ugly hack to get things working by returning a hash. Ultimately
+            # the logic should be reworked to be far less janky but time is money
             if has_local_version?(object)
-                LocalTempfileService.create(object, &block)
+                {content: object.import_url.sub("file://", "")}
             else
-                Hydra::Derivatives::TempfileService.create(object.send(source_name), &block)
+                object.send(source_name)
             end
         end
 
