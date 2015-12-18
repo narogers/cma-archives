@@ -6,21 +6,21 @@ module CMA
       included do
       	makes_derivatives do |obj|
           logger.info("[DERIVATIVES] Preparing to convert a(n) #{obj.mime_type}")
-    			case obj.mime_type
-    			when *image_mime_types
-    				obj.transform_file :content, { 
+     	  case obj.mime_type
+          when *image_mime_types
+    		obj.transform_file :content, { 
               access: { 
                 format: 'jpg',    						
                 size: '1200x1000>',
-    						datastream: 'access'
-    					},
+    		    datastream: 'access'
+    		  },
               thumbnail: { 
                 format: 'jpg',                
                 size: '200x150>',
                 datastream: 'thumbnail'
               },
-    				}, processor: obj.image_processor
-            
+    		}, processor: obj.image_processor
+ 
             # TODO : Generate the thumbnail from the access
             #        copy to greatly speed up the conversion
             #        process
