@@ -20,7 +20,8 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     # the way that the characterization is done for FITS
     #
     # TODO: Make this work with local files
-    LocalTempfileService.create(generic_file) do |f|
+    generic_file.content.local_path = generic_file.import_url.sub("file://", "")
+    Hydra::Derivatives::TempfileService.create(generic_file.content) do |f|
         Resque.logger.info "[EXIFTOOL] Using temporary file #{f.path}"
     	exifdata = MiniExiftool.new(f.path)
     	Sufia.config.exif_to_desc_mapping.each_pair do |exif_node, field|

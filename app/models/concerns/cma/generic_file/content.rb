@@ -4,7 +4,7 @@ module CMA
 			extend ActiveSupport::Concern
 
 			included do
-				contains 'content', class_name: 'FileContentDatastream'
+				contains 'content', class_name: 'CMAFileContentDatastream'
 				contains 'access'
 				contains 'thumbnail'
 			end
