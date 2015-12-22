@@ -15,9 +15,13 @@ class CMAFileContentDatastream < FileContentDatastream
 
   private
     def retrieve_content
-      binding.pry
       if is_cached_locally?
-        File.read(local_path)
+        content = File.open(@local_path, "r") do |f|
+            f.binmode
+            f.read
+        end
+
+        content
       else
         ldp_source.get.body
       end
