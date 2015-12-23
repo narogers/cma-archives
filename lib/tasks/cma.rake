@@ -6,10 +6,15 @@ namespace :cma do
             batches = FileList.new("#{full_path}/**/batch.csv")
 	
             batches.each do |batch|
-                (directory, batch_file) = File.split(batch)
-                puts "Queuing #{directory} for ingest"
-                Sufia.queue.push(BatchIngestJob.new(batch))
+              (directory, batch_file) = File.split(batch)
+              puts "Queuing #{directory} for ingest"
+              Sufia.queue.push(BatchIngestJob.new(batch))
 	  	    end
+        end
+
+        desc "Batch update collection metadata"
+        task :update_collections, [:csv] => :environment do |t, args|
+          # TODO : Fill in the gaps here
         end
     end
 

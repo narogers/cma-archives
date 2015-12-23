@@ -15,7 +15,10 @@ module CMA
         property :temporal, predicate: ::RDF::DC.temporal do |index|
           index.as :stored_searchable
         end
-
+        property :category, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#category") do |index|
+          index.as :stored_searchable
+        end
+ 
         property :abstract, predicate: ::RDF::DC.abstract do |index|
           index.as :stored_searchable
         end
@@ -32,7 +35,7 @@ module CMA
         property :photographer_title, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#photographerTitle") do |index|
           index.as :stored_searchable
         end
-      end
+     end
     end
   end
 end
