@@ -7,14 +7,19 @@ namespace :cma do
 	
             batches.each do |batch|
               (directory, batch_file) = File.split(batch)
-              puts "Queuing #{directory} for ingest"
+              puts "Queuing #{directory} for ingest\n"
               Sufia.queue.push(BatchIngestJob.new(batch))
 	  	    end
         end
 
         desc "Batch update collection metadata"
         task :update_collections, [:csv] => :environment do |t, args|
-          # TODO : Fill in the gaps here
+          if args[:csv].present? and File.exists? args[:csv]
+            print "Queuing #{args[:csv]} for processing\n"
+            Sufia.queue.push(UpdateCollectionMetadataJob.new(args[:csv]))
+          else
+            print "WARNING: Provide a valid CSV file to continue\n"
+          end
         end
     end
 
