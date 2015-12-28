@@ -17,7 +17,7 @@ class UpdateCollectionMetadataJob < ActiveFedoraIdBasedJob
     collections = CSV.read(csv_source, encoding: "UTF-8", headers: true, 
       header_converters: :symbol)
     collections.each_with_index do |collection, i|
-      Resque.logger.info("[BATCH UPDATE] Updating #{collection[:name]} (#{i} of #{collections.size})")
+      log_message("Updating #{collection[:name]} (#{i} of #{collections.size})")
       update_collection(collection)
     end
 
@@ -30,16 +30,26 @@ class UpdateCollectionMetadataJob < ActiveFedoraIdBasedJob
     # Take the name out of the list of keys so that all that remains are fields to
     # be updated
     name = collection.delete(:name)
-    name = name.last
+    # Because the name may come in many forms we must use something like titlecase to help
+    # account for variations
+    name = name.last.titleize
+    
+    # Due to the way that batches are handled a collection may appear multiple times. Presume
+    # that if it has already been processed it is safe to skip any duplicates
+    if (@successful_updates.include?(name) or 
+        @failed_updates.include?(name))
+      log_message("Skipping duplicate collection entry")
+      return
+    end
 
     coll = Collection.where(title: name).first
  
     if (coll.present? and (coll.title == name))
-      Resque.logger.info("[BATCH UPDATE] Processing #{coll.title}")
+      log_message("Processing #{coll.title}")
       update_and_save_metadata(coll, collection) 
       @successful_updates << name
     else
-      Resque.logger.warn("[BATCH UPDATE] Could not locate #{name}")
+      log_message("Could not locate #{name}", Logger::WARN)
       @failed_updates << name
     end
   end
@@ -63,25 +73,22 @@ class UpdateCollectionMetadataJob < ActiveFedoraIdBasedJob
 
       # Commit the changes to the database
       if gf.save
-        Resque.logger.info "[BATCH UPDATE] #{gf.title.first} (#{gf.id}) has been successfully updated"
+        log_message("#{gf.title.first} (#{gf.id}) has been successfully updated")
       else
-        Resque.logger.warn "[BATCH UPDATE] #{gf.title.first} (#{gf.id}) could not be updated"
+        log_message("#{gf.title.first} (#{gf.id}) could not be updated", Logger::WARN)
       end
     end
+  end
+    
+  def log_updates
+    log_message("The following collections were updated")
+    log_message(@successful_updates.sort.join("\n"))
 
-    def log_updates
-      Resque.logger.info "[BATCH UPDATES] The following collections were updated"
-      @successful_updates.each do |coll|
-        Resque.logger.info "[BATCH UPDATE] #{coll}"
-      end
+    log_message("The following collections could not be processed")
+    log_message(@failed_updates.sort.join("\n"))
+  end
 
-      Resque.logger.info "[BATCH UPDATE] The following collections could not be processed"
-      @failed_updates.each do |coll|
-        Resque.logger.info "[BATCH UPDATE] #{coll}"
-      end
-
-
-    end
-
+  def log_message(message, level = Logger::INFO)
+    Resque.logger.log(level, "[BATCH UPDATE] #{message}")
   end
 end
