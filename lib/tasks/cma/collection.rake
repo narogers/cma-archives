@@ -11,7 +11,7 @@ namespace :cma do
         end
 
         desc "Reprocess EXIF metadata for all objects"
-          task :extract_exif => :environment do
+        task :extract_exif => :environment do
             query = "has_model_ssim:GenericFile"
             limits = {fl: "id, title_tesim", rows: GenericFile.count}
             solr_results = ActiveFedora::SolrService.query(query, limits)
@@ -30,7 +30,18 @@ namespace :cma do
                end
                extraction_job = ExtractExifMetadataJob.new(id)
                extraction_job.run
+          end
+       end
+
+       desc "Normalize collection metadata"
+       task :normalize => :environment do
+           i = 1;
+           Collection.find_each do |c|
+             print "#{i} / #{Collection.count} - Normalizing #{c.title}\n"
+             c.title = Collection.normalize_title(c.title)
+             c.save
+             i += 1
            end
        end
-    end
+   end
 end
