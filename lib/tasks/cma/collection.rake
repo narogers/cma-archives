@@ -38,7 +38,7 @@ namespace :cma do
            i = 1;
            Collection.find_each do |c|
              print "#{i} / #{Collection.count} - Normalizing #{c.title}\n"
-             c.title = Collection.normalize_title(c.title)
+             c.normalize_title
              c.save
              i += 1
            end
