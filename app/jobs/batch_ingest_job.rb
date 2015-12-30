@@ -67,6 +67,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  collection_names << @batch.title.first
 	  collections = []
 	  collection_names.each do |coll|
+        coll = coll.titlecase
 	  	collection = find_or_create_collection(coll)
 	  	
 	  	Resque.logger.info "[BATCH] Adding resources to existing collection #{coll}"
@@ -97,7 +98,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	 	  # import jobs run in the background. If something times out at least
 	 	  # this approach will ensure that the entire collection does not need
 	 	  # to be redone
-        Resque.logger.info "[BATCH #{@batch.title}] Ingesting #{resource[0]}"
+        Resque.logger.info "[BATCH] Ingesting #{resource[0]} into #{@batch.title.first}"
 	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
 	  end
 	end
