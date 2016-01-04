@@ -16,7 +16,7 @@ namespace :cma do
         task :failures => :environment do 
             # TODO: Make this more configurable and not hard coded into the
             #       rake task
-            gf_queues = ["audit", "characterize", "derivatives", "exif_metadata"]
+            gf_queues = ["audit", "characterize", "derivatives", "exif_metadata", "import"]
 
             fails = Resque::Failure.all(0, Resque::Failure.count)
             fails.map do |f|
