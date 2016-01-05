@@ -82,3 +82,7 @@ gem 'pry-rails'
 gem 'pry-byebug'
 
 gem 'rsolr', '~> 1.0.6'
+
+# Pin sprocket-rails to the 2.3 branch until some bugs affecting tiny-mce
+# are worked out
+gem 'sprockets-rails', '~> 2.3'
