@@ -1,4 +1,11 @@
 class Collection < Sufia::Collection
+  # Emulate the relationship for members to apply to collections
+  #
+  # TODO : See if there is a similar relationship that exists for defining collections
+  #        only
+  has_and_belongs_to_many :subcollections, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasPart, 
+    class_name: "ActiveFedora::Base"
+
   before_save do
     normalize_title
   end
