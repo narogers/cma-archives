@@ -7,6 +7,9 @@ module CMA
       # so it really needs to be tested but it should be faster than making a query for each member
       # of the collection individually
       def bytes
+        # Don't even bother if the collection is empty
+        return 0 if (0 == members.count)
+
         qry = "*:*"
         limits = {
           fq: "{!join from=hasCollectionMember_ssim to=id}id:#{id}",
@@ -25,7 +28,7 @@ module CMA
         # TODO: Implement some sort of error handling
         return results["stats"]["stats_fields"][file_size_field]["sum"]
       end
-    
+   
       private
     
         def file_size_field
