@@ -6,7 +6,7 @@ module CMA
       # Go to the bare metal in Solr to use the Stats Component. This might have some limitations
       # so it really needs to be tested but it should be faster than making a query for each member
       # of the collection individually
-      def bytes
+      def member_bytes
         # Don't even bother if the collection is empty
         return 0 if (0 == members.count)
 
@@ -28,7 +28,15 @@ module CMA
         # TODO: Implement some sort of error handling
         return results["stats"]["stats_fields"][file_size_field]["sum"]
       end
-   
+  
+      def subcollection_bytes
+        subcollections.reduce(0) { |bytes, sc| bytes += sc.bytes }
+      end
+
+      def bytes
+         member_bytes + subcollection_bytes
+      end
+
       private
     
         def file_size_field
