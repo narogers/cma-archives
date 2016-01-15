@@ -1,0 +1,15 @@
+<table class="table table-zebra-striped">
+  <caption class="sr-only">List of collection members</caption>
+  <thead>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>Date Created</td>
+      <td>&nbsp;</td>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'show_document_list_row', collection: documents, 
+          as: :document %>
+  </tbody>
+</table>

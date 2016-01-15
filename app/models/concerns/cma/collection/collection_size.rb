@@ -12,7 +12,8 @@ module CMA
 
         qry = "*:*"
         limits = {
-          fq: "{!join from=hasCollectionMember_ssim to=id}id:#{id}",
+          fq: ["{!join from=hasCollectionMember_ssim to=id}id:#{id}",
+               "has_model_ssim:GenericFile"],
           # It doesn't really matter what we pull here since it is ignored
           fl: "id",
           # And we don't even need all the results
@@ -25,8 +26,9 @@ module CMA
         }
 
         results = ActiveFedora::SolrService.query(qry, limits);
-        # TODO: Implement some sort of error handling
-        return results["stats"]["stats_fields"][file_size_field]["sum"]
+        total_bytes = results["stats"]["stats_fields"][file_size_field].present? ? results["stats"]["stats_fields"][file_size_field]["sum"] : 0 
+
+        return total_bytes
       end
   
       def subcollection_bytes
