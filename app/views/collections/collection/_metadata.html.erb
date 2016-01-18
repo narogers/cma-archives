@@ -1,2 +1,9 @@
 <h3><%= link_to member.title, collections.collection_path(member.id) %></h3>
-<p><%= member.description %></p>
+<p><%= description_for_collection member %></p>
+<dl class="dl-horizontal">
+  <dt>Members</dt>
+  <dd><%= member.members.count %></dd>
+ 
+  <dt>Size<dt/>
+  <dd><%= number_to_human_size(4551454341241244) %></dd>
+</dl>

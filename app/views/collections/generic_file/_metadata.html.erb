@@ -1,4 +1,4 @@
-<h3><%= member.title.first %></h3>  
+<h3><%= link_to member.title.first, sufia.generic_file_path(member.id) %></h3>  
 <p><%= member.description.first %></p>
 
 <p><em><%= member.import_url %></em></p>
