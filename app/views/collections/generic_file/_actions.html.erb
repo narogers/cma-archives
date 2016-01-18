@@ -1,0 +1,13 @@
+<div class="btn-group">
+  <button class="btn btn-sm dropdown-toggle" data-toggle="dropdown">Select an action <span class="caret"></span></button>
+  <ul class="dropdown-menu dropdown-menu-right">
+    <li>
+      <%= link_to raw('<i class="glyphicon glyphicon-link over"></i> Single-Use Link to File'), '#',
+                  class: "copypaste itemicon itemcode", title: "Single-Use Link to File", id: "copy_link_#{member.id}" %>
+    </li>
+    <li>
+      <%= link_to raw('<i class="glyphicon glyphicon-download-alt"></i> Download File'), sufia.download_path(member.id),
+                  class: 'itemicon itemdownload', title: 'Download File', target: '_new' %>
+    </li>
+  </ul>
+</div>

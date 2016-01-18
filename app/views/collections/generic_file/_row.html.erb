@@ -4,5 +4,5 @@
    <%= render_partial_for 'metadata', member %>
   </td>
   <td><%= member.date_created.first %></td>
-  <td><!-- No actions for collections --></td>
+  <td><%= render_partial_for 'actions', member %></td>
 </tr>
