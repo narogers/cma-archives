@@ -26,4 +26,29 @@ module CMAHelper
 
      return description
   end
+
+  # Alternative method for constructing breadcrumbs that lets you expand out
+  # subcollections
+  def breadcrumbs_for member
+    breadcrumb_trail = breadcrumb_links_for member
+    content_tag :ul, class: 'breadcrumb' do 
+      breadcrumb_trail.map do |entry|
+        content_tag :li do
+          entry[:label]
+        end
+      end.join.html_safe
+    end
+  end
+
+  # TODO: Defend against circular collection loops
+  def breadcrumb_links_for member
+    breadcrumbs = []
+    
+    unless member.collections.empty?
+      breadcrumbs = breadcrumb_links_for member.collections.first 
+    end
+    breadcrumbs += [{label: member.title}] 
+
+    return breadcrumbs
+  end
 end

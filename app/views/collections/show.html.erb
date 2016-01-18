@@ -1,6 +1,8 @@
 <% @page_title = "#{@collection.title} - #{application_name}" %>
 
-  <div itemscope itemtype="http://schema.org/CollectionPage" class="row">
+<%= breadcrumbs_for @collection %>
+
+<div itemscope itemtype="http://schema.org/CollectionPage" class="row">
     <div class="col-sm-10 pull-right">
       <header>
         <h1><%= @presenter.title %></h1>
