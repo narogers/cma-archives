@@ -2,7 +2,6 @@ class Collection < Sufia::Collection
   include CMA::Collection::Featured
   include CMA::Collection::Relations
   include CMA::Collection::CollectionSize
-  include CMA::Collection::ResourcePath
 
   before_save do
     normalize_title
