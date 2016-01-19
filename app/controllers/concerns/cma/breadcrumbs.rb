@@ -23,20 +23,24 @@ module CMA
       when /catalog/
         add_breadcrumb I18n.t("sufia.bread_crumb.search_results"), request.referer
       else
-        add_breadcrumb_for_controller
-        add_breadcrumb_for_action
+        add_breadcrumb_for_parent_collection collection.collections.first unless collection.collections.empty?
       end  
+      add_breadcrumb_for_resource
     end
-  
-    def add_breadcrumb_for_controller
-      add_breadcrumb Proc.new { |c|  }, 
-        Proc.new { |c| sufia.generic_file_path(params["id"] )} 
+ 
+    # Definitely need to revisit for GenericFile level views 
+    def add_breadcrumb_for_resource
+       add_breadcrumb collection.title, collections.collection_path(collection.id)
     end
 
-    def add_breadcrumb_for_action
-      add_breadcrumb I18n.t("sufia.generic_file.browse_view"), 
-        sufia.generic_file_path(params["id"]), only: %w(edit stats),
-        if: ("generic_files" == controller_name)
+    def add_breadcrumb_for_parent_collection parent=nil
+      return if parent.nil?
+      # We have more levels to traverse
+      unless parent.collections.empty?
+        add_breadcrumb_for_parent_collection parent.collections.first
+      end
+      # Then stick on this level
+      add_breadcrumb parent.title, collections.collection_path(parent.id)
     end
   end
 end
