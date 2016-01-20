@@ -25,14 +25,29 @@ module CMA
           raw: true
         }
 
-        results = ActiveFedora::SolrService.query(qry, limits);
+        results = ActiveFedora::SolrService.query(qry, limits)
         total_bytes = results["stats"]["stats_fields"][file_size_field].present? ? results["stats"]["stats_fields"][file_size_field]["sum"] : 0 
 
         return total_bytes
       end
   
       def subcollection_bytes
-        subcollections.reduce(0) { |bytes, sc| bytes += sc.bytes }
+        return 0 if (0 == members.count)
+
+        qry = "*:*"
+        limits = {
+          fl: "id",
+          fq: ["{!join from=hasCollectionMember_ssim to=id}id:#{id}",
+               "has_model_ssim:Collection"],
+          rows: members.count
+        }
+        results = ActiveFedora::SolrService.query(qry, limits)
+        total_bytes = results.reduce(0) do |bytes, r|
+          coll = Sufia::Collection.load_instance_from_solr(r["id"])
+          bytes += coll.bytes
+        end 
+        
+        return total_bytes 
       end
 
       def bytes
