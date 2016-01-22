@@ -41,7 +41,7 @@ group :development, :test do
   gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
-  gem 'capistrano-passenger', '~> 0.1.0'
+  gem 'capistrano-passenger', '~> 0.2'
   gem 'highline'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
@@ -64,6 +64,10 @@ gem 'mini_exiftool'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'devise_ldap_authenticatable'
+
+group :development do
+  gem 'any_login'
+end
 
 group :development, :test do
   gem 'rspec-rails'

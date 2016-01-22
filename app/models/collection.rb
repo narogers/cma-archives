@@ -1,4 +1,8 @@
 class Collection < Sufia::Collection
+  include CMA::Collection::Featured
+  include CMA::Collection::Relations
+  include CMA::Collection::CollectionSize
+
   before_save do
     normalize_title
   end

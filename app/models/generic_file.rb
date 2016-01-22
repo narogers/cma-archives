@@ -16,10 +16,10 @@ class GenericFile < ActiveFedora::Base
     include Hydra::Collections::Collectible
     include Sufia::GenericFile::Batches
     include Sufia::GenericFile::FullTextIndexing
-    include Sufia::GenericFile::Indexing
 
     include CMA::GenericFile::Content
     include CMA::GenericFile::Derivatives
+    include CMA::GenericFile::Indexing
     include CMA::GenericFile::MimeTypes
     include CMA::GenericFile::Metadata
 

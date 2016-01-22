@@ -1,0 +1,7 @@
+<% solr_doc = featured_collection.collection_solr_document %>
+<div class="col-sm-3">
+  <!-- TODO: Use a better cover image -->
+  <img src="http://p-hold.com/museum/300/300">
+  <h3><%= link_to solr_doc.title, collections.collection_path(featured_collection.collection_id) %></h3>
+  <p class="description"><%= solr_doc.description %></p>
+</div>
