@@ -1,13 +1,21 @@
 module CMA
   module SolrDocumentBehavior
     def source
-      # TODO: Define the prefix to strip in the CatalogController instead of using
-      #       import_url
-      fetch(Solrizer.solr_name('import_url', :symbol)).first
+      source_field = Solrizer.solr_name('source', :stored_searchable)
+      if has? source_field
+        fetch(source_field).first
+      else
+        nil
+      end
     end
 
     def subject
-      fetch(Solrizer.solr_name('subject', :stored_searchable))
+      subject_field = Solrizer.solr_name('subject', :stored_searchable)
+      if has? subject_field
+        fetch(subject_field)
+      else
+        []
+      end
     end
   end
 end
