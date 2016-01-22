@@ -19,8 +19,7 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|          
     config.view.gallery.partials = [:gallery_header]
-    #config.view.masonry.partials = [:index]
-    #config.view.slideshow.partials = [:index]
+    config.view.gallery.icon_class = 'glyphicon-th-large'
 
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
@@ -32,7 +31,7 @@ class CatalogController < ApplicationController
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",
-      rows: 10
+      rows: 50
     }
 
     # Specify which field to use in the tag cloud on the homepage.
