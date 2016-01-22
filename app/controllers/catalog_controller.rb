@@ -18,7 +18,7 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|          
-    config.view.gallery.partials = [:gallery_header]
+    config.view.gallery.partials = [:gallery_header, :gallery_details]
     config.view.gallery.icon_class = 'glyphicon-th-large'
 
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
