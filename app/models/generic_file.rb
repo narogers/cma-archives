@@ -24,4 +24,10 @@ class GenericFile < ActiveFedora::Base
     include CMA::GenericFile::Metadata
 
     before_save :verify_mime_type
+
+    # TODO: There is a better way to make this work but in the interest of
+    #       moving forward go with a bodge
+    def resource_path
+      "files/#{id}"
+    end
 end

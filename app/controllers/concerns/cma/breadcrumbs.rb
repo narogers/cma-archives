@@ -23,14 +23,13 @@ module CMA
       when /catalog/
         add_breadcrumb I18n.t("sufia.bread_crumb.search_results"), request.referer
       else
-        add_breadcrumb_for_parent_collection collection.collections.first unless collection.collections.empty?
+        add_breadcrumb_for_parent_collection collections.first unless collections.empty?
       end  
-      add_breadcrumb_for_resource
+      add_breadcrumb_for_resource resource 
     end
  
-    # Definitely need to revisit for GenericFile level views 
-    def add_breadcrumb_for_resource
-       add_breadcrumb collection.title, collections.collection_path(collection.id)
+    def add_breadcrumb_for_resource resource
+      add_breadcrumb resource.title, resource.resource_path
     end
 
     def add_breadcrumb_for_parent_collection parent=nil
@@ -40,7 +39,7 @@ module CMA
         add_breadcrumb_for_parent_collection parent.collections.first
       end
       # Then stick on this level
-      add_breadcrumb parent.title, collections.collection_path(parent.id)
+      add_breadcrumb_for_resource parent
     end
   end
 end
