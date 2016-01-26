@@ -1,14 +1,22 @@
-<h2 class="non lower">Actions</h2>
-<p>
+<ul>
 	<% if can? :read, @generic_file %>
-	  <%= render_download_link "Download full image" %>
+      <li>
+         <a href="#" class="preview-link">Preview image 
+         <span class="glyphicon glyphicon-picture"></span></a>
+      </li>
+	  <li>
+         <%= render_download_link "Download full image" %>
+         <span class="glyphicon glyphicon-hdd"></span>
+      </li>
 	<% end %>
 	<% if can? :edit, @generic_file %>
-    &nbsp;|&nbsp;
+        <li>
 		<% if @generic_file.processing? %>
 			<%= t('sufia.upload.processing') %>
 		<% else %>
 			<%= link_to "Edit", sufia.edit_generic_file_path(@generic_file) %>
+            <span class="glyphicon glyphicon-edit"></span>
 		<% end %>
+        </li>
 	<% end %>
-</p>
+</ul>
