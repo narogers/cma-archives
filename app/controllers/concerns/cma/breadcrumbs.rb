@@ -23,13 +23,19 @@ module CMA
       when /catalog/
         add_breadcrumb I18n.t("sufia.bread_crumb.search_results"), request.referer
       else
-        add_breadcrumb_for_parent_collection collections.first unless collections.empty?
+        add_breadcrumb_for_parent_collection resource.collections.first unless resource.collections.empty?
       end  
       add_breadcrumb_for_resource resource 
     end
- 
+
+    # This breaks a number of MVC conventions but it gets the job done for now
     def add_breadcrumb_for_resource resource
-      add_breadcrumb resource.title, resource.resource_path
+      case resource.title
+      when Array
+        add_breadcrumb resource.title.first, resource.resource_path
+      when String
+        add_breadcrumb resource.title, resource.resource_path
+      end
     end
 
     def add_breadcrumb_for_parent_collection parent=nil
