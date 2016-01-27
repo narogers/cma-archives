@@ -56,7 +56,7 @@ module Sufia
       
       class_attribute :edit_form_class, :presenter_class
       self.edit_form_class = Sufia::Forms::GenericFileEditForm
-      self.presenter_class = Sufia::GenericFilePresenter
+      self.presenter_class = CMA::GenericFilePresenter
     end
 
     # Load the GenericFile from solr instead of fedora
