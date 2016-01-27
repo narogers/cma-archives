@@ -2,16 +2,11 @@
     <% if @generic_file.collections.blank? %>
         <p><%= t('sufia.file.collections_list.empty') %></p>
     <% else %>
-        <p><%= t('sufia.file.collections_list.heading') %></p>
-      <table class="table table-striped">
-        <tbody>
-        <% @generic_file.collections.each do |collection| %>
-        <tr class="collection attributes">
-          <%= content_tag :td, class: 'attribute title', data: { id: collection.id } do %>
-            <%= link_to collection.title, collections.collection_path(collection) %>
-          <% end %>
-        </tr>
+      <ul class="list-unstyled">
+      <% @generic_file.collections.each do |c| %>
+        <%= content_tag :li, class: 'attribute title', data: { id: c.id } do %>
+          <%= link_to c.title, collections.collection_path(c) %>
+        <% end %>
       <% end %>
-      </tbody>
-      </table>
+      </ul>
     <% end %>

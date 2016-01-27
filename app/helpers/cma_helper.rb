@@ -28,4 +28,12 @@ module CMAHelper
 
      return description
   end
+
+  # Renders a thumbnail that links to the larger preview version of an image
+  def render_preview_icon source=nil
+    source ||= "default.png"
+    image_tag sufia.download_path(@generic_file, file: "thumbnail"), 
+      alt: "Load preview image in browser", 
+      class: "img-responsive"
+  end
 end
