@@ -1,6 +1,12 @@
-<h2>File Details</h2>
+<h2>Technical Details</h2>
 <table class="table table-striped">
 <tbody>
+  <% if @generic_file.content.present? %>
+  <tr>
+    <th>File size</th>
+    <td><%= number_to_human_size(@generic_file.file_size.first) %></td>
+  </tr>
+  <% end %>
   <tr>
     <th>Depositor</th>
     <td itemprop="accountablePerson" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><%= @generic_file.depositor %></span></td>
