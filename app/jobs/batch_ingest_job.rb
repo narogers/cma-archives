@@ -19,7 +19,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 		end
 
 		process_batch
-  end
+    end
 	
 	# Read in the CSV file which should follow the following format
 	#
@@ -28,14 +28,14 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	# [collection|collection|collection]
 	# [blank line]
 	# [file, tag, tag, ...]
-	# [01.tif, nrogers@clevelandart.org, ...]  def load_metadata
-  def process_batch
-  	@metadata = CSV.read(batch_file)
+	# [01.tif, nrogers@clevelandart.org, ...]  
+    def process_batch
+  	  @metadata = CSV.read(batch_file)
 
 	  # TODO: Sanity check for missing fields
 	  @batch = Batch.new(
-	  	title: @metadata.shift,
-	  	creator: @metadata.shift)
+	    title: @metadata.shift,
+	    creator: @metadata.shift)
 
 	  # Verify that the creator exists or default to the system's
 	  # batch account
@@ -83,23 +83,18 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  @metadata.shift
 	  # The rest of the file should be a list of files and associated
 	  # properties
-    @metadata.each do |resource|
-    	# TODO : See if a file already exists with the given URL and load
-    	# 			 it instead of creating a new file
-	  	gf = GenericFile.new(
-	  			import_url: "file://#{@root_directory}/#{resource[0]}",
-	  		  collections: collections,
-	  		  )
-	  	gf = apply_default_acls(gf)
-	  	gf.save
+      @metadata.each do |resource|
+        # TODO : See if a file already exists with the given URL and load
+        # 	   it instead of creating a new file
+	    gf = GenericFile.new(
+          import_url: "file://#{@root_directory}/#{resource[0]}",
+	      collections: collections,
+	    )
+	    gf = apply_default_acls(gf)
+	    gf.save
 	 	
-	 	  # Now that most of the processing problems have been resolved it
-	 	  # should be reasonable to just queue up everything and let the 
-	 	  # import jobs run in the background. If something times out at least
-	 	  # this approach will ensure that the entire collection does not need
-	 	  # to be redone
         Resque.logger.info "[BATCH] Ingesting #{resource[0]} into #{@batch.title.first}"
-	  	Sufia.queue.push(ImportUrlJob.new(gf.id))
+	    Sufia.queue.push(ImportUrlJob.new(gf.id))
 	  end
 	end
 
