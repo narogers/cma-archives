@@ -1,0 +1,9 @@
+<% if @generic_file.image? %>
+  <%= render_preview_icon @generic_file %>
+<% elsif @generic_file.pdf? %>
+  <%= render_download_icon "Download PDF" %>
+<% elsif @generic_file.office_document? %>
+    <%= render_download_icon "Download document" %>
+<% else %>
+  <%= render_download_icon %>
+<% end %>

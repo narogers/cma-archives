@@ -15,7 +15,7 @@ module CMA
     end
 
     def default_trail
-      # Noop
+      # NO OP for now      
     end
 
     def trail_from_referer
@@ -23,24 +23,28 @@ module CMA
       when /catalog/
         add_breadcrumb I18n.t("sufia.bread_crumb.search_results"), request.referer
       else
-        add_breadcrumb_for_parent_collection collection.collections.first unless collection.collections.empty?
+        add_breadcrumb_for_parent resource.collections.first 
       end  
-      add_breadcrumb_for_resource
-    end
- 
-    # Definitely need to revisit for GenericFile level views 
-    def add_breadcrumb_for_resource
-       add_breadcrumb collection.title, collections.collection_path(collection.id)
+      add_breadcrumb_for_resource resource
     end
 
-    def add_breadcrumb_for_parent_collection parent=nil
+    def add_breadcrumb_for_resource item
+      case item.title
+      when Array
+        add_breadcrumb item.title.first, sufia.generic_file_path(item.id)
+      when String
+        add_breadcrumb item.title, collections.collection_path(item.id)
+      end
+    end
+
+    def add_breadcrumb_for_parent parent=nil
       return if parent.nil?
       # We have more levels to traverse
       unless parent.collections.empty?
-        add_breadcrumb_for_parent_collection parent.collections.first
+        add_breadcrumb_for_parent parent.collections.first
       end
       # Then stick on this level
-      add_breadcrumb parent.title, collections.collection_path(parent.id)
+      add_breadcrumb_for_resource parent
     end
   end
 end

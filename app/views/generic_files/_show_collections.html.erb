@@ -1,0 +1,12 @@
+    <h2 class="non lower">Collections</h2>
+    <% if @generic_file.collections.blank? %>
+        <p><%= t('sufia.file.collections_list.empty') %></p>
+    <% else %>
+      <ul class="list-unstyled">
+      <% @generic_file.collections.each do |c| %>
+        <%= content_tag :li, class: 'attribute title', data: { id: c.id } do %>
+          <%= link_to c.title, collections.collection_path(c) %>
+        <% end %>
+      <% end %>
+      </ul>
+    <% end %>

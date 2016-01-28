@@ -1,0 +1,17 @@
+<%= render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-xs-12 col-sm-4">
+    <%= render 'generic_files/media_display' %>
+    <%= render 'show_actions' %>
+    <%= render 'show_collections' %>
+  </div>
+  <div itemscope itemtype="<%= @presenter.itemtype %>" class="col-xs-12 col-sm-8">
+    <h1 class="visibility"><%= display_multiple @presenter.title %></h1>
+    <p class="genericfile_description"><%= display_multiple @presenter.description %></p>
+    <%= render 'show_descriptions' %>
+    <%= render 'show_details' %>
+    <%= render 'show_audits' %>
+  </div><!-- /columns second -->
+</div> <!-- /.row -->
+</div><!-- /.container-fluid -->

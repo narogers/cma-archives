@@ -1,12 +1,13 @@
 # -*- encoding : utf-8 -*-
 class SolrDocument 
-
   include Blacklight::Solr::Document
   include Blacklight::Gallery::OpenseadragonSolrDocument
 
   # Adds Sufia behaviors to the SolrDocument.
   include Sufia::SolrDocumentBehavior
-
+  # TODO: Refactor this out from under GenericFile
+  include CMA::GenericFile::MimeTypes
+  include CMA::SolrDocumentBehavior
 
   # self.unique_key = 'id'
   
@@ -22,5 +23,4 @@ class SolrDocument
   # and Blacklight::Document::SemanticFields#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension( Blacklight::Document::DublinCore)    
-
 end

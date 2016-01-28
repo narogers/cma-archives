@@ -16,4 +16,10 @@ class Collection < Sufia::Collection
     # don't split into two words and then apply the titlecase
     self.title = self.title.downcase.titlecase
   end
+
+  # A bodge to move forward with the interface redesign. Needs to be fixed to
+  # be much more DRY
+  def resource_path
+    "/collections/#{id}"
+  end
 end
