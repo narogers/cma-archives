@@ -14,7 +14,7 @@
 		<% if @generic_file.processing? %>
 			<%= t('sufia.upload.processing') %>
 		<% else %>
-			<span class="action"><%= link_to "Edit", sufia.edit_generic_file_path(@generic_file) %></span>
+			<span class="action"><%= link_to "Edit metadata", sufia.edit_generic_file_path(@generic_file) %></span>
             <span class="glyphicon glyphicon-edit"></span>
 		<% end %>
         </li>

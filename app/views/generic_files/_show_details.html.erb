@@ -3,6 +3,14 @@
 <tbody>
   <% if @generic_file.content.present? %>
   <tr>
+    <th>File name</th>
+    <td><%= @generic_file.filename.first %></td>
+  </tr>
+  <tr>
+    <th>Source</th>
+    <td><%= @generic_file.source.first %></td>
+  </tr>
+   <tr>
     <th>File size</th>
     <td><%= number_to_human_size(@generic_file.file_size.first) %></td>
   </tr>

@@ -4,7 +4,7 @@ module CMA
     include Hydra::Presenter
     self.model_class = ::GenericFile
 
-    self.terms = [:title, :description, :filename, :source, :date_created,
+    self.terms = [:title, :description, :date_created,
       :date_modified, :abstract, :category, :subject, :coverage, :creator, 
       :photographer, :photographer_title, :credit_line, :rights]
 
