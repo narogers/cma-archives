@@ -1,5 +1,5 @@
 <tr id="document_<%= member.id %>" %>
-  <td><img src="http://loremflickr.com/150/150/art" alt="Placeholder Image"></td>
+  <td><%= render_collection_thumbnail member %></td>
   <td>
     <%= render_partial_for 'metadata', member %>
   </td>

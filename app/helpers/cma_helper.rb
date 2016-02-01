@@ -36,4 +36,33 @@ module CMAHelper
       alt: "Load preview image in browser", 
       class: "img-responsive"
   end
+
+  # See http://codepen.io/css_librarian/pen/PZaZzg for demonstration of the next
+  # two methods in action
+  def render_collection_thumbnail collection
+    content_tag :div, class: "collection-icon" do
+      content_tag :span, class: "fa-stack fa-5x" do
+        content_tag :i, "", class: "fa fa-folder fa-stack-2x"
+        collection_icon_for collection
+      end
+    end
+  end 
+
+  # TODO: Define these settings in a configuration file instead of here
+  def collection_icon_for collection
+    icon = ""
+    if collection.has_audio?
+      icon = "fa-volume-up"
+    elsif collection.has_images?
+      icon = "fa-photo"
+    elsif collection.has_video?
+      icon = "fa-video-camera"
+    elsif collection.has_pdfs?
+      icon = "fa-archive"
+    else
+      # Unknown so default to nothing
+    end
+  
+    icon.present? ? content_tag(:i, "", {class: "fa #{icon} fa-stack-1x fa-inverse"}) : ""
+  end 
 end
