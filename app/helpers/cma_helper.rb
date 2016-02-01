@@ -42,8 +42,8 @@ module CMAHelper
   def render_collection_thumbnail collection
     content_tag :div, class: "collection-icon" do
       content_tag :span, class: "fa-stack fa-5x" do
-        content_tag :i, "", class: "fa fa-folder fa-stack-2x"
-        collection_icon_for collection
+        concat content_tag :i, "", class: "fa fa-folder fa-stack-2x"
+        concat collection_icon_for collection
       end
     end
   end 
