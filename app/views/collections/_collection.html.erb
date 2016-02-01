@@ -1,0 +1,15 @@
+<li>
+  <h2>
+    <%= link_to collection.title, collections.collection_path(collection) %>
+  </h2>
+  <% collection_model = collection.to_model %>
+  <div class="row">
+    <div class="col-sm-3">
+      <%= render_collection_thumbnail collection_model %>
+    </div>
+    <div class="col-sm-9">
+      <%= render 'collections/attributes', work: collection_model %>
+    </div>
+  </div>
+</li>
+

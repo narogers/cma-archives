@@ -1,0 +1,6 @@
+<% record.category.each do |category| %>
+  <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+    <span itemprop="name"><%= link_to_facet(category, Solrizer.solr_name("category", :facetable)) %></span>
+  </span>
+  <br />
+<% end %>

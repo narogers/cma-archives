@@ -1,0 +1,10 @@
+<dl class="dl-horizontal">
+  <dt>Date created</dt>
+  <dd><%= work.date_created.present? ? work.date_created : "-" %></dd>
+  
+  <dt>Description</dt>
+  <dd><%= work.description || "-" %></dd>
+
+  <dt>Members</dt>
+  <dd><%= work.members.count %></dd>
+</dl>

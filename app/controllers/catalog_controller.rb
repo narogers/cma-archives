@@ -14,7 +14,7 @@ class CatalogController < ApplicationController
   end
 
   def self.modified_field
-    solr_name('date_modified', :stored_sortable, type: :date)
+    solr_name('system_modified', :stored_sortable, type: :date)
   end
 
   configure_blacklight do |config|          
@@ -47,10 +47,10 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
     config.add_facet_field solr_name("creator", :facetable), label: "Creator", limit: 5
-    config.add_facet_field solr_name("tag", :facetable), label: "Keyword", limit: 5
+    config.add_facet_field solr_name("category", :facetable), label: "Category", limit: 5
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
-    config.add_facet_field solr_name("based_near", :facetable), label: "Location", limit: 5
+    #config.add_facet_field solr_name("based_near", :facetable), label: "Location", limit: 5
     config.add_facet_field solr_name("publisher", :facetable), label: "Publisher", limit: 5
     config.add_facet_field solr_name("file_format", :facetable), label: "File Format", limit: 5
     config.add_facet_field solr_name("has_model", :facetable), label: "Type"
@@ -66,6 +66,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description'
     config.add_index_field solr_name("tag", :stored_searchable), label: "Keyword", itemprop: 'keywords'
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about'
+    config.add_index_field solr_name("category", :stored_searchable), label: "Category", itemprop: 'about'
     config.add_index_field solr_name("creator", :stored_searchable), label: "Creator", itemprop: 'creator'
     config.add_index_field solr_name("contributor", :stored_searchable), label: "Contributor", itemprop: 'contributor'
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher'
