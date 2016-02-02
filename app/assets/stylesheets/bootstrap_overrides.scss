@@ -12,6 +12,11 @@ $cma-blue: #005cb9;
  */
 .collection-icon {
   color: $cma-blue;
+  text-align: center;
+}
+
+.featured-collection .collection-icon {
+  font-size: 150%;
 }
 
 @media only screen and (min-width: 768px) {
