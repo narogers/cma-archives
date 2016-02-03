@@ -65,4 +65,16 @@ module CMAHelper
   
     icon.present? ? content_tag(:i, "", {class: "fa #{icon} fa-stack-1x fa-inverse"}) : ""
   end 
+
+  # Maybe this could be done as a presenter instead but for the first prototype
+  # just use a simple helper
+  #
+  # date should be a string representation
+  def formatted_date_for raw_date, format=:concise
+    return "Not available" if raw_date.empty?
+
+    parsed_date = Date.parse(raw_date)
+    parsed_date.to_formatted_s(format)
+  end
 end
+

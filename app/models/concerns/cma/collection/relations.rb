@@ -7,8 +7,11 @@ module CMA
     module Relations
       extend ActiveSupport::Concern
       included do
+        has_many :members,
+          predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasCollectionMember,
+          class_name: "ActiveFedora::Base"
         has_many :collections,
-          predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasPart,
+          predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOfCollection,
           class_name: "ActiveFedora::Base"
       end
     end
