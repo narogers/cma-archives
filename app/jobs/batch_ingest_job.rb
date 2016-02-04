@@ -1,7 +1,7 @@
 require 'csv'
 
 class BatchIngestJob < ActiveFedoraIdBasedJob
-	attr_accessor :batch_file, :batch_creator
+	attr_accessor :batch_file
 
 	def queue_name
 		:batch_ingest
@@ -34,8 +34,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
 	  # TODO: Sanity check for missing fields
 	  @batch = Batch.new(
-	    title: @metadata.shift,
-	    creator: @metadata.shift)
+	    title: [@metadata.shift.first.titleize],
+	    creator: [@metadata.shift.first])
 
 	  # Verify that the creator exists or default to the system's
 	  # batch account
@@ -43,53 +43,50 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	    @batch.creator = [User.batchuser.login]
 	  end
 	  @batch.save
-	  self.batch_creator = @batch.creator.first
 
-	  collections = process_collections
-	  process_files(collections)
-	end
+	  @collection = find_or_create_collection(@batch.title.first)
+      add_collection_relationships
+	  process_files
+    end
 
- 	def process_collections
+ 	def add_collection_relationships
 	  # Each line should be a collection title until you reach a
 	  # blank line at which point the list is assumed to be complete.
 	  # This means that additional collection membership is optional.
-	  collection_name = @metadata.shift
-	  collection_names = []
+	  current_title = @metadata.shift.first
 
 	  # Because it is a CSV file the line comes across as an array
 	  # rather than a string
-	  while collection_name.present? do
-	    collection_names << collection_name.first unless collection_name.empty?
-	  	collection_name = @metadata.shift
+	  while current_title.present? do
+        current_title = current_title.titleize
+        parent_collection = find_collection(current_title)
+        if parent_collection.nil?
+          Resque.logger.warn("[BATCH] Could not locate #{current_title}")
+        else
+          @collection.collections += [parent_collection]
+        end
+        current_title = @metadata.shift.first
 	  end
-
-	  # As a default add the batch name as a collection
-	  collection_names << @batch.title.first
-	  collections = []
-	  collection_names.each do |coll|
-        coll = coll.titlecase
-	  	collection = find_or_create_collection(coll)
-	  	
-	  	Resque.logger.info "[BATCH] Adding resources to existing collection #{coll}"
-	  	collections << collection
-	  end
-
-	  collections
+      @collection.save
 	end
 
-	def process_files(collections = [])
-	  # Shift off the row of headers so you don't try to process
-	  # "file" header
-	  @metadata.shift
+	def process_files()
+      # We need to remember the list of metadata fields for later. Ignore
+      # only the mandatory :file attribute
+      fields = @metadata.shift
+      fields.map! { |field| field.to_sym }.delete(:file)
+      
 	  # The rest of the file should be a list of files and associated
 	  # properties
       @metadata.each do |resource|
         # TODO : See if a file already exists with the given URL and load
         # 	   it instead of creating a new file
+        base_path = resource.shift
 	    gf = GenericFile.new(
-          import_url: "file://#{@root_directory}/#{resource[0]}",
-	      collections: collections,
+          import_url: "file://#{@root_directory}/#{base_path}",
+	      collections: [@collection],
 	    )
+        gf = apply_metadata_properties(gf, fields, resource)
 	    gf = apply_default_acls(gf)
 	    gf.save
 	 	
@@ -110,23 +107,50 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	# Iterate over all the collections found looking for an exact match.
 	# There may be a better way of doing this but it will at least get the 
 	# process bootstrapped until time permits an incremental improvement
-	def find_or_create_collection(title)
-		collections = Collection.where(["title_tesim: \"#{title}\""])
-		collections.each do |c|
-			return c if c.title.eql?(title)
-		end
+    def find_collection(title)
+      collections = Collection.where(["title_tesim: \"#{title}\""])
+	  collections.each do |c|
+		return c if c.title.eql?(title)
+	  end
 
-		# Only now do we create a new collection object
-		create_collection(title)
-	end
+      # In case of emergency break glass and return nil
+      nil
+    end
+
+    def find_or_create_collection(title)
+        collection = find_collection(title)
+		# Only if there was no result do we try again
+		collection = create_collection(title) if collection.nil?
+        # And now return the result
+        collection
+    end
+
+    # Apply default metadata at the time of creation. 
+    #
+    # gf: Generic File object
+    # values: Array of values
+    # fields: Mappings to metadata fields
+    def apply_metadata_properties(resource, fields, values)
+      values.each_with_index do |value, i|
+        field = fields[i]
+        # When multivalued save as an array
+        if resource[field].is_a? Array
+          resource[field] = [value]
+        else
+          resource[field] = value
+        end
+      end
+
+      resource
+    end
 
 	# Define some default access permissions to the collection
 	# that will make it globally accessible to anyone who is
 	# registered. This works because the next iteration will use the
 	# role map to permit access collection by collection
 	def apply_default_acls(resource)
-		resource.depositor = self.batch_creator
-		resource.edit_users = [self.batch_creator]
+		resource.depositor = @batch.creator.first
+		resource.edit_users = @batch.creator
 		# Group defaults
 		resource.edit_groups = [:admin]
 		resource.discover_groups = [:admin]
