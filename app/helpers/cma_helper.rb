@@ -76,5 +76,14 @@ module CMAHelper
     parsed_date = Date.parse(raw_date)
     parsed_date.to_formatted_s(format)
   end
+
+  # Sibling to Sufia's display_multiple that renders only the first value
+  def display_primary(value)
+    if value.is_a? Array
+      value.first
+    else
+      value
+    end
+  end
 end
 
