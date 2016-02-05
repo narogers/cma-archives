@@ -85,5 +85,22 @@ module CMAHelper
       value
     end
   end
+
+  # Thumbnail method for gallery view(s)
+  def preview_thumbnail_tag(document, options)
+    if document.collection?
+      render_collection_thumbnail document
+    else
+      path = 
+        if document.image?
+          sufia.download_path document, file: "thumbnail"
+        elsif document.audio?
+          "audio.png"
+        else
+          "default.png"
+        end
+      image_tag path, options
+    end
+  end
 end
 
