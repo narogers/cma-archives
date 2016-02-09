@@ -9,6 +9,7 @@ module CMA
         solr_doc[Solrizer.solr_name('file_format', :facetable)] = object.file_format
         solr_doc['all_text_timv'] = object.full_text.content
         solr_doc[Solrizer.solr_name('file_size', STORED_INDEXED_INTEGER)] = object.content.size.to_i
+        solr_doc[Solrizer.solr_name('mime_type', :symbol)] = object.mime_type
         # Index the Fedora-generated SHA1 digest to create a linkage
         # between files on disk (in fcrepo.binary-store-path) and objects
         # in the repository.

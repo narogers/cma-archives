@@ -343,7 +343,7 @@ GEM
     mini_exiftool (2.5.1)
     mini_magick (4.3.6)
     mini_portile2 (2.0.0)
-    minitest (5.8.3)
+    minitest (5.8.4)
     mono_logger (1.1.0)
     multi_json (1.11.2)
     multi_xml (0.5.5)
@@ -357,7 +357,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (3.0.2)
     noid (0.8.0)
-    nokogiri (1.6.7.1)
+    nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     nom-xml (0.5.4)
       activesupport (>= 3.2.18)
@@ -412,7 +412,7 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6.0)
       rails-deprecated_sanitizer (>= 1.0.1)
-    rails-html-sanitizer (1.0.2)
+    rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
     rails-observers (0.1.2)
       activemodel (~> 4.0)
@@ -678,6 +678,7 @@ DEPENDENCIES
   devise-guests (~> 0.3)
   devise_ldap_authenticatable
   dotenv-rails
+  font-awesome-rails
   highline
   hydra-derivatives!
   jbuilder (~> 2.0)

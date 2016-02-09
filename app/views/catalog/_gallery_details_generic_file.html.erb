@@ -5,7 +5,7 @@
   <dt>Subject(s)</dt>
   <dd>
     <%# TODO: Refactor this into a partial %>
-    <%= document.subject.each do |sub| %>
+    <% document.subject.each do |sub| %>
       <%= link_to_facet(sub, Solrizer.solr_name("subject", :facetable)) %>
       <br />
     <% end %>

@@ -34,7 +34,6 @@ Sufia.config do |config|
   }
 
   config.max_days_between_audits = 7
-
   config.max_notifications_for_dashboard = 5
 
   config.cc_licenses = {

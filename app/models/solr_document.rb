@@ -7,6 +7,8 @@ class SolrDocument
   include Sufia::SolrDocumentBehavior
   # TODO: Refactor this out from under GenericFile
   include CMA::GenericFile::MimeTypes
+  # Likewise
+  include CMA::Collection::CollectionType
   include CMA::SolrDocumentBehavior
 
   # self.unique_key = 'id'

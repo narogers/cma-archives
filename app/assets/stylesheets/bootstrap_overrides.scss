@@ -1,5 +1,26 @@
+/**
+ * Global styles
+ */
+$cma-blue: #005cb9;
+
+#masthead, #footer {
+  background: $cma-blue;
+}
+
+/* Change color of thumbnails for collections from the default
+ * black / gray
+ */
+.collection-icon {
+  color: $cma-blue;
+  text-align: center;
+}
+
+.featured-collection .collection-icon {
+  font-size: 150%;
+}
+
 @media only screen and (min-width: 768px) {
 	#masthead {
-		min-height: 4em;
+	  min-height: 4em;
 	}
 }

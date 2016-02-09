@@ -1,7 +1,7 @@
 # Batch updates the metadata for members of a collection 
 require 'csv'
 
-class UpdateCollectionMetadataJob < ActiveFedoraIdBasedJob
+class UpdateCollectionMembersJob < ActiveFedoraIdBasedJob
   attr_accessor :csv_source
   
   def queue_name
@@ -18,7 +18,7 @@ class UpdateCollectionMetadataJob < ActiveFedoraIdBasedJob
     collections = CSV.read(csv_source, encoding: "UTF-8", headers: true, 
       header_converters: :symbol)
     collections.each_with_index do |collection, i|
-      log_message("#{collection[:name]} (#{i} of #{collections.size})")
+      log_message("Updating #{collection[:name]} (#{i} of #{collections.size})")
       update_collection(collection)
     end
 
@@ -46,11 +46,11 @@ class UpdateCollectionMetadataJob < ActiveFedoraIdBasedJob
     coll = Collection.where(title: name).first
  
     if (coll.present? and (coll.title == name))
-      log_message("Updating metadata")
+      log_message("Processing #{coll.title}")
       update_and_save_metadata(coll, collection) 
       @successful_updates << name
     else
-      log_message("Could not locate collection", Logger::WARN)
+      log_message("Could not locate #{name}", Logger::WARN)
       @failed_updates << name
     end
   end
@@ -60,22 +60,24 @@ class UpdateCollectionMetadataJob < ActiveFedoraIdBasedJob
   # exception is singular fields, which will be overwritten.
   def update_and_save_metadata(collection, metadata)
     fields = metadata.to_h.keys.sort
-    fields.each do |field|
-      if collection[field].is_a? Array
-        # Multivalued field
-        collection[field] += [metadata[field]]
-        collection[field].uniq!
-      else 
-        # Singular field
-        collection[field] = metadata[field]
+    collection.members.each do |gf|
+      fields.each do |field|
+        if gf[field].is_a? Array
+          # Multivalued field
+          gf[field] += [metadata[field]]
+          gf[field].uniq!
+        else 
+          # Singular field
+          gf[field] = metadata[field]
+        end
       end
-    end
 
-    # Commit the changes to the database
-    if collection.save
-      log_message("Update succesful")
-    else
-      log_message("Update has failed", Logger::WARN)
+      # Commit the changes to the database
+      if gf.save
+        log_message("#{gf.title.first} (#{gf.id}) has been successfully updated")
+      else
+        log_message("#{gf.title.first} (#{gf.id}) could not be updated", Logger::WARN)
+      end
     end
   end
     
