@@ -14,6 +14,11 @@ module CMA
         # between files on disk (in fcrepo.binary-store-path) and objects
         # in the repository.
         solr_doc[Solrizer.solr_name('digest', :symbol)] = digest_from_content
+        # Put the thumbnail and access copies into Solr for faster retrieval if they are
+        # present
+        solr_doc["thumbnail_uri_ssm"] = object.thumbnail.uri.to_s
+        solr_doc["preview_uri_ssm"] = object.access.uri.to_s
+
         object.index_collection_ids(solr_doc) unless Sufia.config.collection_facet.nil?
       end
     end

@@ -1,7 +1,14 @@
 <ul class="list-unstyled">
 	<% if can? :read, @generic_file %>
       <li>
-         <span class="action"><a href="#" class="preview-link">Preview image</span> 
+         <span class="action">
+           <%= link_to "Preview image", 
+                 sufia.download_path(@generic_file, file: "access"),
+               { "data-toggle" => "modal", 
+                 "data-target" => "#preview-#{@generic_file.id}",
+                 title: "Preview image in lightbox",
+                 "aria-label" => "Load preview image" } %>
+         </span> 
          <span class="icon glyphicon glyphicon-picture"></span></a>
       </li>
 	  <li>

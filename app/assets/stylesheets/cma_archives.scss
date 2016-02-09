@@ -1,0 +1,43 @@
+.lightbox {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  margin: auto;
+
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.66);
+}
+
+.lightbox .controls {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+
+.lightbox figure {
+  position: relative;
+  width: 60%;
+  margin: auto 20%;
+}
+
+.lightbox img {
+  width: 100%;
+  height: auto;
+}
+
+.lightbox figcaption {
+  font-size: 150%;
+  font-style: italic;
+  position: absolute;
+  width: 100%;
+  bottom: 0em;
+  padding: 0.5em;
+  left: 0;
+  color: rgb(255, 255, 255);
+  background: rgba(0, 0, 0, 0.8);
+}
