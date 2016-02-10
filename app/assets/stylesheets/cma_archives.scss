@@ -47,9 +47,16 @@
  * Gallery view tweaks for search results
  */
 .flex-gallery {
+  display: -ms-flexbox;
   display: flex;
+
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+
+  -ms-align-items: flex-end;
   align-items: flex-end;
+
+  -ms-justify-content: stretch;
   justify-content: stretch;
 }
 
