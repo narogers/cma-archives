@@ -42,3 +42,20 @@
   color: rgb(255, 255, 255);
   background: rgba(0, 0, 0, 0.8);
 }
+
+/** 
+ * Gallery view tweaks for search results
+ */
+.flex-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: stretch;
+}
+
+.flex-gallery .document {
+  flex-basis: 20vh;
+  margin: 1em 2vh;
+  min-width: 240px;
+  text-align: center;
+}

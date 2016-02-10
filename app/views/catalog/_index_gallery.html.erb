@@ -1,9 +1,9 @@
 <%# Override Blacklight defaults %>
-<div class="document col-xs-6 col-md-3">
-  <div class="thumbnail">
+<div class="document">
+  <figure>
     <%= render_thumbnail_tag(document, {}, :counter => document_counter_with_offset(document_counter)) %>
-  </div>
-  <div class="caption">
-    <%= render_document_partials document, blacklight_config.view_config(:gallery).partials %>
-  </div>
+    <figcaption>
+      <%= render_document_partials document, blacklight_config.view_config(:gallery).partials %>
+    </figcaption>
+  </figure>
 </div>
