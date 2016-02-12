@@ -18,9 +18,14 @@ class Collection < Sufia::Collection
     self.title = self.title.downcase.titlecase
   end
 
-  # Default Sufia makes collections always public which is not needed here
-  # so we override the method to make the before_save a noop.
+  # Override default behaviour of making everything public to inherit the
+  # permissions of the parent (if it is present). There's a danger here in
+  # infinite loops that exists elsewhere in the code so tread with caution
   def update_permissions
-    # Noop
+    if self.collections.present?
+      parent = collections.first
+      self.read_groups = parent.read_groups
+      self.edit_groups = parent.edit_groups
+    end
   end 
 end
