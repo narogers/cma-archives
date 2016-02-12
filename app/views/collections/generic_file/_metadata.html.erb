@@ -1,6 +1,5 @@
 <h3><%= link_to member.title.first, sufia.generic_file_path(member.id) %></h3>  
 <p><%= member.description.first %></p>
-<p><em><%= member.source.first %></em></p>
 <% unless member.subject.empty? %>
   <h4>Subjects</h4>
   <ul class="list-unstyled">
