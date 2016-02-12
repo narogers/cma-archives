@@ -9,7 +9,7 @@ Follow the normal [installation instructions](https://github.com/projecthydra/su
 
 When you are done editing the file import the collections into the repository using the Rake command
 
-%&lt; rake cma:collection:install_featured
+_%&gt; rake cma:collection:install_featured_
 
 #### Batch Ingesting Content
 Content is designed to be loaded using batch files. For more information see
@@ -18,4 +18,4 @@ the list of [related utilities](https://github.com/ClevelandArtGIT/cma-archives-
 Multiple CSV files can be processed at the same time. Simply point the command
 at the root directory for your dropbox.
 
-%&lt; rake cma:batch:ingest[path to dropbox]
+_%&gt; rake cma:batch:ingest["path to dropbox"]_
