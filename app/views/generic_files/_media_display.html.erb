@@ -1,5 +1,11 @@
 <% if @generic_file.image? %>
-  <%= render_preview_icon @generic_file %>
+  <%= link_to image_tag(sufia.download_path(@generic_file, file: "thumbnail")),
+        sufia.download_path(@generic_file, file: "access"),
+      { "aria-label" => "Load preview image",
+        "data-target" => "#preview-#{@generic_file.id}",
+        "data-toggle" => "modal",
+        title: "Preview image in lightbox" } 
+    %>
 <% elsif @generic_file.pdf? %>
   <%= render_download_icon "Download PDF" %>
 <% elsif @generic_file.office_document? %>

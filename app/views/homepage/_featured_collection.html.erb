@@ -1,5 +1,5 @@
 <% solr_doc = featured_collection.collection_solr_document %>
-<div class="col-sm-3 featured-collection">
+<div class="col-xs-6 col-sm-4 featured-collection">
   <%= render_collection_thumbnail featured_collection.collection_solr_document %>
   <h3><%= link_to solr_doc.title, collections.collection_path(featured_collection.collection_id) %></h3>
   <p class="description"><%= solr_doc.description %></p>

@@ -93,7 +93,7 @@ module CMAHelper
     else
       path = 
         if document.image?
-          sufia.download_path document, file: "thumbnail"
+          sufia.download_path(document, file: "thumbnail")
         elsif document.audio?
           "audio.png"
         else

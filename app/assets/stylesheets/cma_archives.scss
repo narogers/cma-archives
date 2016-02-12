@@ -1,0 +1,70 @@
+.lightbox {
+  display: -ms-flex;
+  display: flex;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  margin: auto;
+
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.66);
+}
+
+.lightbox .controls {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+
+.lightbox figure {
+  position: relative;
+  width: auto;
+  height: 100vh;
+  margin: 10vh auto;
+}
+
+.lightbox img {
+  width: auto;
+  height: 80vh;
+}
+
+.lightbox figcaption {
+  font-size: 150%;
+  font-style: italic;
+  position: absolute;
+  width: 100%;
+  bottom: 20vh;
+  padding: 0.5em;
+  left: 0;
+  color: rgb(255, 255, 255);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/** 
+ * Gallery view tweaks for search results
+ */
+.flex-gallery {
+  display: -ms-flexbox;
+  display: flex;
+
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+
+  -ms-align-items: flex-end;
+  align-items: flex-end;
+
+  -ms-justify-content: stretch;
+  justify-content: stretch;
+}
+
+.flex-gallery .document {
+  flex-basis: 20vh;
+  margin: 1em 2vh;
+  min-width: 240px;
+  text-align: center;
+}

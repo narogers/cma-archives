@@ -1,7 +1,10 @@
 /**
  * Global styles
  */
+@import "bootstrap/variables";
+
 $cma-blue: #005cb9;
+$cma-brown: $brand-warning;
 
 #masthead, #footer {
   background: $cma-blue;
@@ -11,7 +14,7 @@ $cma-blue: #005cb9;
  * black / gray
  */
 .collection-icon {
-  color: $cma-blue;
+  color: $cma-brown;
   text-align: center;
 }
 

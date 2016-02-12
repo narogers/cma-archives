@@ -1,0 +1,15 @@
+<div class="modal" id="preview-<%= @generic_file.id %>">
+  <div class="lightbox">
+    <figure>
+       <%# TODO: Refactor this into a helper method %>
+       <%= image_tag sufia.download_path(@generic_file, file: "access"),
+             alt: @generic_file.title.first %>
+       <figcaption><%= @generic_file.title.first %></figcaption>
+       <%= link_to "[x]", sufia.generic_file_path(@generic_file.id), 
+             {"data-toggle" => "modal", 
+                "data-target" => "#preview-#{@generic_file.id}", 
+                class: "controls",
+                title: "Hide preview"} %>
+    </figure>
+  </div>
+</div>

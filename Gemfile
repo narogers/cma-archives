@@ -70,7 +70,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'ruby-prof'
+  gem 'simplecov', require: false
 end
 
 # Enhance background job support and logging of jobs

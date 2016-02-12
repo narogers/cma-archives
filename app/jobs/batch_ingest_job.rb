@@ -12,13 +12,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 		@root_directory = File.dirname(File.expand_path(batch_metadata))
 	end
 	
-	def run
-		if !File.exists?(batch_file) then
-			Resque.logger.info '[BATCH INGEST] Warning: unable to locate a manifest file'
-			return
-		end
+    def run
+	  if !File.exists?(batch_file) then
+		Resque.logger.info '[BATCH INGEST] Warning: unable to locate a manifest file'
+		  return
+	  end
 
-		process_batch
+	  process_batch
     end
 	
 	# Read in the CSV file which should follow the following format
@@ -99,6 +99,9 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 		Resque.logger.info "[BATCH] Creating a new collection - #{title}"
 		collection = Collection.new(title: title)
 		collection = apply_default_acls(collection)
+        # Don't know why it appends "public" to read_groups but let's fix that 
+        # manually
+        collection.read_groups.delete("public")
 		collection.save
 
 		collection
