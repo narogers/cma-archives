@@ -99,9 +99,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 		Resque.logger.info "[BATCH] Creating a new collection - #{title}"
 		collection = Collection.new(title: title)
 		collection = apply_default_acls(collection)
-        # Don't know why it appends "public" to read_groups but let's fix that 
-        # manually
-        collection.read_groups.delete("public")
 		collection.save
 
 		collection

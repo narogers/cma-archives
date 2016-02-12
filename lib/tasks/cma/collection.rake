@@ -81,8 +81,9 @@ namespace :cma do
               parent_collection = Collection.new(title: coll["name"],
                 description: coll["description"],
                 depositor: "admin",
-                edit_users: ["admin"],
-                edit_groups: [coll["groups"]])
+                edit_users: [:admin],
+                edit_groups: [:admin],
+                read_groups: [coll["groups"]])
 
               if parent_collection.save
                 FeaturedCollection.create(collection_id: parent_collection.id)

@@ -1,7 +1,7 @@
 class GenericFile < ActiveFedora::Base
-		# TODO : Remove any includes that are not needed once the
-		# 			 interface has been cleaned up
-		include Hydra::Derivatives
+	# TODO : Remove any includes that are not needed once the
+	# 			 interface has been cleaned up
+	include Hydra::Derivatives
     include Sufia::ModelMethods
     include Sufia::Noid
     include Sufia::GenericFile::MimeTypes
@@ -24,10 +24,4 @@ class GenericFile < ActiveFedora::Base
     include CMA::GenericFile::Metadata
 
     before_save :verify_mime_type
-
-    # TODO: There is a better way to make this work but in the interest of
-    #       moving forward go with a bodge
-    def resource_path
-      "files/#{id}"
-    end
 end

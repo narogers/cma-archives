@@ -18,9 +18,9 @@ class Collection < Sufia::Collection
     self.title = self.title.downcase.titlecase
   end
 
-  # A bodge to move forward with the interface redesign. Needs to be fixed to
-  # be much more DRY
-  def resource_path
-    "/collections/#{id}"
-  end
+  # Default Sufia makes collections always public which is not needed here
+  # so we override the method to make the before_save a noop.
+  def update_permissions
+    # Noop
+  end 
 end
