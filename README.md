@@ -11,7 +11,7 @@ When you are done editing the file import the collections into the repository us
 
 %&lt; rake cma:collection:install_featured
 
-## Batch Ingesting Content
+#### Batch Ingesting Content
 Content is designed to be loaded using batch files. For more information see
 the list of [related utilities](https://github.com/ClevelandArtGIT/cma-archives-utils). Batch files can also be created manually if the structure is followed in your workflow.
 
