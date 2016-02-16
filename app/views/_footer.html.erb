@@ -1,7 +1,7 @@
 <div id="footer" class="container-fluid">
 	<div class="row">
 		<div class="col-xs-12 col-sm-5">
-          <%= any_login_here %>
+          <%= any_login_here if Rails.env.development? %>
 		  <p>Cleveland Museum of Art</p>
 		</div>
 	  <div class="col-xs-12 col-sm-7">
