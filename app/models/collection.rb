@@ -22,8 +22,8 @@ class Collection < Sufia::Collection
   # permissions of the parent (if it is present). There's a danger here in
   # infinite loops that exists elsewhere in the code so tread with caution
   def update_permissions
-    if self.collections.present?
-      parent = collections.first
+    unless self.collections.empty? then
+      parent = self.collections.first
       self.read_groups = parent.read_groups
       self.edit_groups = parent.edit_groups
     end
