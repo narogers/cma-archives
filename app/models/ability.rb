@@ -5,7 +5,7 @@ class Ability
   
   # Define any customized permissions here.
   def custom_permissions
-    # Limits deleting objects to a the admin user
+    # Limits deleting objects to admin users
     #
     if current_user.groups.include? :admin.to_s
        can [:discover, :read, :edit], Collection
