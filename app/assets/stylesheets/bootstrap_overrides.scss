@@ -5,6 +5,7 @@
 
 $cma-blue: #005cb9;
 $cma-brown: $brand-warning;
+$cma-gray: $gray-lighter;
 
 #masthead, #footer {
   background: $cma-blue;
@@ -16,6 +17,10 @@ $cma-brown: $brand-warning;
 .collection-icon {
   color: $cma-brown;
   text-align: center;
+}
+
+.collection-icon.disabled {
+  color: $cma-gray;
 }
 
 .featured-collection .collection-icon {

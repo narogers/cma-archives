@@ -40,7 +40,10 @@ module CMAHelper
   # See http://codepen.io/css_librarian/pen/PZaZzg for demonstration of the next
   # two methods in action
   def render_collection_thumbnail collection
-    content_tag :div, class: "collection-icon" do
+    classes = current_user.can?(:read, collection) ?
+              "collection-icon" :
+              "collection-icon disabled"
+    content_tag :div, class: classes do
       content_tag :span, class: "fa-stack fa-5x" do
         concat content_tag :i, "", class: "fa fa-folder fa-stack-2x"
         concat collection_icon_for collection
