@@ -7,9 +7,6 @@
         <h1><%= @presenter.title %></h1>
         <p class="collection_description"><%= @presenter.description %></p>
       </header>
-      <% unless has_collection_search_parameters? %>
-      <%= render 'collections/show_descriptions' %>
-      <% end %>
     </div>
     <div class="col-sm-2">
       <%= render partial: 'collections/media_display', locals: { generic_file: @collection } %>
@@ -19,13 +16,13 @@
 <% if has_collection_search_parameters? %>
     <% header_title = "Search Results" %>
 <% else %>
-    <% header_title = "Collection Members" %>
+    <% header_title = @presenter.summary %>
 <% end %>
 
 <div class="row">
   <div class="col-xs-12">
-    <h2 class="col-xs-6 col-md-7 col-lg-6"><%= header_title %></h2>
-    <div class="col-xs-6 col-md-5 col-lg-6"><%= render partial: 'search_form' %></div>
+    <h2 class="col-xs-6 col-md-6 col-lg-6"><%= header_title %></h2>
+    <%= render "search_form" %>
   </div>
 </div>
 
@@ -33,4 +30,8 @@
 
 <%= render_document_index @member_docs %>
 
-<%= render partial: 'paginate' %>
+<div class="row">
+  <div class="col-xs-12">
+    <%= render 'paginate' %>
+  </div>
+</div>

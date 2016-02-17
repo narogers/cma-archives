@@ -1,0 +1,7 @@
+<div class="col-xs-12 col-sm-6 col-md-6" %>
+  <% if @response.total_pages > 1 %>
+    <div class="pager">
+      <%= paginate @response, outer_window: 2, route_set: collections %>
+    </div><!-- /pager -->
+  <% end %>
+</div>

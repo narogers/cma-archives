@@ -49,6 +49,7 @@ end
 
 gem 'sufia', '~> 6.5'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
+
 #gem 'browse-everything', github: 'narogers/browse-everything'
 # Peg to this version to avoid any future changes as PCDM Implementation
 # continues. This code has the RAW fix merged into the main development
