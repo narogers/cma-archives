@@ -18,29 +18,32 @@
   text-decoration: none;
   position: absolute;
   top: 0.5em;
-  right: 0.5em;
+  right: 1em;
 }
 
 .lightbox figure {
   position: relative;
-  width: auto;
-  height: 100vh;
-  margin: 10vh auto;
+  width: 50%;
+  height: 100%;
+  margin: 0 auto;
 }
 
 .lightbox img {
-  width: auto;
-  height: 80vh;
+  min-width: 480px;
+  max-width: 80%;
+  margin: auto 10%;
+  height: auto;
 }
 
 .lightbox figcaption {
   font-size: 150%;
   font-style: italic;
   position: absolute;
-  width: 100%;
-  bottom: 20vh;
+  min-width: 480px;
+  width: 80%;
+  margin: auto 10%;
   padding: 0.5em;
-  left: 0;
+
   color: rgb(255, 255, 255);
   background: rgba(0, 0, 0, 0.8);
 }
