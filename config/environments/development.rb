@@ -48,4 +48,7 @@ Rails.application.configure do
   # logs
   Deprecation.default_deprecation_behavior = :log
 
+  # Suppress whiny output from the web console
+  config.web_console.whiny_requests = false
+  config.web_console.whitelisted_ips = "192.168.56.1"
 end
