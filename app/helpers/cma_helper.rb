@@ -19,11 +19,7 @@ module CMAHelper
      if collection.description.present?
        description = collection.description
      else
-       first_member = collection.members.first
-       unless first_member.nil?
-         description = File.dirname(first_member.import_url)
-         description = Addressable::URI.parse(description).path
-       end
+       "No description available"
      end
 
      return description
