@@ -9,31 +9,15 @@ module CMA
       def member_bytes
         # Don't even bother if the collection is empty
         return 0 if (0 == members.count)
-
-        qry = "*:*"
-        limits = {
-          fq: ["{!join from=hasCollectionMember_ssim to=id}id:#{id}",
-               "has_model_ssim:GenericFile"],
-          # It doesn't really matter what we pull here since it is ignored
-          fl: "id",
-          # And we don't even need all the results
-          rows: 1,
-          # But these do matter since they are the magic parts of the URL
-          stats: 'true',
-          "stats.field" => file_size_field,
-          # And make it raw to get the right part of the response
-          raw: true
-        }
-
-        results = ActiveFedora::SolrService.query(qry, limits)
-        total_bytes = results["stats"]["stats_fields"][file_size_field].present? ? results["stats"]["stats_fields"][file_size_field]["sum"] : 0 
-
-        return total_bytes
+        query_solr_for_collection_size(self.id)
       end
   
       def subcollection_bytes
         return 0 if (0 == members.count)
 
+        # Despite the fact we have the member_ids array we need to filter
+        # out anything that is not a Collection. Thus the need to perform
+        # a preliminary request to Solr
         qry = "*:*"
         limits = {
           fl: "id",
@@ -43,8 +27,7 @@ module CMA
         }
         results = ActiveFedora::SolrService.query(qry, limits)
         total_bytes = results.reduce(0) do |bytes, r|
-          coll = Sufia::Collection.load_instance_from_solr(r["id"])
-          bytes += coll.bytes
+          bytes += query_solr_for_collection_size r["id"]
         end 
         
         return total_bytes 
@@ -55,7 +38,28 @@ module CMA
       end
 
       private
-    
+        def query_solr_for_collection_size(id)
+          qry = "*:*"
+          limits = {
+            fq: ["{!join from=hasCollectionMember_ssim to=id}id:#{id}",
+               "has_model_ssim:GenericFile"],
+            # It doesn't really matter what we pull here since it is ignored
+            fl: "id",
+            # And we don't even need all the results
+            rows: 1,
+            # But these do matter since they are the magic parts of the URL
+            stats: 'true',
+            "stats.field" => file_size_field,
+            # And make it raw to get the right part of the response
+            raw: true
+          }
+
+          results = ActiveFedora::SolrService.query(qry, limits)
+          total_bytes = results["stats"]["stats_fields"][file_size_field].present? ? results["stats"]["stats_fields"][file_size_field]["sum"] : 0 
+
+          return total_bytes
+        end
+ 
         def file_size_field
           "file_size_isi"
         end
