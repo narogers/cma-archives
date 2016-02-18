@@ -13,8 +13,6 @@ module CMA
       end
   
       def subcollection_bytes
-        return 0 if (0 == members.count)
-
         # Despite the fact we have the member_ids array we need to filter
         # out anything that is not a Collection. Thus the need to perform
         # a preliminary request to Solr
@@ -25,12 +23,18 @@ module CMA
                "has_model_ssim:Collection"],
           rows: members.count
         }
-        results = ActiveFedora::SolrService.query(qry, limits)
-        total_bytes = results.reduce(0) do |bytes, r|
-          bytes += query_solr_for_collection_size r["id"]
-        end 
+        collection_ids = ActiveFedora::SolrService.query(qry, limits)
+
+        bytes = 0
+        if collection_ids.size > 0
+          collection_ids.map! {|coll| coll["id"] }
+          collection_ids.each_slice(500) do |ids|
+            bytes += query_solr_for_collection_size(ids.join(" "))
+          end
+        end
         
-        return total_bytes 
+        # Return the final tally
+        bytes
       end
 
       def bytes
@@ -41,7 +45,7 @@ module CMA
         def query_solr_for_collection_size(id)
           qry = "*:*"
           limits = {
-            fq: ["{!join from=hasCollectionMember_ssim to=id}id:#{id}",
+            fq: ["{!join from=hasCollectionMember_ssim to=id}id:(#{id})",
                "has_model_ssim:GenericFile"],
             # It doesn't really matter what we pull here since it is ignored
             fl: "id",
