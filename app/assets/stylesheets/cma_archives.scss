@@ -1,6 +1,7 @@
 .lightbox {
   display: -ms-flex;
   display: flex;
+  justify-content: center;
 
   position: absolute;
   top: 0;
@@ -15,34 +16,42 @@
 
 .lightbox .controls {
   color: rgb(255, 255, 255);
+  background: rgba(0, 0, 0, 0.75);
+
   text-decoration: none;
   position: absolute;
-  top: 0.5em;
-  right: 1em;
+  top: 0;
+  right: 0;
+  padding: 0 0.5em;
+  font-size: 150%;
 }
 
 .lightbox figure {
   position: relative;
   width: 50%;
-  height: 100%;
-  margin: 0 auto;
+  align-self: center;
+
+  background: rgba(0, 0, 0, 0.75);
 }
 
 .lightbox img {
-  min-width: 480px;
-  max-width: 80%;
-  margin: auto 10%;
+  max-width: 100%;
   height: auto;
+  text-align: center;
+  max-height: 100vh;
+  align-self: center;
 }
 
 .lightbox figcaption {
   font-size: 150%;
   font-style: italic;
   position: absolute;
-  min-width: 480px;
-  width: 80%;
-  margin: auto 10%;
+  bottom: 0;
+  max-width: 100%;
   padding: 0.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   color: rgb(255, 255, 255);
   background: rgba(0, 0, 0, 0.8);
