@@ -9,6 +9,7 @@ class SolrDocument
   include CMA::GenericFile::MimeTypes
   include CMA::GenericFile::ImageBehavior
   # Likewise
+  include CMA::Collection::CollectionSize
   include CMA::Collection::CollectionType
   include CMA::SolrDocumentBehavior
 

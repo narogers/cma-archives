@@ -17,5 +17,26 @@ module CMA
         []
       end
     end
+
+    def members
+      case hydra_model
+      when "Collection"
+        fetch("hasCollectionMember_ssim")
+      else
+        nil
+      end
+    end
+
+    # This assumes that the bytes method for collections is already included
+    # in your module. Be sure to also mixin CMA::Collection::CollectionSize
+    # if relying on this module
+    def bytes
+      case hydra_model
+      when "Collection"
+        super
+      else
+        fetch("file_size_isi")
+      end  
+    end
   end
 end

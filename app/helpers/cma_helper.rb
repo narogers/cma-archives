@@ -1,6 +1,6 @@
 module CMAHelper
   def render_partial_for(partial, member=nil)
-    root_path = member.class.to_s.underscore
+    root_path = member.hydra_model.underscore
 
     # This should look something like collection/collection/row
     # or collection/generic_file/row
