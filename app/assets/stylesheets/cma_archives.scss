@@ -75,4 +75,11 @@
 /* Reset over Sufia's defaults */
 .pager, .pagination {
   margin: 0;
+  border-radius: 0;
 }
+
+.pager li > span,
+.pager li > a {
+  border-radius: 0;
+}
+

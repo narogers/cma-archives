@@ -101,5 +101,10 @@ module CMAHelper
       image_tag path, options
     end
   end
+
+  # Helper block for pagination
+  def fa_icon(icon)
+    content_tag :i, class: "fa fa-{icon}"
+  end
 end
 

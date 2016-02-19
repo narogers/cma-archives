@@ -1,3 +1,6 @@
+<% html_class = current_page.first? ? "disabled" : "" %>
+
 <li>
-  <%= link_to_unless current_page.first?, raw(t 'views.pagination.first'), url, :remote => remote %>
+  <%= link_to fa_icon("step-backward"), url, 
+       class: html_class, :remote => remote %> 
 </li>
