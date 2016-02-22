@@ -1,0 +1,7 @@
+<div class="pagination col-xs-12 col-md-push-3 col-md-8">
+  <% if @response.total_pages > 1 %>
+    <div class="pager">
+      <%= paginate @response, window: 2, theme: 'bootstrap3' %>
+    </div>
+  <% end %>
+</div>

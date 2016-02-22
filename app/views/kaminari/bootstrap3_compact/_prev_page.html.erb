@@ -1,0 +1,6 @@
+<% html_class = current_page.first? ? "disabled" : "" %>
+
+<li>
+  <%= link_to fa_icon("angle-double-left"), url, class: html_class, 
+       :rel => 'prev', :remote => remote %>
+</li>
