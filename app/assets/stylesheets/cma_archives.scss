@@ -30,16 +30,16 @@
   position: relative;
   width: 50%;
   align-self: center;
+  text-align: center;
 
   background: rgba(0, 0, 0, 0.75);
+
 }
 
 .lightbox img {
   max-width: 100%;
   height: auto;
-  text-align: center;
   max-height: 100vh;
-  align-self: center;
 }
 
 .lightbox figcaption {
@@ -47,9 +47,10 @@
   font-style: italic;
   position: absolute;
   bottom: 0;
-  max-width: 100%;
+  width: 100%;
   padding: 0.5em;
   overflow: hidden;
+  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
 

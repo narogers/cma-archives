@@ -54,6 +54,14 @@ namespace :cma do
            end
        end
 
+       # Updates permissions for collections based on the settings for the
+       # parent. To take advantage of this update the master collections (Editorial,
+       # Object Photography, etc) and then run this in the background
+       desc "Update collection permissions"
+       task :update_permissions => :environment do
+         Sufia.queue.push(ReindexCollectionPermissionsJob.new)
+       end
+
        # Loads default collections into the repository. These should
        # be the umbrella collections that will be featured on the home
        # page
