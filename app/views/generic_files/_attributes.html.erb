@@ -3,7 +3,7 @@
   <dd><%= work.create_date || "-" %></dd>
   
   <dt>Description</dt>
-  <dd><%= work.description || "-" %></dd>
+  <dd><%= truncate(work.description, length: 80, separator: ' ') || "-" %></dd>
 
   <dt>Source</dt>
   <dd><%= work.source %></dd>
