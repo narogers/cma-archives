@@ -21,7 +21,7 @@ module CMA
     def members
       case hydra_model
       when "Collection"
-        fetch("hasCollectionMember_ssim")
+        has?("hasCollectionMember_ssim") ? fetch("hasCollectionMember_ssim") : []
       else
         nil
       end
