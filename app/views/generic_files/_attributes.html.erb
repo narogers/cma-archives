@@ -1,6 +1,6 @@
 <dl class="dl-horizontal">
   <dt>Date created</dt>
-  <dd><%= work.create_date || "-" %></dd>
+  <dd><%= work.date_created || "-" %></dd>
   
   <dt>Description</dt>
   <dd><%= truncate(work.description, length: 80, separator: ' ') || "-" %></dd>
