@@ -69,7 +69,10 @@ group :development do
   gem 'any_login'
 end
 
-group :development, :test do
+group :test do 
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails', '~> 4'
   gem 'rspec-rails'
   gem 'simplecov', require: false
 end

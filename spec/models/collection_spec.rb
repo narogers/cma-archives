@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-RSpec.describe Collection do
+RSpec.describe Collection, type: :model do
   it "normalizes a lower case title" do
     c = Collection.new(title: "test title 123.45")
     expect(c.normalize_title).to eq "Test Title 123.45"
