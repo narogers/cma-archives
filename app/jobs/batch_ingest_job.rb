@@ -79,20 +79,22 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  # The rest of the file should be a list of files and associated
 	  # properties
       @metadata.each do |resource|
-        # TODO : See if a file already exists with the given URL and load
-        # 	   it instead of creating a new file
-        base_path = resource.shift
-	    gf = GenericFile.new(
-          import_url: "file://#{@root_directory}/#{base_path}",
-	      collections: [@collection],
-	    )
-        gf = apply_metadata_properties(gf, fields, resource)
-	    gf = apply_default_acls(gf)
-	    gf.save
+        filename = resource.shift
+        unless @collection.contains?(label: filename)
+	      gf = GenericFile.new(
+            import_url: "file://#{@root_directory}/#{filename}",
+	        collections: [@collection],
+	      )
+          gf = apply_metadata_properties(gf, fields, resource)
+	      gf = apply_default_acls(gf)
+	      gf.save
 	 	
-        Resque.logger.info "[BATCH] Ingesting #{resource[0]} into #{@batch.title.first}"
-	    Sufia.queue.push(ImportUrlJob.new(gf.id))
-	  end
+          Resque.logger.info "[BATCH] Ingesting #{resource[0]} into #{@batch.title.first}"
+	      Sufia.queue.push(ImportUrlJob.new(gf.id))
+	    else
+          Resque.logger.info "[BATCH] Skipping existing file #{filename}" 
+        end
+      end
 	end
 
 	def create_collection(title)
