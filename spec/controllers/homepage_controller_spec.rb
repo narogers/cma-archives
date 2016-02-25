@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe HomepageController, type: :controller do
   routes { Sufia::Engine.routes }
-  let(:user) { FactoryGirl.create(User) }
  
   describe "#index" do
     context "with an anonymous user" do

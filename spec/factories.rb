@@ -2,19 +2,24 @@ FactoryGirl.define do
   factory :user do
     sequence(:email) { |n| "user#{n}@example.com" }
 
-    factory :photographer do
+    trait :photographer do
+      login "photostudio"
       display_name "Photography Studio"
-      groups [:photostudio]
     end
 
-    factory :archivist do
+    trait :archivist do
+      login "archivist" 
       display_name "Archivist"
-      groups [:archives]
     end
 
-    factory :administrator do
+    trait :administrator do
+      login "administrator"
       display_name "Administrator"
-      groups [:admin]
+    end
+ 
+    trait :conservationist do
+      login "conservationist"
+      display_name "Conservation"
     end
   end
 end
