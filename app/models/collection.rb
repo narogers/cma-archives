@@ -22,6 +22,12 @@ class Collection < Sufia::Collection
   # permissions of the parent (if it is present). There's a danger here in
   # infinite loops that exists elsewhere in the code so tread with caution
   def update_permissions
+    # Done this way because of a bug that pops up when the relationship has
+    # yet to be defined. Otherwise the caller will get a nasty surprise
+    if ([] == self.collections)
+      # No OP
+    end
+      
     unless self.collections.blank? then
       parent = self.collections.first
       self.read_groups = parent.read_groups

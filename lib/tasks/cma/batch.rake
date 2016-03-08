@@ -1,6 +1,6 @@
 namespace :cma do
     namespace :batch do
-        desc "Batch ingest content according to CMA standards"
+        desc "Batch ingest content"
         task :ingest, [:base_directory] => :environment do |t, args|
             full_path = File.expand_path(args[:base_directory])
             batches = FileList.new("#{full_path}/**/batch.csv")

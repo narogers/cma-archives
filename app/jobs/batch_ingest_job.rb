@@ -25,7 +25,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	#
 	# [title]
     # [creator]
-	# [collection|collection|collection]
+	# [creation date]
+	# [parent collection]
 	# [blank line]
 	# [file, tag, tag, ...]
 	# [01.tif, nrogers@clevelandart.org, ...]  
@@ -36,7 +37,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  @batch = Batch.new(
 	    title: [@metadata.shift.first.titleize],
 	    creator: [@metadata.shift.first])
-
+   
 	  # Verify that the creator exists or default to the system's
 	  # batch account
 	  if (0 == User.where(login: @batch.creator).count)
@@ -45,8 +46,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  @batch.save
 
 	  @collection = find_or_create_collection(@batch.title.first)
+      set_creation_date(@metadata.shift.first)
       add_collection_relationships
 	  process_files
+    end
+
+    def set_creation_date(date)
+      @collection.date_created = [date]
     end
 
  	def add_collection_relationships
