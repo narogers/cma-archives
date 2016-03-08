@@ -97,7 +97,6 @@ namespace :cma do
                 FeaturedCollection.create(collection_id: parent_collection.id)
                 print "Collection has been created as #{parent_collection.id}\n"
               else
-                binding.pry
                 print "ERROR: #{parent_collection.errors.to_s}\n"
               end
             else
