@@ -78,4 +78,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Silence deprecation warnings in production only
+  ActiveSupport::Deprecation.silenced = true
+  Deprecation.default_deprecation_behavior = :silence
 end
