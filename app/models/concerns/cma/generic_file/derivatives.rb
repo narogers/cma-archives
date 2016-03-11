@@ -35,7 +35,7 @@ module CMA
         # file or for a supported format that ImageMagick can
         # read AND write
         def image_processor
-          is_raw_file? ? :raw_image : :image
+          is_raw_file? ? :exif_image : :image
         end
 
         # Returns true if the image is a Digital Negative

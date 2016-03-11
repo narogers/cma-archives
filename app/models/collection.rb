@@ -42,7 +42,7 @@ class Collection < Sufia::Collection
   def contains?(fields)
     queries = []
     fields.each_pair do |k, v|
-      queries << "#{Solrizer.solr_name(k)}:#{v}"
+      queries << "#{Solrizer.solr_name(k)}:\"#{v}\""
     end 
     query = queries.join(" ")
     limits = {

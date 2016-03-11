@@ -17,10 +17,12 @@ module Hydra::Derivatives
       # Attempt to extract the thumbnail. If this fails then return the full
       # blown image instead
       if (system("dcraw", "-e", tmp_master.path))
+        Resque.logger.info "[DERIVATIVES] Extracted thumbnail image for #{object.id}"
         tmp_thumbnail_path = tmp_master.path.sub ".dng", ".thumb.jpg"
         xfrm = MiniMagick::Image.open tmp_thumbnail_path
         FileUtils.rm tmp_thumbnail_path
       else
+        Resque.logger.info "[DERIVATIVES] Using RAW master to generate derivatives for #{object.id}"
         xfrm = MiniMagick::Image.open tmp_master.path
       end
 
