@@ -14,7 +14,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	
     def run
 	  if !File.exists?(batch_file) then
-		Resque.logger.info '[BATCH INGEST] Warning: unable to locate a manifest file'
+		Resque.logger.info '[BATCH] Warning: unable to locate a manifest file'
 		  return
 	  end
 
@@ -95,7 +95,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	      gf = apply_default_acls(gf)
 	      gf.save
 	 	
-          Resque.logger.info "[BATCH] Ingesting #{resource[0]} into #{@batch.title.first}"
+          Resque.logger.info "[BATCH] Ingesting #{filename} into #{@batch.title.first}"
 	      Sufia.queue.push(ImportUrlJob.new(gf.id))
 	    else
           Resque.logger.info "[BATCH] Skipping existing file #{filename}" 
