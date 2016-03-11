@@ -11,7 +11,7 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
   
   def run
     # Set two escape clauses before you go any further
-    Resque.logger.info "[EXIF] Working with resource #{generic_file.id}"
+    Resque.logger.info "[EXIF] Extracting EXIF headers for #{generic_file.id}"
     return unless generic_file.content.has_content?
     return unless generic_file.image?
 
@@ -22,7 +22,6 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     # TODO: Make this work with local files
     generic_file.content.local_path = generic_file.import_url.sub("file://", "")
     Hydra::Derivatives::TempfileService.create(generic_file.content) do |f|
-        Resque.logger.info "[EXIFTOOL] Using temporary file #{f.path}"
     	exifdata = MiniExiftool.new(f.path)
     	Sufia.config.exif_to_desc_mapping.each_pair do |exif_node, field|
     		# A missing tag returns nil - let's use that to our
@@ -39,7 +38,6 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
             #
             # Also strip out any pipes, such as in the :subject
             # field and replace them with more readable -- dividers
-            Resque.logger.info "[EXIF] Before => #{metadata}"
             if (metadata.is_a? Array)
               metadata.map! { |meta| meta.to_s.gsub("|", " -- ") } 
             else
@@ -80,7 +78,6 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
 
 		# If there is a little housekeeping to do for some key 
 		# fields it should happen here as needed    	
-        Resque.logger.info("[EXIF] Saving changes to #{generic_file.id}")
 		generic_file.save
     end
   end
