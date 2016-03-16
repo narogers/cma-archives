@@ -12,8 +12,6 @@ module CMAHelper
   # Given a collection object will choose either the description field,
   # if present, or the path for the folder. This is a bit of a bandaid
   # patch until the metadata can be updated
-  #
-  # TODO: Consider using a presenter
   def description_for_collection collection
      description = 'No description available'
      if collection.description.present?
@@ -47,7 +45,6 @@ module CMAHelper
     end
   end 
 
-  # TODO: Define these settings in a configuration file instead of here
   def collection_icon_for collection
     icon = ""
     if collection.has_audio?
@@ -65,10 +62,6 @@ module CMAHelper
     icon.present? ? content_tag(:i, "", {class: "fa #{icon} fa-stack-1x fa-inverse"}) : ""
   end 
 
-  # Maybe this could be done as a presenter instead but for the first prototype
-  # just use a simple helper
-  #
-  # date should be a string representation
   def formatted_date_for raw_date, format=:concise
     return "Not available" if raw_date.empty?
 

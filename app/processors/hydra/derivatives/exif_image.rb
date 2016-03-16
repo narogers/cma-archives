@@ -3,7 +3,14 @@ require 'mini_magick'
 module Hydra::Derivatives
   class ExifImage < Image
     class_attribute :timeout
-  
+
+    def create_resized_image destination_name, size, format, quality=nil
+      create_image(destination_name, format, quality) do |xfrm|
+        xfrm.thumbnail(size) if size.present?
+        xfrm.strip
+      end
+    end
+
     # No longer a need to override create_image or remove_temp_files
     # if we can extract the thumbnmail that is already embedded in the
     # RAW container. As an added bonus this will go very quickly compared
