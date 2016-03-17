@@ -19,7 +19,7 @@ module CMA
                 size: '200x150>',
                 datastream: 'thumbnail'
               },
-    		}, processor: obj.image_processor
+    		}, processor: :exif_image
           end
         end
 
@@ -29,13 +29,6 @@ module CMA
           if is_raw_file?
             self.mime_type = "image/x-adobe-dng"
           end
-        end
-
-        # Returns the correct image processor for either a RAW
-        # file or for a supported format that ImageMagick can
-        # read AND write
-        def image_processor
-          is_raw_file? ? :exif_image : :image
         end
 
         # Returns true if the image is a Digital Negative

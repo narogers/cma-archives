@@ -15,7 +15,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     def run
 	  if !File.exists?(batch_file) then
 		Resque.logger.info '[BATCH] Warning: unable to locate a manifest file'
-		  return
+		raise CMA::Exceptions::FileNotFoundError.new "Could not resolve #{batch_file} to a valid path"  
 	  end
 
 	  process_batch
@@ -76,7 +76,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       @collection.save
 	end
 
-	def process_files()
+	def process_files
       # We need to remember the list of metadata fields for later. Ignore
       # only the mandatory :file attribute
       fields = @metadata.shift
@@ -140,6 +140,11 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     # fields: Mappings to metadata fields
     def apply_metadata_properties(resource, fields, values)
       values.each_with_index do |value, i|
+        if value.blank?
+          Resque.logger.warn "[BATCH] Could not process empty field #{fields[i]}"
+          next
+        end
+
         field = fields[i]
         # When multivalued save as an array
         if resource[field].is_a? Array

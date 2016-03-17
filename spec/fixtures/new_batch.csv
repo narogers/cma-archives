@@ -1,0 +1,9 @@
+New Batch Ingest
+clio
+2016-03
+Batch Tests
+
+file,part_of,photographer,source
+01.tif,ED001,Nathan Rogers,ED001/01.tif
+02.tif,ED002,,ED002/02.tif
+03.tif,,,

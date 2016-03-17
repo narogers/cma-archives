@@ -1,0 +1,9 @@
+Existing Batch Ingest
+clio
+2016-03
+Batch Tests
+
+file,part_of,photographer,source
+04.tif,ED004,Nathan Rogers,ED004/04.tif
+05.jpg,ED005,Nathan Rogers,ED005/05.jpg
+06.dng,ED006,Nathan Rogers,ED006/06.dng
