@@ -16,7 +16,8 @@ module Hydra::Derivatives
     # RAW container. As an added bonus this will go very quickly compared
     # to rescaling a 40MB DNG file
     def load_image_transformer
-      tmp_master = Tempfile.new([object.id, ".dng"])
+      extension = File.extname(object.import_url)
+      tmp_master = Tempfile.new([object.id, extension])
       tmp_master.binmode
       tmp_master.write(source_file.content)
 
@@ -25,7 +26,7 @@ module Hydra::Derivatives
       # blown image instead
       if (system("dcraw", "-e", tmp_master.path))
         Resque.logger.info "[DERIVATIVES] Extracted thumbnail image for #{object.id}"
-        tmp_thumbnail_path = tmp_master.path.sub ".dng", ".thumb.jpg"
+        tmp_thumbnail_path = tmp_master.path.sub extension, ".thumb.jpg"
         xfrm = MiniMagick::Image.open tmp_thumbnail_path
         FileUtils.rm tmp_thumbnail_path
       else

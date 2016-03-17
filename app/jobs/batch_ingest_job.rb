@@ -33,7 +33,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     def process_batch
   	  @metadata = CSV.read(batch_file)
 
-	  # TODO: Sanity check for missing fields
 	  @batch = Batch.new(
 	    title: [@metadata.shift.first.titleize],
 	    creator: [@metadata.shift.first])
