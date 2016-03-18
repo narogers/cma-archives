@@ -89,6 +89,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	      gf = GenericFile.new(
             import_url: "file://#{@root_directory}/#{filename}",
 	        collections: [@collection],
+            label: filename
 	      )
           gf = apply_metadata_properties(gf, fields, resource)
 	      gf = apply_default_acls(gf)
