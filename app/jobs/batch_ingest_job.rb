@@ -31,11 +31,11 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	# [file, tag, tag, ...]
 	# [01.tif, nrogers@clevelandart.org, ...]  
     def process_batch
-  	  @metadata = CSV.read(batch_file)
+  	  metadata = CSV.read(batch_file)
 
 	  @batch = Batch.new(
-	    title: [@metadata.shift.first.titleize],
-	    creator: [@metadata.shift.first])
+	    title: [metadata.shift.first.titleize],
+	    creator: [metadata.shift.first])
    
 	  # Verify that the creator exists or default to the system's
 	  # batch account
@@ -45,45 +45,43 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  @batch.save
 
 	  @collection = find_or_create_collection(@batch.title.first)
-      set_creation_date(@metadata.shift.first)
-      add_collection_relationships
-	  process_files
+      set_creation_date(metadata.shift.first)
+      add_collection_relationships(metadata.shift.first)
+      # Ignore the blank line
+      metadata.shift.first
+	  process_files(metadata)
     end
 
     def set_creation_date(date)
       @collection.date_created = [date]
     end
 
- 	def add_collection_relationships
+ 	def add_collection_relationships(parent_title)
 	  # Each line should be a collection title until you reach a
 	  # blank line at which point the list is assumed to be complete.
 	  # This means that additional collection membership is optional.
-	  current_title = @metadata.shift.first
 
 	  # Because it is a CSV file the line comes across as an array
 	  # rather than a string
-	  while current_title.present? do
-        current_title = current_title.titleize
-        parent_collection = find_collection(current_title)
-        if parent_collection.nil?
-          Resque.logger.warn("[BATCH] Could not locate #{current_title}")
-        else
-          @collection.collections += [parent_collection]
-        end
-        current_title = @metadata.shift.first
-	  end
+      parent_title = parent_title.titleize
+      parent_collection = find_collection(parent_title)
+      if parent_collection.nil?
+        Resque.logger.warn("[BATCH] Could not locate #{parent_title}")
+      else
+        @collection.collections += [parent_collection]
+      end
       @collection.save
 	end
 
-	def process_files
+	def process_files(metadata)
       # We need to remember the list of metadata fields for later. Ignore
       # only the mandatory :file attribute
-      fields = @metadata.shift
+      fields = metadata.shift
       fields.map! { |field| field.to_sym }.delete(:file)
       
 	  # The rest of the file should be a list of files and associated
 	  # properties
-      @metadata.each do |resource|
+      metadata.each do |resource|
         filename = resource.shift
         unless @collection.contains?(label: filename)
 	      gf = GenericFile.new(
