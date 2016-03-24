@@ -17,6 +17,7 @@ class GenericFile < ActiveFedora::Base
     include Sufia::GenericFile::Batches
     include Sufia::GenericFile::FullTextIndexing
 
+    include CMA::GenericFile::Characterization
     include CMA::GenericFile::Content
     include CMA::GenericFile::Derivatives
     include CMA::GenericFile::Indexing
