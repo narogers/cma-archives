@@ -1,7 +1,7 @@
 module CMA
   class CharacterizationService
     def self.characterize content
-      uri = "http://localhost:8888/fits/FitsService"
+      uri = "http://127.0.0.1:8888/fits/FitsService"
       # No point continuing if there is nothing to process
       return unless content.has_content?
 
