@@ -15,7 +15,7 @@ class GenericFile < ActiveFedora::Base
     include Sufia::GenericFile::ProxyDeposit
     include Hydra::Collections::Collectible
     include Sufia::GenericFile::Batches
-    include Sufia::GenericFile::FullTextIndexing
+    #include Sufia::GenericFile::FullTextIndexing
 
     include CMA::GenericFile::Characterization
     include CMA::GenericFile::Content

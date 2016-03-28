@@ -7,7 +7,8 @@ module CMA
         solr_doc[Solrizer.solr_name('label')] = object.label
         solr_doc[Solrizer.solr_name('file_format')] = object.file_format
         solr_doc[Solrizer.solr_name('file_format', :facetable)] = object.file_format
-        solr_doc['all_text_timv'] = object.full_text.content
+        # Enable if full text indexing is ever required
+        #solr_doc['all_text_timv'] = object.full_text.content
         solr_doc[Solrizer.solr_name('file_size', STORED_INDEXED_INTEGER)] = object.content.size.to_i
         solr_doc[Solrizer.solr_name('mime_type', :symbol)] = object.mime_type
         # Index the Fedora-generated SHA1 digest to create a linkage
