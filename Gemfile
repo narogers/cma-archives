@@ -42,9 +42,6 @@ group :development, :test do
   gem 'capistrano-rails'
   gem 'capistrano-passenger', '~> 0.2'
   gem 'highline'
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
 end
 
 gem 'sufia', '~> 6.6'
@@ -67,6 +64,8 @@ gem 'devise_ldap_authenticatable'
 
 group :development do
   gem 'any_login'
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
 end
 
 group :test do 

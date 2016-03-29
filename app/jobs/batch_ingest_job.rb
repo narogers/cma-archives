@@ -39,7 +39,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
    
 	  # Verify that the creator exists or default to the system's
 	  # batch account
-	  if (0 == User.where(login: @batch.creator).count)
+	  if (0 == User.where(login: @batch.creator.first).count)
 	    @batch.creator = [User.batchuser.login]
 	  end
 	  @batch.save
