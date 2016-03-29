@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.6'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'mysql2', '~> 0.3.13', group: :production
@@ -47,7 +47,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 end
 
-gem 'sufia', '~> 6.5'
+gem 'sufia', '~> 6.6'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 
 #gem 'browse-everything', github: 'narogers/browse-everything'
@@ -55,7 +55,7 @@ gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 # continues. This code has the RAW fix merged into the main development
 # branch
 gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: 'cc031e7'
-gem 'active-fedora', '~> 9.7'
+gem 'active-fedora', '9.10.4'
 
 # Once Sufia's references are updated use v2.0 instead
 #gem 'hydra-derivatives', '~> 2.0'
