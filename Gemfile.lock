@@ -171,6 +171,7 @@ GEM
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.1)
     daemons (1.2.3)
+    dalli (2.7.6)
     database_cleaner (1.5.1)
     debug_inspector (0.0.2)
     deprecation (0.2.2)
@@ -358,6 +359,7 @@ GEM
     memoist (0.14.0)
     method_source (0.8.2)
     mime-types (2.99.1)
+    mime-types-data (3.2016.0221)
     mimemagic (0.3.1)
     mini_exiftool (2.5.1)
     mini_magick (4.5.1)
@@ -700,6 +702,7 @@ DEPENDENCIES
   capistrano-rails
   capybara
   coffee-rails (~> 4.1.0)
+  dalli
   database_cleaner
   devise
   devise-guests (~> 0.3)
