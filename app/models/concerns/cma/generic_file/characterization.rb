@@ -5,6 +5,7 @@ module CMA
   module GenericFile
     module Characterization
       def characterize
+        Rails.logger.info "[CHARACTERIZE] Processing #{self.id}"
         metadata = CMA::CharacterizationService.characterize(content)
         characterization.ng_xml = metadata if metadata.present?
         append_metadata
