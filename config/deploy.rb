@@ -63,6 +63,8 @@ namespace :deploy do
     end
   end
 
-  after :clear_cache, 'resque:pool:restart'
+  # Enable once the bug fix below is merged into an official
+  # release (https://github.com/capistrano/capistrano/commit/5fcf3da44424975e098a4fe860fe961c0102e22d)
+  #after :clear_cache, 'resque:pool:restart'
 end
 
