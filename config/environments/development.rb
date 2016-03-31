@@ -46,9 +46,10 @@ Rails.application.configure do
   # Reroute STDERR to a log file in the same directory for easier
   # troubleshooting instead of having it swallowed by the Apache
   # logs
-  Deprecation.default_deprecation_behavior = :log
+  Deprecation.default_deprecation_behavior = :silence
 
   # Suppress whiny output from the web console
   config.web_console.whiny_requests = false
   config.web_console.whitelisted_ips = "192.168.56.1"
 end
+
