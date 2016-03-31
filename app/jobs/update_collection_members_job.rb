@@ -90,6 +90,6 @@ class UpdateCollectionMembersJob < ActiveFedoraIdBasedJob
   end
 
   def log_message(message, level = Logger::INFO)
-    Resque.logger.log(level, "[BATCH UPDATE] #{message}")
+    Rails.logger.log(level, "[BATCH UPDATE] #{message}")
   end
 end

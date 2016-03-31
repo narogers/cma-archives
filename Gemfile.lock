@@ -8,6 +8,15 @@ GIT
       activesupport (>= 3.0.0)
 
 GIT
+  remote: git://github.com/nevans/resque-pool.git
+  revision: 0878ccf4e5e9332236dd87ce44b5d43df597f28d
+  branch: master
+  specs:
+    resque-pool (0.7.0.dev)
+      rake
+      resque (~> 1.22)
+
+GIT
   remote: git://github.com/projecthydra/hydra-derivatives.git
   revision: cc031e739474a929a56a85e6e62af33c5c74cc99
   ref: cc031e7
@@ -516,9 +525,6 @@ GEM
       resque (~> 1.10)
     resque-logger (0.2.0)
       resque
-    resque-pool (0.6.0)
-      rake
-      resque (~> 1.22)
     resque-status (0.5.0)
       resque (~> 1.19)
     retriable (1.4.1)
@@ -722,6 +728,7 @@ DEPENDENCIES
   rails (= 4.2.6)
   resque-dynamic-queues
   resque-logger
+  resque-pool!
   resque-status
   rsolr (~> 1.0.6)
   rspec-rails

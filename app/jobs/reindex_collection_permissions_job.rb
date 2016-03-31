@@ -11,7 +11,7 @@ class ReindexCollectionPermissionsJob
     # Collection.find_each is marginally faster than the alternatives for
     # now and possibly less memory intensive
     Collection.find_each do |coll|
-      Resque.logger.info "[PERMISSIONS] Updating #{coll.title} (#{coll.id})"
+      Rails.logger.info "[PERMISSIONS] Updating #{coll.title} (#{coll.id})"
       coll.save
     end 
   end

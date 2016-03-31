@@ -14,7 +14,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	
     def run
 	  if !File.exists?(batch_file) then
-		Resque.logger.info '[BATCH] Warning: unable to locate a manifest file'
+		Rails.logger.info '[BATCH] Warning: unable to locate a manifest file'
 		raise CMA::Exceptions::FileNotFoundError.new "Could not resolve #{batch_file} to a valid path"  
 	  end
 
@@ -66,7 +66,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       parent_title = parent_title.titleize
       parent_collection = find_collection(parent_title)
       if parent_collection.nil?
-        Resque.logger.warn("[BATCH] Could not locate #{parent_title}")
+        Rails.logger.warn("[BATCH] Could not locate #{parent_title}")
       else
         @collection.collections += [parent_collection]
       end
@@ -93,16 +93,16 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	      gf = apply_default_acls(gf)
 	      gf.save
 	 	
-          Resque.logger.info "[BATCH] Ingesting #{filename} into #{@batch.title.first}"
+          Rails.logger.info "[BATCH] Ingesting #{filename} into #{@batch.title.first}"
 	      Sufia.queue.push(ImportUrlJob.new(gf.id))
 	    else
-          Resque.logger.info "[BATCH] Skipping existing file #{filename}" 
+          Rails.logger.info "[BATCH] Skipping existing file #{filename}" 
         end
       end
 	end
 
 	def create_collection(title)
-		Resque.logger.info "[BATCH] Creating a new collection - #{title}"
+		Rails.logger.info "[BATCH] Creating a new collection - #{title}"
 		collection = Collection.new(title: title)
 		collection = apply_default_acls(collection)
 		collection.save
@@ -139,7 +139,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     def apply_metadata_properties(resource, fields, values)
       values.each_with_index do |value, i|
         if value.blank?
-          Resque.logger.warn "[BATCH] Could not process empty field #{fields[i]}"
+          Rails.logger.warn "[BATCH] Could not process empty field #{fields[i]}"
           next
         end
 

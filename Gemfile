@@ -77,6 +77,10 @@ group :test do
 end
 
 # Enhance background job support and logging of jobs
+#
+# Try using Resque Pool 0.7.0 to see if the ability to hotswap pools simplifies
+# management at all
+gem 'resque-pool', github: "nevans/resque-pool", branch: "master"
 gem 'resque-status' 
 gem 'resque-dynamic-queues'
 gem 'resque-logger'

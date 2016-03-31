@@ -11,7 +11,7 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
   
   def run
     # Set two escape clauses before you go any further
-    Resque.logger.info "[EXIF] Extracting EXIF headers for #{generic_file.id}"
+    Rails.logger.info "[EXIF] Extracting EXIF headers for #{generic_file.id}"
     return unless generic_file.content.has_content?
     return unless generic_file.image?
 
@@ -48,7 +48,7 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     		# be mapped accordingly. We need to determine if it is
     		# multivalued and push an array instead of a scalar value
     		# to prevent errors.
-    		Resque.logger.info '[EXIF] Processing ' + field.to_s
+    		Rails.logger.info '[EXIF] Processing ' + field.to_s
 
     		if (generic_file[field].is_a? Array)
               if metadata.is_a? Array
