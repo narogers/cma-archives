@@ -6,8 +6,10 @@ namespace :resque do
     task :start do
       on roles(:workers) do
         within app_path do
-          execute :bundle, :exec, "resque-pool", "--daemon", "--hot-swap",
-            "--environment #{fetch(:rails_env)}", "--term-graceful"
+          with run_at_exit_hooks: 1 do
+            execute :bundle, :exec, "resque-pool", "--daemon", "--hot-swap",
+              "--environment #{fetch(:rails_env)}", "--term-graceful"
+          end
         end
       end
     end
