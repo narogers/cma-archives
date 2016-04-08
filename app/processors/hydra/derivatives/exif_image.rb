@@ -31,7 +31,7 @@ module Hydra::Derivatives
         # which is why it is currently the default
         tmp_thumbnail_path = tmp_master.path.sub extension, ".thumb.jpg"
         if !(File.exists? tmp_thumbnail_path)
-          tmp_thumbnail_path.sub ".jpg", ".ppm"
+          tmp_thumbnail_path.sub! ".jpg", ".ppm"
         end
 
         xfrm = MiniMagick::Image.open tmp_thumbnail_path
