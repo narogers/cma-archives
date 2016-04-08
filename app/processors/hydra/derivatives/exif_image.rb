@@ -26,7 +26,14 @@ module Hydra::Derivatives
       # blown image instead
       if (system("dcraw", "-e", tmp_master.path))
         Rails.logger.info "[DERIVATIVES] Extracted thumbnail image for #{object.id}"
+        # The path can be either .jpg or .ppm so if it doesn't exist we just
+        # switch to the other extension. JPEG is more common with RAW files
+        # which is why it is currently the default
         tmp_thumbnail_path = tmp_master.path.sub extension, ".thumb.jpg"
+        if !(File.exists? tmp_thumbnail_path)
+          tmp_thumbnail_path.sub ".jpg", ".ppm"
+        end
+
         xfrm = MiniMagick::Image.open tmp_thumbnail_path
         FileUtils.rm tmp_thumbnail_path
       else
