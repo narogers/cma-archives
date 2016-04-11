@@ -93,7 +93,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	      gf = apply_default_acls(gf)
 	      gf.save
 	 	
-          Rails.logger.info "[BATCH] Ingesting #{filename} into #{@batch.title.first}"
+          Rails.logger.info "[BATCH] Ingesting #{gf.id} (#{filename}) into #{@batch.title.first}"
 	      Sufia.queue.push(ImportUrlJob.new(gf.id))
 	    else
           Rails.logger.info "[BATCH] Skipping existing file #{filename}" 

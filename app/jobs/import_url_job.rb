@@ -29,7 +29,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     #
     # This is not perfect but it will work with 99% of the cases that
     # are present
-    Rails.logger.info "[IMPORT URL] Preparing file for processing"
+    Rails.logger.info "[IMPORT URL] Preparing #{generic_file.import_url} for processing"
     mime_types = MIME::Types.of(uri.basename)
     generic_file.mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
     tmp_file = [id] 
