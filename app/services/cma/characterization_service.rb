@@ -22,7 +22,6 @@ module CMA
         end
 
         if 200 == response.code
-          #binding.pry
           # Kludge because the information that comes back from FITS Servlet is not
           # actually indicated to be UTF-8. Need to open an issue with the upstream
           # repository after which this code can be simplified
