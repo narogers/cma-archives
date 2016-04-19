@@ -8,6 +8,24 @@ GIT
       activesupport (>= 3.0.0)
 
 GIT
+  remote: git://github.com/narogers/active_fedora.git
+  revision: 38b5241865c20c19d1a1c959d22ef6755a6b1657
+  branch: faster_rdf
+  specs:
+    active-fedora (9.11.0.alpha)
+      active-triples (~> 0.7.1)
+      activemodel (>= 4.2, < 6)
+      activesupport (>= 4.2.4, < 6)
+      deprecation
+      ldp (~> 0.5.0)
+      linkeddata
+      nom-xml (>= 0.5.1)
+      om (~> 3.1)
+      rdf-rdfxml (~> 1.1)
+      rsolr (~> 1.0, >= 1.0.10)
+      solrizer (~> 3.4)
+
+GIT
   remote: git://github.com/nevans/resque-pool.git
   revision: 0878ccf4e5e9332236dd87ce44b5d43df597f28d
   branch: master
@@ -28,22 +46,6 @@ GIT
       hydra-file_characterization (~> 0.3)
       mime-types (< 3)
       mini_magick (>= 3.2, < 5)
-
-PATH
-  remote: /home/nrogers/active_fedora
-  specs:
-    active-fedora (9.11.0.alpha)
-      active-triples (~> 0.7.1)
-      activemodel (>= 4.2, < 6)
-      activesupport (>= 4.2.4, < 6)
-      deprecation
-      ldp (~> 0.5.0)
-      linkeddata
-      nom-xml (>= 0.5.1)
-      om (~> 3.1)
-      rdf-rdfxml (~> 1.1)
-      rsolr (~> 1.0, >= 1.0.10)
-      solrizer (~> 3.4)
 
 GEM
   remote: https://rubygems.org/
