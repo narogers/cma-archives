@@ -35,8 +35,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-
+  gem 'pry-byebug'
   gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
@@ -52,7 +51,9 @@ gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 # continues. This code has the RAW fix merged into the main development
 # branch
 gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: 'cc031e7'
-gem 'active-fedora', '9.10.4'
+#gem 'active-fedora', '9.10.4'
+#gem 'active-fedora', github: 'narogers/active_fedora', branch: 'faster_rdf'
+gem 'active-fedora', path: "/home/nrogers/active_fedora"
 
 # Once Sufia's references are updated use v2.0 instead
 #gem 'hydra-derivatives', '~> 2.0'
@@ -66,6 +67,7 @@ group :development do
   gem 'any_login'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+  gem 'ruby-prof'
 end
 
 group :test do 
@@ -89,7 +91,6 @@ gem 'resque-logger'
 # unless there are major problems
 gem 'pry'
 gem 'pry-rails'
-gem 'pry-byebug'
 
 gem 'rsolr', '~> 1.0.6'
 
