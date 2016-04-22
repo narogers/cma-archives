@@ -68,7 +68,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       if parent_collection.nil?
         Rails.logger.warn("[BATCH] Could not locate #{parent_title}")
       else
-        @collection.collections += [parent_collection]
+        @collection.collection_ids += [parent_collection.id]
       end
       @collection.save
 	end
@@ -86,7 +86,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
         unless @collection.contains?(label: filename)
 	      gf = GenericFile.new(
             import_url: "file://#{@root_directory}/#{filename}",
-	        collections: [@collection],
+	        collection_ids: [@collection.id],
             label: filename
 	      )
           gf = apply_metadata_properties(gf, fields, resource)
