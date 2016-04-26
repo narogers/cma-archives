@@ -116,7 +116,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     def find_collection(title)
       collection_ids = ActiveFedora::SolrService.query("primary_title_ssi:\"#{title}\"", {fq: "has_model_ssim:Collection", fl: "id"})
 
-      (0 == collection_ids.count) ? Collection.find(collection_ids.first["id"]) : nil
+      (collection_ids.count > 0) ? Collection.find(collection_ids.first["id"]) : nil
     end
 
     def find_or_create_collection(title)
