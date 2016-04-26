@@ -114,13 +114,9 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	# There may be a better way of doing this but it will at least get the 
 	# process bootstrapped until time permits an incremental improvement
     def find_collection(title)
-      collections = Collection.where(["title_tesim: \"#{title}\""])
-	  collections.each do |c|
-		return c if c.title.eql?(title)
-	  end
+      collection_ids = ActiveFedora::SolrService.query("primary_title_ssi:\"#{title}\"", {fq: "has_model_ssim:Collection", fl: "id"})
 
-      # In case of emergency break glass and return nil
-      nil
+      (0 == collection_ids.count) ? Collection.find(collection_ids.first["id"]) : nil
     end
 
     def find_or_create_collection(title)
