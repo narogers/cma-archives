@@ -8,7 +8,6 @@ module CMA
         solr_doc[Solrizer.solr_name('file_format')] = object.file_format
         solr_doc[Solrizer.solr_name('file_format', :facetable)] = object.file_format
         # Enable if full text indexing is ever required
-        #solr_doc['all_text_timv'] = object.full_text.content
         solr_doc[Solrizer.solr_name('file_size', STORED_INDEXED_INTEGER)] = object.content.size.to_i
         solr_doc[Solrizer.solr_name('mime_type', :symbol)] = object.mime_type
         # Index the Fedora-generated SHA1 digest to create a linkage
@@ -21,6 +20,9 @@ module CMA
         solr_doc["preview_uri_ssm"] = object.access.uri.to_s
         # Sorting fields cannot be multivalued
         solr_doc[Solrizer.solr_name("primary_title", :stored_sortable)] = object.title.first unless object.title.empty?
+        # TODO: Figure out how to reliably cast to a date for better
+        #       sorting
+        solr_doc[Solrizer.solr_name("date_created", :stored_sortable)] = object.date_created.first unless object.date_created.blank?
 
         object.index_collection_ids(solr_doc) unless Sufia.config.collection_facet.nil?
       end

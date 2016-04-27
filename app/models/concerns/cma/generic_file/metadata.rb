@@ -4,6 +4,7 @@ module CMA
   module GenericFile
     module Metadata
       extend ActiveSupport::Concern
+      include Sufia::GenericFile::Metadata
 
       included do
         property :spatial, predicate: ::RDF::DC.spatial do |index|
