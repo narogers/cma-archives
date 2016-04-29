@@ -2,31 +2,29 @@
 <%= render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
 
 <div itemscope itemtype="http://schema.org/CollectionPage" class="row">
-    <div class="col-sm-10 pull-right">
-      <header>
-        <h1><%= @presenter.title %></h1>
-        <p class="collection_description"><%= @presenter.description %></p>
-      </header>
-    </div>
-    <div class="col-sm-2">
-      <%= render partial: 'collections/media_display', locals: { generic_file: @collection } %>
-    </div>
+  <div class="col-sm-2">
+    <%= render partial: 'collections/media_display', locals: { generic_file: @collection } %>
   </div>
+  <div class="col-sm-10">
+    <header>
+      <h1><%= @presenter.title %></h1>
+      <p class="collection_description"><%= @presenter.description %></p>
+    </header>
+    <h2 id="member_details"><%= @presenter.summary %></h2>
+  </div>
+</div>
 
 <% if has_collection_search_parameters? %>
-    <% header_title = "Search Results" %>
-<% else %>
-    <% header_title = @presenter.summary %>
+    Search Results
 <% end %>
 
 <div class="row">
   <div class="col-xs-12">
-    <h2 class="col-xs-6 col-md-6 col-lg-6"><%= header_title %></h2>
+    <%= render 'sort_and_per_page' %>
     <%= render "search_form" %>
   </div>
 </div>
 
-<%= render 'sort_and_per_page' %>
 
 <%= render_document_index @member_docs %>
 

@@ -1,7 +1,7 @@
-<div class="col-xs-12 col-sm-6 col-md-6" %>
+<div class="col-xs-12 col-md-4" %>
   <% if @response.total_pages > 1 %>
     <div class="pager">
-      <%= paginate @response, window: 2, route_set: collections, theme: 'bootstrap3' %>
+      <% paginate @response, window: 2, route_set: collections, theme: 'bootstrap3' %>
     </div><!-- /pager -->
   <% end %>
 </div>

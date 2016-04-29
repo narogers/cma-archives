@@ -18,8 +18,13 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|          
+    config.per_page = [25, 50, 100, 250]
+
     config.view.gallery.partials = [:gallery_header, :gallery_details]
     config.view.gallery.icon_class = 'glyphicon-th-large'
+
+    config.add_results_collection_tool :sort_widget
+    config.add_results_collection_tool :view_type_group
 
     #config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     #config.show.partials.insert(1, :openseadragon)
@@ -30,14 +35,14 @@ class CatalogController < ApplicationController
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
-      sort: "primary_title_ssi ASC",
+      sort: "primary_title_ssi DESC",
       qt: "search",
       rows: 50
     }
 
     # Specify which field to use in the tag cloud on the homepage.
     # To disable the tag cloud, comment out this line.
-    config.tag_cloud_field_name = Solrizer.solr_name("tag", :facetable)
+    #config.tag_cloud_field_name = Solrizer.solr_name("tag", :facetable)
 
     # solr field configuration for document/show views
     config.index.title_field = solr_name("title", :stored_searchable)
@@ -46,9 +51,9 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
-    config.add_facet_field solr_name("creator", :facetable), label: "Creator", limit: 5
-    config.add_facet_field solr_name("category", :facetable), label: "Category", limit: 5
+    #config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
+    #config.add_facet_field solr_name("creator", :facetable), label: "Creator", limit: 5
+    #config.add_facet_field solr_name("category", :facetable), label: "Category", limit: 5
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
     config.add_facet_field solr_name("photographer", :facetable), label: "Photographer", limit: 5
@@ -66,7 +71,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description'
     #config.add_index_field solr_name("tag", :stored_searchable), label: "Keyword", itemprop: 'keywords'
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about'
-    config.add_index_field solr_name("category", :stored_searchable), label: "Category", itemprop: 'about'
+    #config.add_index_field solr_name("category", :stored_searchable), label: "Category", itemprop: 'about'
     config.add_index_field solr_name("creator", :stored_searchable), label: "Creator", itemprop: 'creator'
     config.add_index_field solr_name("contributor", :stored_searchable), label: "Contributor", itemprop: 'contributor'
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher'
@@ -166,7 +171,7 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('description') do |field|
-      field.label = "Abstract or Summary"
+      field.label = "Description"
       field.solr_parameters = {
         :"spellcheck.dictionary" => "description"
       }
@@ -177,16 +182,16 @@ class CatalogController < ApplicationController
       }
     end
 
-    config.add_search_field('publisher') do |field|
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "publisher"
-      }
-      solr_name = solr_name("publisher", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
+    #config.add_search_field('publisher') do |field|
+    #  field.solr_parameters = {
+    #    :"spellcheck.dictionary" => "publisher"
+    #  }
+    #  solr_name = solr_name("publisher", :stored_searchable)
+    #  field.solr_local_parameters = {
+    #    qf: solr_name,
+    #    pf: solr_name
+    #  }
+    #end
 
     config.add_search_field('date_created') do |field|
       field.solr_parameters = {
@@ -210,16 +215,16 @@ class CatalogController < ApplicationController
       }
     end
 
-    config.add_search_field('language') do |field|
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "language"
-      }
-      solr_name = solr_name("language", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
+    #config.add_search_field('language') do |field|
+    #  field.solr_parameters = {
+    #    :"spellcheck.dictionary" => "language"
+    #  }
+    #  solr_name = solr_name("language", :stored_searchable)
+    #  field.solr_local_parameters = {
+    #    qf: solr_name,
+    #    pf: solr_name
+    #  }
+    #end
 
     config.add_search_field('resource_type') do |field|
       field.solr_parameters = {
@@ -279,13 +284,13 @@ class CatalogController < ApplicationController
     #  }
     #end
 
-    config.add_search_field('depositor') do |field|
-      solr_name = solr_name("depositor", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
+    #config.add_search_field('depositor') do |field|
+    #  solr_name = solr_name("depositor", :stored_searchable)
+    #  field.solr_local_parameters = {
+    #    qf: solr_name,
+    #    pf: solr_name
+    #  }
+    #end
 
     config.add_search_field('rights') do |field|
       solr_name = solr_name("rights", :stored_searchable)
