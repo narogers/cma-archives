@@ -1,0 +1,8 @@
+        <div id="per_page-dropdown" class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_per_page %> per page <i class="fa fa-caret-down"></i></button>
+          <ul class="dropdown-menu">
+            <% per_page_options_for_select.each do |(label, value)| %>
+              <li><%= link_to "#{value} per page", collections.collection_path(@collection, per_page: value) %></li>
+            <% end %>
+          </ul>
+        </div>
