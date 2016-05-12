@@ -28,7 +28,7 @@ module CMA
           Rails.logger.info "[CHARACTERIZE] Characterization complete for #{uri}?file=#{f.path}"
           return response.body.force_encoding("iso-8859-1").encode("utf-8")
         else
-          raise UnexpectedServerResponse("Received HTTP status code #{response.code} from #{uri}")
+          raise UnexpectedServerResponse.new("Received HTTP status code #{response.code} from #{uri}")
         end
       end
     end

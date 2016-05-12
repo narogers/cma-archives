@@ -8,9 +8,12 @@ gem 'dotenv-rails'
 gem 'rails', '4.2.6'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-gem 'mysql2', '~> 0.3.13', group: :production
-
+group :development, :test do
+  gem 'sqlite3'
+end
+group :staging, :production do
+  gem 'mysql2', '~> 0.4'
+end
 # Use Font Awesome icon set
 gem 'font-awesome-rails'
 # Use SCSS for stylesheets

@@ -68,9 +68,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       if parent_collection.nil?
         Rails.logger.warn("[BATCH] Could not locate #{parent_title}")
       else
-        @collection.collection_ids += [parent_collection.id]
+        @collection.collections += [parent_collection]
       end
-      @collection.save
 	end
 
 	def process_files(metadata)
@@ -81,23 +80,30 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       
 	  # The rest of the file should be a list of files and associated
 	  # properties
+      resources = []
       metadata.each do |resource|
         filename = resource.shift
         unless @collection.contains?(label: filename)
 	      gf = GenericFile.new(
             import_url: "file://#{@root_directory}/#{filename}",
-	        collection_ids: [@collection.id],
             label: filename
 	      )
           gf = apply_metadata_properties(gf, fields, resource)
 	      gf = apply_default_acls(gf)
 	      gf.save
-	 	
+	 	  resources << gf
+
           Rails.logger.info "[BATCH] Ingesting #{gf.id} (#{filename}) into #{@batch.title.first}"
-	      Sufia.queue.push(ImportUrlJob.new(gf.id))
 	    else
           Rails.logger.info "[BATCH] Skipping existing file #{filename}" 
         end
+      end
+      # Adding the records in a batch like this is WAY faster because it does
+      # not try to reload the members relationship n times
+      Rails.logger.info "[BATCH] Updating collection relationships for #{@collection.title} (#{@collection.id})"
+      @collection.members += resources
+      resources.each do |gf|
+        Sufia.queue.push(ImportUrlJob.new(gf.id))
       end
 	end
 

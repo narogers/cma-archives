@@ -27,7 +27,7 @@ class Collection < Sufia::Collection
     # Done this way because of a bug that pops up when the relationship has
     # yet to be defined. Otherwise the caller will get a nasty surprise
     if ([] == self.collections)
-      # No OP
+     # No OP
     end
       
     unless self.collections.blank? then
