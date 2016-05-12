@@ -8,9 +8,7 @@ gem 'dotenv-rails'
 gem 'rails', '4.2.6'
 
 # Use sqlite3 as the database for Active Record
-group :development, :test do
-  gem 'sqlite3'
-end
+gem 'sqlite3'
 group :staging, :production do
   gem 'mysql2', '~> 0.4'
 end
