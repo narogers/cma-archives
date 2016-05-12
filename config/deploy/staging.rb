@@ -17,4 +17,4 @@ server 'appdev01.clevelandart.org', user: 'railsapps', roles: %w{app db web work
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
-fetch(:default_env).merge!(rails_env: :production)
+fetch(:default_env).merge!(rails_env: :staging)
