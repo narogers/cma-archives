@@ -34,7 +34,7 @@ RSpec.describe BatchIngestJob do
       job = BatchIngestJob.new "spec/fixtures/batch.csv"
       job.run
       
-      ids = Collection.find_with_conditions("title_tesim: \"Test Batch Ingest\"")
+      ids = Collection.search_with_conditions("title_tesim: \"Test Batch Ingest\"")
       coll = Collection.load_instance_from_solr(ids.first["id"])
 
       expect(coll.title).to eq "Test Batch Ingest"
@@ -52,7 +52,7 @@ RSpec.describe BatchIngestJob do
 
       job = BatchIngestJob.new "spec/fixtures/batch.csv"
       job.run  
-      ids = Collection.find_with_conditions("title_tesim: \"Test Batch Ingest\"")     
+      ids = Collection.search_with_conditions("title_tesim: \"Test Batch Ingest\"")     
       coll = Collection.load_instance_from_solr(ids.first["id"]) 
 
       expect(ids.count).to be 1

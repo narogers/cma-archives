@@ -1,6 +1,6 @@
 <div id="sortAndPerPage" class="row">
   <div class="col-xs-12 col-md-6">
-    <div class="btn-group" role="group">
+    <div class="btn-group" id="per_page-dropdown" role="group">
       <%= render "per_page_widget" %>
       <%= paginate @response, 
           page_entries_info: page_entries_info(@response),

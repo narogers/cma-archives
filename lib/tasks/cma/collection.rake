@@ -38,8 +38,7 @@ namespace :cma do
                   puts "WARNING: Could not locate #{id} in Fedora"
                   next
                end
-               extraction_job = ExtractExifMetadataJob.new(id)
-               extraction_job.run
+               ExtractExifMetadataJob.new(id).run
           end
        end
 
@@ -47,7 +46,7 @@ namespace :cma do
        task :normalize => :environment do
            i = 1;
            Collection.find_each do |c|
-             print "#{i} / #{Collection.count} - Normalizing #{c.title}\n"
+             print "#{i} / #{Collection.count.freeze} - Normalizing #{c.title}\n"
              c.normalize_title
              c.save
              i += 1
@@ -71,38 +70,8 @@ namespace :cma do
        task :install_featured => :environment do
           # TODO: Make the CSV path configurable instead of a hard coded
           #       setting
-          default_collections_source = "config/default_collections.yml"
-          default_collections = YAML.load_file(default_collections_source)
-
-          default_collections.each do |coll|
-            # Not efficient at all but gets the job done
-            # Given how many times it gets used could be refactored into the
-            # collection model
-            next if coll["name"].empty?
-
-            query = "title_tesim:\"#{coll["name"]}\""
-            result_count = ActiveFedora::SolrService.count(query)
-
-            case result_count
-            when 0
-              print "Processing #{coll["name"]}\n"
-              parent_collection = Collection.new(title: coll["name"],
-                description: coll["description"],
-                depositor: "admin",
-                edit_users: [:admin],
-                edit_groups: [:admin],
-                read_groups: [coll["groups"]])
-
-              if parent_collection.save
-                FeaturedCollection.create(collection_id: parent_collection.id)
-                print "Collection has been created as #{parent_collection.id}\n"
-              else
-                print "ERROR: #{parent_collection.errors.to_s}\n"
-              end
-            else
-              print "WARNING: #{coll["name"]} already exists\n"
-            end
-          end
+          source = "config/default_collections.yml"        
+          InstallFeaturedCollectionsJob.new(source).run
         end
     end
 end

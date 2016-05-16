@@ -1,6 +1,6 @@
 set :stage, :staging
 set :branch, :master
-set :deploy_to, "/var/www/sites/archives.stage/cma-archives"
+set :deploy_to, "/var/www/sites/archives/rails/cma-archives/"
 set :log_level, :debug
 
 
