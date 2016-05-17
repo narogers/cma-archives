@@ -74,6 +74,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails', '~> 4'
+  gem 'faker'
   gem 'rspec-rails'
   gem 'simplecov', require: false
 end

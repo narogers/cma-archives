@@ -102,6 +102,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       # not try to reload the members relationship n times
       Rails.logger.info "[BATCH] Updating collection relationships for #{@collection.title} (#{@collection.id})"
       @collection.members += resources
+      @collection.save
       resources.each do |gf|
         Sufia.queue.push(ImportUrlJob.new(gf.id))
       end

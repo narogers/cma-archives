@@ -47,12 +47,12 @@ RSpec.describe BatchIngestJob do
       allow(ImportUrlJob).to receive(:new)
       allow(Sufia.queue).to receive(:push)
 
-      count = Collection.count(conditions: "title_tesim: \"Test Batch Ingest\"") 
+      count = Collection.count(conditions: "primary_title_ssi: \"Test Batch Ingest\"") 
       expect(count).to be 0
 
       job = BatchIngestJob.new "spec/fixtures/batch.csv"
       job.run  
-      ids = Collection.search_with_conditions("title_tesim: \"Test Batch Ingest\"")     
+      ids = Collection.search_with_conditions("primary_title_ssi: \"Test Batch Ingest\"")     
       coll = Collection.load_instance_from_solr(ids.first["id"]) 
 
       expect(ids.count).to be 1
