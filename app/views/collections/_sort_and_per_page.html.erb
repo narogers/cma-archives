@@ -8,6 +8,6 @@
        <%= render "sort_widget" %>
 
        <%= render 'paginate' %>
-        <% console %>
+        <% console if Rails.env == "development" %>
      </div>
 </div>
