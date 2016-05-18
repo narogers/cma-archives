@@ -3,6 +3,8 @@ set :branch, :master
 set :deploy_to, "/var/www/sites/archives/rails/cma-archives"
 set :log_level, :info
 
+set :passenger_environment_variables, {path: "/opt/passenger/passenger/bin:$PATH", passenger_instance_registry_dir: "/var/passenger"}
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
