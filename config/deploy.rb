@@ -1,10 +1,6 @@
 # config valid only for current version of Capistrano
 lock '3.4.1'
 
-set :stages, ["staging", "production"]
-set :default_stage, "staging"
-set :stage_dir, "config/deploy"
-
 set :application, 'cma-archives'
 set :app_path, "#{deploy_to}/current"
 set :scm, :git

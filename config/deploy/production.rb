@@ -1,8 +1,7 @@
-set :stage, :production
+set :rails_env, :production
 set :branch, :master
 set :deploy_to, "/var/www/sites/archives/rails/cma-archives"
 set :log_level, :info
-
 
 # server-based syntax
 # ======================
