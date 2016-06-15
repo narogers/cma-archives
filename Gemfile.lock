@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/nevans/resque-pool.git
-  revision: 0878ccf4e5e9332236dd87ce44b5d43df597f28d
+  revision: ec81c92df41ecdbdecaea55863964baf3e9e03ad
   branch: master
   specs:
     resque-pool (0.7.0.dev)
@@ -103,7 +103,7 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (6.3.6)
+    autoprefixer-rails (6.3.6.1)
       execjs
     bcp47 (0.3.3)
       i18n
@@ -143,7 +143,7 @@ GEM
       skydrive
     builder (3.2.2)
     byebug (8.2.5)
-    cancancan (1.13.1)
+    cancancan (1.14.0)
     capistrano (3.4.1)
       i18n
       rake (>= 10.0.0)
@@ -186,7 +186,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.2.2)
       activesupport
-    devise (3.5.9)
+    devise (3.5.10)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -224,7 +224,7 @@ GEM
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.10)
-    font-awesome-rails (4.6.2.0)
+    font-awesome-rails (4.6.3.0)
       railties (>= 3.2, < 5.1)
     foreigner (1.7.4)
       activerecord (>= 3.0.0)
@@ -314,7 +314,7 @@ GEM
     json-ld (1.99.2)
       multi_json (~> 1.11)
       rdf (~> 1.99)
-    json-schema (2.6.1)
+    json-schema (2.6.2)
       addressable (~> 2.3.8)
     jwt (1.5.4)
     launchy (2.4.3)
@@ -374,9 +374,9 @@ GEM
     mini_exiftool (2.7.2)
     mini_magick (4.5.1)
     mini_portile2 (2.0.0)
-    minitest (5.8.4)
+    minitest (5.9.0)
     mono_logger (1.1.0)
-    multi_json (1.12.0)
+    multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.4.4)
@@ -512,8 +512,8 @@ GEM
     redis (3.3.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
-    redlock (0.1.5)
-      redis (~> 3, >= 3.0.5)
+    redlock (0.1.6)
+      redis (~> 3, >= 3.3.0)
     ref (2.0.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
@@ -669,7 +669,7 @@ GEM
       ref
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (2.0.3)
+    tilt (2.0.4)
     tinymce-rails (4.3.12)
       railties (>= 3.1.1)
     tinymce-rails-imageupload (4.0.16.beta)
