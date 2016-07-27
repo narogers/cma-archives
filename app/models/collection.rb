@@ -41,19 +41,21 @@ class Collection < Sufia::Collection
   # to see the collection contains an object that matches all of the criteria
   #
   # field: A hash containing a Solr field (key) and the value to test
-  def contains?(fields)
+  def find_children_by(fields)
     queries = []
     fields.each_pair do |k, v|
       queries << "#{Solrizer.solr_name(k)}:\"#{v}\""
     end 
     query = queries.join(" ")
     limits = {
+      fl: "id",
       fq: ["has_model_ssim:GenericFile",
            "{!join from=hasCollectionMember_ssim to=id}id:#{self.id}"],
-      rows: 1
     }
-    file_count = ActiveFedora::SolrService.count(query, limits)
+    ids = ActiveFedora::SolrService.query(query, limits)
+    ids = ids.collect { |res| res["id"] }
 
-    return file_count > 0
+    # Now return the set
+    ids    
   end
 end

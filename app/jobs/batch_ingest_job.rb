@@ -80,10 +80,14 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       
 	  # The rest of the file should be a list of files and associated
 	  # properties
-      resources = []
+      new_resources = []
+      updated_resources = []
+
       metadata.each do |resource|
         filename = resource.shift
-        unless @collection.contains?(label: filename)
+        current_children_ids = @collection.find_children_by(label: filename)
+
+        if current_children_ids.empty?
 	      gf = GenericFile.new(
             import_url: "file://#{@root_directory}/#{filename}",
             label: filename
@@ -91,20 +95,29 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
           gf = apply_metadata_properties(gf, fields, resource)
 	      gf = apply_default_acls(gf)
 	      gf.save
-	 	  resources << gf
+	 	  resources << gf.id
 
           Rails.logger.info "[BATCH] Ingesting #{gf.id} (#{filename}) into #{@batch.title.first}"
 	    else
-          Rails.logger.info "[BATCH] Skipping existing file #{filename}" 
+          # Defer checksumming to the BatchIngestJob
+          gf_id = current_children_ids.first
+          if (is_updated?(gf_id, filename))
+            Rails.logger.info "[BATCH] Updating #{gf_id} (#{filename})"
+            updated_resources << gf_id
+          end
         end
       end
+
       # Adding the records in a batch like this is WAY faster because it does
       # not try to reload the members relationship n times
       Rails.logger.info "[BATCH] Updating collection relationships for #{@collection.title} (#{@collection.id})"
       @collection.members += resources
       @collection.save
-      resources.each do |gf|
-        Sufia.queue.push(ImportUrlJob.new(gf.id))
+      new_resources.each do |gf_id|
+        Sufia.queue.push(ImportUrlJob.new(gf_id))
+      end
+      updated_resources.each do |gf_id|
+        Sufia.queue.push(UpdateResourceJob.new(gf_id);
       end
 	end
 
