@@ -83,6 +83,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       new_resources = []
       updated_resources = []
 
+      Rails.logger.info "[BATCH] ...!"
+
       metadata.each do |resource|
         filename = resource.shift
         current_children_ids = @collection.find_children_by(label: filename)
@@ -101,9 +103,12 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	    else
           # Defer checksumming to the BatchIngestJob
           gf_id = current_children_ids.first
-          if (is_updated?(gf_id, filename))
+          fixity = Fixity.new(gf_id)
+          if (fixity.updated?)
             Rails.logger.info "[BATCH] Updating #{gf_id} (#{filename})"
             updated_resources << gf_id
+          else
+            Rails.logger.info "[BATCH] Skipping #{gf_id} (#{filename})"
           end
         end
       end
@@ -117,7 +122,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
         Sufia.queue.push(ImportUrlJob.new(gf_id))
       end
       updated_resources.each do |gf_id|
-        Sufia.queue.push(UpdateResourceJob.new(gf_id);
+        Sufia.queue.push(ImportUrlJob.new(gf_id))
       end
 	end
 

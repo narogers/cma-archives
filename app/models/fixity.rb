@@ -38,4 +38,8 @@ class Fixity
     (local[:algorithm] == remote[:algorithm]) &&
     (local[:checksum] == remote[:checksum])
   end
+
+  def updated?
+    !self.equal?
+  end
 end
