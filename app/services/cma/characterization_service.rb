@@ -2,7 +2,7 @@ module CMA
   class CharacterizationService
     def self.characterize content
       # TODO: Make these configurable
-      uri = "http://127.0.0.1:8888/fits/FitsService"
+      uri = "http://127.0.0.1:8888/fits/examine"
       timeout = 180
 
       # No point continuing if there is nothing to process
