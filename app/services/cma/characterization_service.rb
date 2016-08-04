@@ -16,7 +16,7 @@ module CMA
 
         begin
           response = HTTParty.get(uri, query: {file: f.path}, timeout: timeout)
-        rescue Net::Timeout => timeout_error
+        rescue Net::ReadTimeout => timeout_error
           Rails.logger.warn "[CHARACTERIZE] Could not connect to #{uri}?file=#{f.path} after waiting #{timeout} seconds"
             raise timeout_error
         end
