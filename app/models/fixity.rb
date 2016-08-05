@@ -8,16 +8,22 @@ class Fixity
 
   def remote
     if @remote_digest[:checksum].nil?
-      RDF::Reader.open(@remote_digest[:uri]) do |reader|
-        reader.each_statement do |triple|
-          if triple.predicate.eql? RDF::Vocab::PREMIS.hasMessageDigest
-            digest = triple.object.value
-            scheme, algorithm, checksum = digest.split(":")
+      begin
+        RDF::Reader.open(@remote_digest[:uri]) do |reader|
+          reader.each_statement do |triple|
+            if triple.predicate.eql? RDF::Vocab::PREMIS.hasMessageDigest
+              digest = triple.object.value
+              scheme, algorithm, checksum = digest.split(":")
 
-            @remote_digest[:algorithm] = algorithm
-            @remote_digest[:checksum] = checksum
+              @remote_digest[:algorithm] = algorithm
+              @remote_digest[:checksum] = checksum
+            end
           end
         end
+      rescue IOError
+        puts "ERROR: Could not retrieve fixity data from Fedora"
+        @remote_digest[:checksum] = false
+        @remote_digest[:algorithm] = nil
       end
     end
 
