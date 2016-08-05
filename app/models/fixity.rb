@@ -28,8 +28,14 @@ class Fixity
     @local_digest[:algorithm] ||= 'sha1'
     
     if @local_digest[:checksum].nil?
-      @local_digest[:checksum] = Digest::SHA1.file(@local_digest[:path])
-    end
+      if File.exists? @local_digest[:path]
+        @local_digest[:checksum] = Digest::SHA1.file(@local_digest[:path])
+      else
+        # If the file does not exist set checksum to false since you cannot
+        # calculate the SHA1 for a file that is not present
+        @local_digest[:checksum] = false
+      end
+   end
 
     @local_digest 
   end
