@@ -58,6 +58,7 @@ gem 'active-fedora', '~> 9'
 # Once Sufia's references are updated use v2.0 instead
 #gem 'hydra-derivatives', '~> 2.0'
 gem 'mini_exiftool'
+gem 'exiftool'
 
 gem 'devise'
 gem 'devise-guests', '~> 0.3'

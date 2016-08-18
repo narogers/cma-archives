@@ -114,10 +114,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
         end
       end
 
-      # Adding the records in a batch like this is WAY faster because it does
-      # not try to reload the members relationship n times
-      Rails.logger.info "[BATCH] Updating collection relationships for #{@collection.title} (#{@collection.id})"
-
       new_resources.each do |gf_id|
         Sufia.queue.push(ImportUrlJob.new(gf_id))
       end
