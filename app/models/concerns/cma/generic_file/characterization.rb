@@ -6,7 +6,10 @@ module CMA
     module Characterization
       def characterize
         Rails.logger.info "[CHARACTERIZE] Processing #{self.id}"
-        metadata = CMA::CharacterizationService.characterize(content)
+        # TODO: Remove hard coded arbitrary limit
+        metadata = content.size < (200 * 2**30) ?
+          CMA::CharacterizationService.characterize(content) :
+          content.extract_metadata
         characterization.ng_xml = metadata if metadata.present?
         append_metadata
         self.filename = [content.original_name]
