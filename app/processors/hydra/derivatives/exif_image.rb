@@ -6,6 +6,8 @@ module Hydra::Derivatives
 
     def create_resized_image destination_name, size, format, quality=nil
       create_image(destination_name, format, quality) do |xfrm|
+        # Shift colorspace to always be sRGB for the web
+        xfrm.colorspace("rgb")
         xfrm.thumbnail(size) if size.present?
         xfrm.strip
       end
@@ -20,7 +22,7 @@ module Hydra::Derivatives
       tmp_master = Tempfile.new([object.id, extension])
       tmp_master.binmode
       tmp_master.write(source_file.content)
-
+  
       xfrm = nil
       # Attempt to extract the thumbnail. If this fails then return the full
       # blown image instead
