@@ -35,13 +35,13 @@ class Fixity
     
     if @local_digest[:checksum].nil?
       if File.exists? @local_digest[:path]
-        @local_digest[:checksum] = Digest::SHA1.file(@local_digest[:path])
+        @local_digest[:checksum] = Digest::SHA1.file(@local_digest[:path]).hexdigest
       else
         # If the file does not exist set checksum to false since you cannot
         # calculate the SHA1 for a file that is not present
         @local_digest[:checksum] = false
       end
-   end
+    end
 
     @local_digest 
   end
