@@ -5,6 +5,7 @@ require 'mini_magick'
 MiniMagick.configure do |config|
   config.cli = :imagemagick
   config.cli_path = "/usr/bin"
+  config.whiny = false
   # Patch from upstream Sufia
   config.shell_api = "posix-spawn"
 end
