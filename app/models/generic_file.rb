@@ -1,6 +1,4 @@
 class GenericFile < ActiveFedora::Base
-	# TODO : Remove any includes that are not needed once the
-	# 			 interface has been cleaned up
 	include Hydra::Derivatives
     include Sufia::ModelMethods
     include Sufia::Noid
@@ -8,9 +6,9 @@ class GenericFile < ActiveFedora::Base
     include Sufia::GenericFile::Export
     include Sufia::GenericFile::Characterization
     include Sufia::GenericFile::Permissions
-    include Sufia::GenericFile::Trophies
-    include Sufia::GenericFile::Featured
-    include Sufia::GenericFile::Versions
+    #include Sufia::GenericFile::Trophies
+    #include Sufia::GenericFile::Featured
+    #include Sufia::GenericFile::Versions
     include Sufia::GenericFile::ProxyDeposit
     include Hydra::Collections::Collectible
     include Sufia::GenericFile::Batches

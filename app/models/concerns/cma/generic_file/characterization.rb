@@ -7,7 +7,7 @@ module CMA
       def characterize
         Rails.logger.info "[CHARACTERIZE] Processing #{self.id}"
         # TODO: Remove hard coded arbitrary limit
-        metadata = content.size < (200 * 2**30) ?
+        metadata = (content.size < (200 * 2**30)) ?
           CMA::CharacterizationService.characterize(content) :
           content.extract_metadata
         characterization.ng_xml = metadata if metadata.present?
