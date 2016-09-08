@@ -1,9 +1,9 @@
-<h3><%= link_to member.title, collections.collection_path(member.id) %></h3>
-<p><%= description_for_collection member %></p>
+<h3><%= link_to model.title, collections.collection_path(model.id) %></h3>
+<p><%= model.description %>
 <dl class="dl-horizontal">
   <dt>Items</dt>
-  <dd><%= member.members.count %></dd>
+  <dd><%= model.member_count %></dd>
  
   <dt>Size<dt/>
-  <dd><%= number_to_human_size(member.bytes) %></dd>
+  <dd><%= model.bytes %>
 </dl>

@@ -9,7 +9,8 @@
     </tr>
   </thead>
   <tbody>
-    <%= render partial: 'show_document_list_row', collection: documents, 
-          as: :document %>
+    <%= render partial: 'show_document_list_row', 
+          collection: @presenter.member_presenters,
+          as: :model %>
   </tbody>
 </table>

@@ -4,10 +4,41 @@ module CMA
     include Hydra::Presenter
     include ActionView::Helpers::NumberHelper
 
+    def bytes
+      return "#{number_to_human_size(model.bytes)} bytes"
+    end
+
     def description
       return model.description.present? ?
         model.description :
-        "#{model.members.count} members (#{number_to_human_size(model.bytes)})"
+        "No description available"
+    end
+
+    def thumbnail
+      icon = ""
+      if model.has_audio?
+        icon = "fa-volume-up"
+      elsif model.has_images?
+        icon = "fa-photo"
+      elsif model.has_video?
+        icon = "fa-video-camera"
+      elsif model.has_pdfs?
+        icon = "fa-archive"
+      else
+        # NoOp
+      end
+    end
+
+    def id
+      return model.id
+    end
+
+    def summary
+      return "#{model.members.count} members (#{number_to_human_size(model.bytes)})"  
+    end
+
+    def member_count
+      return model.member_ids.count
     end
 
     # Retrieve a list of members from Solr for faster performance.
@@ -15,19 +46,27 @@ module CMA
     # TODO: Figure out how to do ranged based queries and refresh only part
     #       of the interface
     def member_presenters
-      @member_presenters ||= build_presenters(model.member_ids)
+      @member_presenters ||= build_presenters
+    end
+
+    # Path to any includes
+    #
+    # TODO: Figure out where to refactor this so that it makes more sense
+    def partial_path
+      return model.class.to_s.underscore
     end
 
     private
-      def build_presenters(ids)
+      def build_presenters
+        members = ActiveFedora::SolrService.query("{!join from=hasCollectionMember_ssim to=id}id:(#{model.id})", {rows: model.member_ids.count})
+
         presenters = []
-        ids.each do |id|
-          member = ActiveFedora::Base.load_instance_from_solr(id)
-          klass = "CMA::#{member.class}Presenter".constantize
-          presenters << klass.new(member)
+        members.each do |m|
+          klass = "CMA::#{m.model}Presenter".constantize
+          presenters << klass.new(m.reify)
         end
 
-        presenters
+        return presenters
       end
   end
 end

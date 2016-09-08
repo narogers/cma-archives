@@ -1,9 +1,9 @@
-<h3><%= link_to member.title, sufia.generic_file_path(member.id) %></h3>  
-<p><%= truncate member.description, length: 80, separator: ' ' %></p>
-<% unless member.subject.empty? %>
+<h3><%= link_to model.title, sufia.generic_file_path(model.id) %></h3>  
+<p><%= truncate model.description, length: 80, separator: ' ' %></p>
+<% unless model.subject.empty? %>
   <h4>Subjects</h4>
   <ul class="list-unstyled">
-    <% member.subject.each do |subject| %>
+    <% model.subject.each do |subject| %>
       <li><%= link_to_facet(subject, Solrizer.solr_name("subject", :facetable)) %></li>
     <% end %>
   </ul>
