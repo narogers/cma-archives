@@ -1,6 +1,6 @@
 <% solr_doc = featured_collection.collection_solr_document %>
 <div class="col-xs-6 col-sm-4 featured-collection">
-  <%= render_collection_thumbnail featured_collection.collection_solr_document %>
+  <%= render_collection_thumbnail featured_collection.icon, solr_doc %>
   <% if current_user.can?(:read, solr_doc) %>
     <h3><%= link_to solr_doc.title, collections.collection_path(featured_collection.collection_id) %></h3>
   <% else %>
