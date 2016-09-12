@@ -38,7 +38,7 @@ module CMA
     end
 
     def summary
-      return "#{model.members.count} members (#{number_to_human_size(model.bytes)})"  
+      return "#{self.member_count} members (#{number_to_human_size(model.bytes)})"  
     end
 
     def member_count
@@ -62,12 +62,11 @@ module CMA
 
     private
       def build_presenters
-        members = ActiveFedora::SolrService.query("{!join from=hasCollectionMember_ssim to=id}id:(#{model.id})", {rows: model.member_ids.count})
-
         presenters = []
-        members.each do |m|
-          klass = "CMA::#{m.model}Presenter".constantize
-          presenters << klass.new(m.reify)
+        model.member_ids.each do |m_id|
+          member = ActiveFedora::Base.load_instance_from_solr(m_id)
+          klass = "CMA::#{member.class}Presenter".constantize
+          presenters << klass.new(member)
         end
 
         return presenters
