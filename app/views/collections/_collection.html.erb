@@ -4,7 +4,7 @@
   </h2>
   <div class="row">
     <div class="col-sm-3">
-      <%= render_collection_thumbnail collection %>
+      <%= render_collection_thumbnail collection, collection.class %>
     </div>
     <div class="col-sm-9">
       <%= render 'collections/attributes', work: collection %>

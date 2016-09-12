@@ -3,8 +3,6 @@ module CMA
   module Controller
     # Crib this from Devise examples in the Platformatec wiki
     def after_sign_in_path_for(_resource)
-      Rails.logger.info("[SIGN IN] Firing off event")
-
       sign_in_url = new_user_session_url
       Rails.logger.info "[SIGN IN] #{sign_in_url}"
 

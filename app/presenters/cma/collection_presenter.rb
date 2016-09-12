@@ -29,6 +29,10 @@ module CMA
       end
     end
 
+    def date_created
+      return model.date_created.first 
+    end
+
     def id
       return model.id
     end

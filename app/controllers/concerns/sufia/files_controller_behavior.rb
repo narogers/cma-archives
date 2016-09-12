@@ -1,7 +1,7 @@
 module Sufia
   module FilesController
     extend ActiveSupport::Autoload
-    autoload :BrowseEverything
+    #autoload :BrowseEverything
     autoload :LocalIngestBehavior
     autoload :UploadCompleteBehavior
   end

@@ -19,32 +19,25 @@ module CMA
     end
 
     def trail_from_referer
-      case request.referer
-      when /catalog/
+      if (request.referer =~ /catalog/)
         add_breadcrumb I18n.t("sufia.bread_crumb.search_results"), request.referer
-      else
-        add_breadcrumb_for_parent resource.collections.first 
-      end  
-      add_breadcrumb_for_resource resource
+      end
+      add_breadcrumb_for_resource params[:id]
     end
 
-    def add_breadcrumb_for_resource item
-      case item.title
-      when Array
-        add_breadcrumb item.title.first, sufia.generic_file_path(item.id)
-      when String
-        add_breadcrumb item.title, collections.collection_path(item.id)
-      end
-    end
+    def add_breadcrumb_for_resource resource_id
+      item = ActiveFedora::Base.load_instance_from_solr(resource_id)
 
-    def add_breadcrumb_for_parent parent=nil
-      return if parent.nil?
-      # We have more levels to traverse
-      unless parent.collections.empty?
-        add_breadcrumb_for_parent parent.collections.first
+      unless item.collection_ids.blank?
+        add_breadcrumb_for_resource item.collection_ids.first
       end
-      # Then stick on this level
-      add_breadcrumb_for_resource parent
+
+      case item.class
+        when GenericFile
+          add_breadcrumb I18n.t(item.title.first), sufia.generic_file_path(item.id)
+        when Collection
+          add_breadcrumb I18n.t(item.title), collections.collection_path(item.id)
+      end
     end
   end
 end
