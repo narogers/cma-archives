@@ -22,6 +22,7 @@ module CMA
       if (request.referer =~ /catalog/)
         add_breadcrumb I18n.t("sufia.bread_crumb.search_results"), request.referer
       end
+
       add_breadcrumb_for_resource params[:id]
     end
 
@@ -32,11 +33,11 @@ module CMA
         add_breadcrumb_for_resource item.collection_ids.first
       end
 
-      case item.class
-        when GenericFile
-          add_breadcrumb I18n.t(item.title.first), sufia.generic_file_path(item.id)
-        when Collection
-          add_breadcrumb I18n.t(item.title), collections.collection_path(item.id)
+      case item.class.to_s
+        when "GenericFile"
+          add_breadcrumb item.title.first, sufia.generic_file_path(item.id)
+        when "Collection"
+          add_breadcrumb item.title, collections.collection_path(item.id)
       end
     end
   end
