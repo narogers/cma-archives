@@ -1,15 +1,14 @@
 module CMA
-	module GenericFile
-		module Content
-			extend ActiveSupport::Concern
+  module GenericFile
+    module Content
+	  extend ActiveSupport::Concern
 
-			included do
-				has_subresource 'content', 
-                  class_name: 'CMAFileContentDatastream'
-				has_subresource 'access'
-				has_subresource 'thumbnail'
-			end
+	  included do
+		contains 'content', class_name: 'CMAFileContentDatastream'
+		contains 'access'
+		contains 'thumbnail'
+	  end
 			
-		end
-	end
+    end
+  end
 end

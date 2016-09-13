@@ -45,7 +45,7 @@ group :development, :test do
   gem 'highline'
 end
 
-gem 'sufia', '~> 6.6'
+gem 'sufia', '~> 6.6.1'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 
 #gem 'browse-everything', github: 'narogers/browse-everything'

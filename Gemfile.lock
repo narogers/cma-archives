@@ -51,18 +51,16 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    active-fedora (9.13.0)
+    active-fedora (9.7.2)
       active-triples (~> 0.7.1)
-      activemodel (>= 4.2, < 6)
-      activesupport (>= 4.2.4, < 6)
+      activesupport (>= 4.1.0)
       deprecation
-      ldp (~> 0.5.0)
+      ldp (~> 0.4.0)
       linkeddata
       nom-xml (>= 0.5.1)
       om (~> 3.1)
       rdf-rdfxml (~> 1.1)
-      rsolr (~> 1.0, >= 1.0.10)
-      solrizer (~> 3.4)
+      rsolr (~> 1.0.10)
     active-triples (0.7.5)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -103,7 +101,7 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (6.4.1)
+    autoprefixer-rails (6.4.1.1)
       execjs
     bcp47 (0.3.3)
       i18n
@@ -153,7 +151,7 @@ GEM
       sshkit (~> 1.2)
     capistrano-passenger (0.2.0)
       capistrano (~> 3.0)
-    capistrano-rails (1.1.7)
+    capistrano-rails (1.1.8)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capybara (2.8.1)
@@ -318,12 +316,10 @@ GEM
     jwt (1.5.4)
     launchy (2.4.3)
       addressable (~> 2.3)
-    ldp (0.5.0)
-      deprecation
+    ldp (0.4.1)
       faraday
       http_logger
       linkeddata (>= 1.1)
-      rdf-vocab
       slop
     legato (0.7.0)
       multi_json
@@ -367,9 +363,9 @@ GEM
       rails (>= 4.2.0)
     memoist (0.15.0)
     method_source (0.8.2)
-    mime-types (2.99.2)
+    mime-types (2.99.3)
     mimemagic (0.3.2)
-    mini_exiftool (2.7.6)
+    mini_exiftool (2.8.0)
     mini_magick (4.5.1)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
@@ -622,7 +618,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     stomp (1.4.3)
-    sufia (6.6.0)
+    sufia (6.6.1)
       blacklight (~> 5.16)
       blacklight-gallery (~> 0.1)
       blacklight_advanced_search (>= 5.1.4, < 6.0)
@@ -641,12 +637,12 @@ GEM
       redlock (~> 0.1.2)
       sass-rails
       select2-rails (~> 3.5.9)
-      sufia-models (= 6.6.0)
+      sufia-models (= 6.6.1)
       tinymce-rails (~> 4.1)
       tinymce-rails-imageupload (~> 4.0.16.beta)
       yaml_db (~> 0.2)
-    sufia-models (6.6.0)
-      active-fedora (~> 9.4)
+    sufia-models (6.6.1)
+      active-fedora (~> 9.4, < 9.8)
       active_fedora-noid (~> 1.0)
       activerecord-import (~> 0.5)
       activeresource (~> 4.0)
@@ -746,7 +742,7 @@ DEPENDENCIES
   simplecov
   sprockets-rails (~> 2.3)
   sqlite3
-  sufia (~> 6.6)
+  sufia (~> 6.6.1)
   therubyracer
   turbolinks
   uglifier (>= 1.3.0)
