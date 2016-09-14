@@ -15,7 +15,7 @@ module CMA
 
     def description
       return model.description.present? ?
-        model.description.first :
+        model.description :
         "No description available"
     end
 
