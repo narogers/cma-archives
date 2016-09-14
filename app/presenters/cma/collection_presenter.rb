@@ -4,6 +4,11 @@ module CMA
     include Hydra::Presenter
     include ActionView::Helpers::NumberHelper
 
+    def initialize(model, member_ids = nil)
+      super(model)
+      @member_ids = member_ids || model.member_ids      
+    end
+
     def bytes
       return "#{number_to_human_size(model.bytes)} bytes"
     end
@@ -63,7 +68,7 @@ module CMA
     private
       def build_presenters
         presenters = []
-        model.member_ids.each do |m_id|
+        @member_ids.each do |m_id|
           member = ActiveFedora::Base.load_instance_from_solr(m_id)
           klass = "CMA::#{member.class}Presenter".constantize
           presenters << klass.new(member)
