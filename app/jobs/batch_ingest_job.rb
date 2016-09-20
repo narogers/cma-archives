@@ -80,10 +80,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       
 	  # The rest of the file should be a list of files and associated
 	  # properties
-      new_resources = []
-      updated_resources = []
-
-      Rails.logger.info "[BATCH] ...!"
+      resources_to_import = []
 
       metadata.each do |resource|
         filename = resource.shift
@@ -98,26 +95,23 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	      gf = apply_default_acls(gf)
 	      gf.save
           @collection.members << gf
-          @collection.save
 
           Rails.logger.info "[BATCH] Ingesting #{gf.id} (#{filename}) into #{@batch.title.first}"
+          resources_to_import << gf.id
 	    else
           # Defer checksumming to the BatchIngestJob
           gf_id = current_children_ids.first
           fixity = Fixity.new(gf_id)
-          if (fixity.updated?)
+          unless fixity.equal?
             Rails.logger.info "[BATCH] Updating #{gf_id} (#{filename})"
-            updated_resources << gf_id
+            resources_to_import << gf_id
           else
             Rails.logger.info "[BATCH] Skipping #{gf_id} (#{filename})"
           end
         end
       end
 
-      new_resources.each do |gf_id|
-        Sufia.queue.push(ImportUrlJob.new(gf_id))
-      end
-      updated_resources.each do |gf_id|
+      resources_to_import.each do |gf_id|
         Sufia.queue.push(ImportUrlJob.new(gf_id))
       end
 	end
