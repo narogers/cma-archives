@@ -2,7 +2,7 @@
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_sort_field.label %></button>
           <ul class="dropdown-menu">
             <% active_sort_fields.each do |key, sort_order| %>
-              <li><%= link_to sort_order.label, collections.collection_path(@collection, per_page: current_per_page, sort_by: key) %></li>
+              <li><%= link_to sort_order.label, collections.collection_path(@collection, per_page: current_per_page, sort: key) %></li>
             <% end %>
           </ul>
         </div>

@@ -36,7 +36,10 @@ module CMA
         property :photographer_title, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#photographerTitle") do |index|
           index.as :stored_searchable
         end
-        #property :accession_number, predicate: ::RDF::URI.new("http://vocab.getty.edu/aat/300312355") do |index|
+        property :accession_number, predicate: ::RDF::URI.new("http://vocab.getty.edu/aat/300312355") do |index|
+          index.as :stored_searchable
+        end
+
         property :accession_number, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#accession") do |index|
           index.as :stored_searchable
         end

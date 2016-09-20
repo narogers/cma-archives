@@ -8,7 +8,7 @@ class GenericFile < ActiveFedora::Base
     include Sufia::GenericFile::Permissions
     #include Sufia::GenericFile::Trophies
     #include Sufia::GenericFile::Featured
-    #include Sufia::GenericFile::Versions
+    include Sufia::GenericFile::Versions
     include Sufia::GenericFile::ProxyDeposit
     include Hydra::Collections::Collectible
     include Sufia::GenericFile::Batches
