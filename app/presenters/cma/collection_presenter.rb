@@ -10,7 +10,7 @@ module CMA
     end
 
     def bytes
-      return "#{number_to_human_size(model.bytes)} bytes"
+      return "#{number_to_human_size(model.bytes)}"
     end
 
     def description
