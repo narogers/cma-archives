@@ -1,20 +1,22 @@
 require 'csv'
 
 class BatchIngestJob < ActiveFedoraIdBasedJob
-	attr_accessor :batch_file
+	attr_accessor :batch_file 
 
 	def queue_name
 		:batch_ingest
 	end
 
-	def initialize(batch_metadata)
-		self.batch_file = batch_metadata
-		@root_directory = File.dirname(File.expand_path(batch_metadata))
+	def initialize(csv_path, batch_id = nil)
+		self.batch_file = csv_path
+        @batch_id = batch_id
 	end
 	
     def run
+	  @root_directory = File.dirname(File.expand_path(self.batch_file))
+ 
 	  if !File.exists?(batch_file) then
-		Rails.logger.info '[BATCH] Warning: unable to locate a manifest file'
+		Rails.logger.info "[#{log_prefix}] Warning: unable to locate a manifest file"
 		raise CMA::Exceptions::FileNotFoundError.new "Could not resolve #{batch_file} to a valid path"  
 	  end
 
@@ -31,25 +33,21 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	# [file, tag, tag, ...]
 	# [01.tif, nrogers@clevelandart.org, ...]  
     def process_batch
-  	  metadata = CSV.read(batch_file)
-
-	  @batch = Batch.new(
-	    title: [metadata.shift.first.titleize],
-	    creator: [metadata.shift.first])
-   
-	  # Verify that the creator exists or default to the system's
-	  # batch account
-	  if (0 == User.where(login: @batch.creator.first).count)
-	    @batch.creator = [User.batchuser.login]
+      batch = find_batch(@batch_id)
+  	  metadata = CSV.read(@batch_file)
+  
+      collection_title = metadata.shift.first.titleize
+	  creator = metadata.shift.first
+	  if (0 == User.where(login: creator).count)
+	    creator = [User.batchuser.login]
 	  end
-	  @batch.save
 
-	  @collection = find_or_create_collection(@batch.title.first)
+	  @collection = find_or_create_collection(collection_title, creator)
       set_creation_date(metadata.shift.first)
       add_collection_relationships(metadata.shift.first)
       # Ignore the blank line
       metadata.shift.first
-	  process_files(metadata)
+	  process_files(metadata, batch)
     end
 
     def set_creation_date(date)
@@ -57,22 +55,16 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     end
 
  	def add_collection_relationships(parent_title)
-	  # Each line should be a collection title until you reach a
-	  # blank line at which point the list is assumed to be complete.
-	  # This means that additional collection membership is optional.
-
-	  # Because it is a CSV file the line comes across as an array
-	  # rather than a string
       parent_title = parent_title.titleize
       parent_collection = find_collection(parent_title)
       if parent_collection.nil?
-        Rails.logger.warn("[BATCH] Could not locate #{parent_title}")
+        Rails.logger.warn("[#{log_prefix}] Could not locate #{parent_title}")
       else
         @collection.collections += [parent_collection]
       end
 	end
 
-	def process_files(metadata)
+	def process_files(metadata, batch)
       # We need to remember the list of metadata fields for later. Ignore
       # only the mandatory :file attribute
       fields = metadata.shift
@@ -89,24 +81,26 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
         if current_children_ids.empty?
 	      gf = GenericFile.new(
             import_url: "file://#{@root_directory}/#{filename}",
-            label: filename
+            label: filename,
+            batch: batch
 	      )
           gf = apply_metadata_properties(gf, fields, resource)
 	      gf = apply_default_acls(gf)
 	      gf.save
           @collection.members << gf
 
-          Rails.logger.info "[BATCH] Ingesting #{gf.id} (#{filename}) into #{@batch.title.first}"
+          Rails.logger.info "[#{log_prefix}] Ingesting #{gf.id} (#{filename})"
           resources_to_import << gf.id
 	    else
           # Defer checksumming to the BatchIngestJob
           gf_id = current_children_ids.first
           fixity = Fixity.new(gf_id)
           unless fixity.equal?
-            Rails.logger.info "[BATCH] Updating #{gf_id} (#{filename})"
+            Rails.logger.info "[#{log_prefix}] Updating #{gf_id} (#{filename})"
             resources_to_import << gf_id
           else
-            Rails.logger.info "[BATCH] Skipping #{gf_id} (#{filename})"
+            Rails.logger.info "[#{log_prefix}] Skipping #{gf_id} (#{filename})"
+
           end
         end
       end
@@ -116,10 +110,11 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       end
 	end
 
-	def create_collection(title)
-		Rails.logger.info "[BATCH] Creating a new collection - #{title}"
+	def create_collection(title, creator)
+		Rails.logger.info "[#{log_prefix}] Creating a new collection - #{title}"
 		collection = Collection.new(title: title)
-		collection = apply_default_acls(collection)
+		collection.depositor = creator
+        collection.edit_users = [creator]
 		collection.save
 
 		collection
@@ -134,11 +129,10 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       (collection_id.count > 0) ? Collection.find(collection_id.first["id"]) : nil
     end
 
-    def find_or_create_collection(title)
+    def find_or_create_collection(title, creator)
         collection = find_collection(title)
-		# Only if there was no result do we try again
-		collection = create_collection(title) if collection.nil?
-        # And now return the result
+		collection = create_collection(title, creator) if collection.nil?
+
         collection
     end
 
@@ -150,7 +144,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     def apply_metadata_properties(resource, fields, values)
       values.each_with_index do |value, i|
         if value.blank?
-          Rails.logger.warn "[BATCH] Could not process empty field #{fields[i]}"
+          Rails.logger.warn "[#{log_prefix}] Could not process empty field #{fields[i]}"
           next
         end
 
@@ -166,13 +160,9 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       resource
     end
 
-	# Define some default access permissions to the collection
-	# that will make it globally accessible to anyone who is
-	# registered. This works because the next iteration will use the
-	# role map to permit access collection by collection
 	def apply_default_acls(resource)
-		resource.depositor = @batch.creator.first
-		resource.edit_users = @batch.creator
+		resource.depositor = @collection.depositor
+		resource.edit_users = @collection.edit_users
 		# Group defaults
 		resource.edit_groups = [:admin]
 		resource.discover_groups = [:admin]
@@ -180,4 +170,22 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
 		resource
 	end
+
+    # Attempt to load the batch which all resources should belong to.
+    # If not found fall back to nil and proceed without the resources
+    # being associated to any grouping
+    def find_batch(id)
+      begin
+        id.blank? ? nil : Batch.find(id) 
+      rescue ActiveFedora::ObjectNotFoundError
+        nil
+      end  
+    end
+
+    def log_prefix
+      @batch_id.present? ?
+        "[BATCH #{@batch_id}]" :
+        "[BATCH]"
+    end
 end
+

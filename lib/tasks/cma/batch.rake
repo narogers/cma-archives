@@ -3,12 +3,14 @@ namespace :cma do
         desc "Batch ingest content"
         task :ingest, [:base_directory] => :environment do |t, args|
             full_path = File.expand_path(args[:base_directory])
-            batches = FileList.new("#{full_path}/**/batch.csv")
-	
-            batches.each do |batch|
-              (directory, batch_file) = File.split(batch)
+            csv_files = FileList.new("#{full_path}/**/batch.csv")
+            batch = Batch.create(
+              title: ["Batch #{DateTime.now.strftime("%Y.%m.%d.%H%M")}"])
+   	
+            csv_files.each do |path|
+              directory = File.split(path)[0]
               puts "Queuing #{directory} for ingest\n"
-              Sufia.queue.push(BatchIngestJob.new(batch))
+              Sufia.queue.push BatchIngestJob.new(path, batch.id)
 	  	    end
         end
 
