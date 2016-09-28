@@ -43,6 +43,8 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
             else
                metadata = metadata.to_s.gsub("|", " -- ")
             end
+            # Strip all nonprinting characters that will cause indexing
+            # issues.
 
     		# Here we know that the tag exists and just needs to
     		# be mapped accordingly. We need to determine if it is
@@ -56,11 +58,9 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
               else
                 generic_file[field] += [metadata]
               end
-              # Call uniq! since a bug in ActiveFedora prevents usage of the handy
-              # << method
-              generic_file[field].uniq!
     		else
-    		  generic_file[field] = (metadata.is_a? Array) ? metadata.join(" ") : metadata
+    		  generic_file[field] = 
+                (metadata.is_a? Array) ? metadata.join(" ") : metadata
     		end
     	end
 

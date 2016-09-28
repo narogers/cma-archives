@@ -88,6 +88,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	      gf = apply_default_acls(gf)
 	      gf.save
           @collection.members << gf
+          @collection.save
 
           Rails.logger.info "[#{log_prefix}] Ingesting #{gf.id} (#{filename})"
           resources_to_import << gf.id
@@ -184,8 +185,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
     def log_prefix
       @batch_id.present? ?
-        "[BATCH #{@batch_id}]" :
-        "[BATCH]"
+        "BATCH #{@batch_id}" :
+        "BATCH"
     end
 end
 
