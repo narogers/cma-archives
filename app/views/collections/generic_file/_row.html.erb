@@ -1,6 +1,6 @@
 <tr id="document_<%= model.id %>">
   <td><%= render_thumbnail_tag model.model %></td>
   <td><%= render_partial_for 'metadata', model %></td>
-  <td><%= model.date_created %></td>
+  <td><%= model.date_created.first %></td>
   <td><%= render_partial_for 'actions', model %></td>
 </tr>
