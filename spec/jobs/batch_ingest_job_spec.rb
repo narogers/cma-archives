@@ -38,6 +38,7 @@ RSpec.describe BatchIngestJob do
       expect(coll.date_created).to contain_exactly "2016-03"
       expect(coll.collections).to contain_exactly @parent
       expect(coll.members.count).to be 3
+      expect(coll.resource_type).to contain_exactly "Collection"
     end
 
     it "does not reprocess existing content" do

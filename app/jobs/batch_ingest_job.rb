@@ -113,10 +113,10 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
 	def create_collection(title, creator)
 		Rails.logger.info "[#{log_prefix}] Creating a new collection - #{title}"
-		collection = Collection.new(title: title)
-		collection.depositor = creator
-        collection.edit_users = [creator]
-		collection.save
+		collection = Collection.create(title: title,
+          depositor: creator,
+          edit_users: [creator],
+          resource_type: ["Collection"])
 
 		collection
 	end

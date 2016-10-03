@@ -19,22 +19,11 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
       "file_size" => 0,
     }
     
-    # Infer the MIME type from the file name since it was not
-    # provided by any HTTP headers
-
-    # Because of a bug with DNG files we need to coax MiniMagick into
-    # loading the right library. Until a better solution comes along
-    # the way to do this is by forcing an extension onto the file but
-    # only for DNGs
-    #
-    # This is not perfect but it will work with 99% of the cases that
-    # are present
     Rails.logger.info "[IMPORT URL] Preparing #{generic_file.import_url} for processing"
     mime_types = MIME::Types.of(uri.basename)
     generic_file.mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
     tmp_file = [id] 
     tmp_file << ".#{mime_types.first.extensions.first}" unless mime_types.blank?   
-
     # Can't use TempfileService here because we are trying to
     # ingest the content into Fedora and that method assumes
     # that it is already there

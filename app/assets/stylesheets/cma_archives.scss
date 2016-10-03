@@ -1,3 +1,5 @@
+@import 'bootstrap_overrides';
+
 .lightbox {
   display: -ms-flex;
   display: flex;
@@ -93,3 +95,17 @@
   border-radius: 0;
 }
 
+/**
+ * Custom styling to make global search look more like base Blacklight
+ * Can be deleted if code is brought closer to source
+ */
+.for-search-field {
+  background: $cma-gray;
+  border-radius: 4px 0 0 4px;
+}
+
+.for-search-field select {
+  background: transparent;
+  border: none;
+  width: 20ch;
+}
