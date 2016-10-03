@@ -9,34 +9,26 @@ class InstallFeaturedCollectionsJob
     :collections
   end
 
-  # If the collections parameter is a String infer that it is a path to
-  # something on disk. Otherwise presume that you can just roll with the
-  # data structure as is
   def run
     featured_collections = collections.is_a?(String) ?
       load_collections(collections) :
       collections 
     validate_collections featured_collections
 
-    featured_collections.each do |fc|
-      print "Preparing #{fc[:title]} ...\n"
-      coll = create_or_find_collection(fc)
-      create_featured_collection(coll.id)
+    featured_collections.each do |featured|
+      create_or_update_collection(featured)
     end
   end
 
-  def create_or_find_collection(collection)
-    collections_in_solr = ActiveFedora::SolrService.query(
-       "primary_title_ssi:\"#{collection[:title]}\"", 
-       {fq: "has_model_ssim:Collection"})
-    coll = (0 == collections_in_solr.count) ?
+  def create_or_update_collection(collection)
+    count = Collection.count(conditions: "title_tesim: \"#{collection[:title]}\"")
+    (0 == count) ?
       create_collection(collection) :
-      collections_in_solr.first
-    
-    coll
+      update_collection(collection)
   end
 
   def create_collection(collection)
+    puts "* Creating #{collection[:title]}"
     coll = Collection.new(
       title: collection[:title],
       description: collection[:description],
@@ -46,18 +38,17 @@ class InstallFeaturedCollectionsJob
     )
     coll.read_groups += [collection[:groups]] unless collection[:groups].blank?
     coll.save
-
-    print "* Creating a new collection in the repository\n"
+    FeaturedCollection.create(collection_id: coll.id)
 
     coll
   end
 
-  def create_featured_collection(collection_id)
-    FeaturedCollection.create(collection_id: collection_id) unless
-      FeaturedCollection.exists?(collection_id: collection_id)
-    print "* FeaturedCollection has been created for #{collection_id}\n"  
+  def update_collection collection
+    puts "* Updating #{collection[:title]}"
+    coll = ActiveFedora::SolrService.query("title_tesim: \"#{collection[:title]}\"", {rows: 1, fl: "id", fq: "has_model_ssim:Collection"}).first
+    FeaturedCollection.find_or_create_by(collection_id: coll["id"])
   end
- 
+
   def load_collections(yaml)
     collections = nil
     if File.exists? yaml
@@ -68,9 +59,6 @@ class InstallFeaturedCollectionsJob
     end
   end
 
-  # Ensure that each collection hash object contains at a minimum a title
-  # and description. If either is missing immediately raise an error then
-  # halt processing
   def validate_collections(collections)
     collections.each do |c|
       if (c[:title].blank? or c[:description].blank?)

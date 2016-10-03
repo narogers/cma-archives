@@ -1,10 +1,12 @@
 <table class="table table-striped">
   <tbody>
   <% present_terms(@presenter,@presenter.terms - [:title, :description]) do |r, term| %>
+    <% if r.value(term).present? %>
     <tr>
       <th><%= r.label(term) %></th>
       <td><%= r.value(term) %></td>
     </tr>
+    <% end %>
   <% end %>
   </tbody>
 </table>

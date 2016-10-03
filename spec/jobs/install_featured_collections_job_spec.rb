@@ -1,51 +1,44 @@
+require 'rails_helper'
+
 RSpec.describe InstallFeaturedCollectionsJob do
-  before(:all) do
-    # NO OP
-  end
-
-  after(:all) do
-    # NO OP
-  end
-
   describe "#run" do
+    let(:source) { "spec/fixtures/featured_collections.yml" }
+
     before(:each) do
       FeaturedCollection.delete_all
       Collection.delete_all
     end
 
     it "loads collections from a Hash" do
-      source = FactoryGirl.build_list(:collection_hash, 1)
-      InstallFeaturedCollectionsJob.new(source).run
+      hash = FactoryGirl.build_list(:collection_hash, 1)
+      InstallFeaturedCollectionsJob.new(hash).run
 
       coll = Collection.first
       expect(FeaturedCollection.count).to eq 1
       expect(Collection.count).to eq 1
-      expect(coll.title).to eq source.first[:title]
-      expect(coll.description).to eq source.first[:description]
+      expect(coll.title).to eq hash.first[:title]
+      expect(coll.description).to eq hash.first[:description]
     end
 
     it "fails on invalid collections" do
-      source = "spec/fixtures/invalid_collections.yml"
+      bad_source = "spec/fixtures/invalid_collections.yml"
  
-      job = InstallFeaturedCollectionsJob.new(source)
+      job = InstallFeaturedCollectionsJob.new(bad_source)
       expect { job.run }.to raise_error CMA::Exceptions::MissingValueError 
     end
 
     it "creates new collections" do
-      source = "spec/fixtures/featured_collections.yml"
       InstallFeaturedCollectionsJob.new(source).run
+      editorial = find_by_title("Editorial Photography")
       
       expect(FeaturedCollection.count).to eq 3
       expect(Collection.count).to eq 3
-      editorial = Collection.find(title: "Editorial Photography").first
-      expect(editorial.title).to eq "Editorial Photography"
+      expect(editorial).to_not be_nil
       expect(editorial.read_groups).to contain_exactly "photostudio"
     end
    
     it "updates relationships for existing collections" do
-      source = "spec/fixtures/featured_collections.yml"
-      job = InstallFeaturedCollectionsJob.new(source)
-      job.run
+      InstallFeaturedCollectionsJob.new(source).run
 
       expect(FeaturedCollection.count).to eq 3
       expect(Collection.count).to eq 3
@@ -54,7 +47,7 @@ RSpec.describe InstallFeaturedCollectionsJob do
       expect(FeaturedCollection.count).to eq 0
       expect(Collection.count).to eq 3
 
-      job.run
+      InstallFeaturedCollectionsJob.new(source).run
       expect(FeaturedCollection.count).to eq 3
       expect(Collection.count).to eq 3      
     end

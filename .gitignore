@@ -13,7 +13,7 @@ capybara-*.html
 /public/system
 /coverage/
 /spec/tmp
-/spec/example.txt
+spec/examples.txt
 **.orig
 rerun.txt
 pickle-email-*.html
@@ -37,6 +37,7 @@ config/analytics.yml
 config/database.yml
 config/fedora.yml
 config/jetty.yml
+config/ldap.yml
 config/redis.yml
 config/resque-pool.yml
 config/role_map.yml

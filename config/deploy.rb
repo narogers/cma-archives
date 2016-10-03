@@ -51,7 +51,7 @@ set :default_env, { path: "/usr/local/bin:$PATH" }
 set :keep_releases, 5
 
 # Touch files to fix timestamps in cases of aggressive caching
-#set :normalize_asset_timestamps, %{public/images public/javascripts public/stylesheets}
+set :normalize_asset_timestamps, %{public/images public/javascripts public/stylesheets}
 
 namespace :deploy do
   after :restart, :clear_cache do

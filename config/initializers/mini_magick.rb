@@ -4,8 +4,7 @@ require 'mini_magick'
 # GraphicsMagick and explicitly set the path
 MiniMagick.configure do |config|
   config.cli = :imagemagick
-  config.cli_path = "/usr/bin"
-  config.whiny = false
+  config.cli_path = "/usr/local/bin"
   # Patch from upstream Sufia
   config.shell_api = "posix-spawn"
 end

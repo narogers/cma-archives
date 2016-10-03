@@ -39,7 +39,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       collection_title = metadata.shift.first.titleize
 	  creator = metadata.shift.first
 	  if (0 == User.where(login: creator).count)
-	    creator = [User.batchuser.login]
+	    creator = User.batchuser.login
 	  end
 
 	  @collection = find_or_create_collection(collection_title, creator)
