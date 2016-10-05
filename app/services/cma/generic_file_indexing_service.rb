@@ -23,7 +23,7 @@ module CMA
         solr_doc["preview_uri_ssm"] = object.access.uri.to_s
         # Sorting fields cannot be multivalued
         solr_doc[Solrizer.solr_name("primary_title", :stored_sortable)] = object.title.first unless object.title.empty?
-        solr_doc[Solrizer.solr_name("date_created", :stored_sortable, type: :date)] = object.date_created.first unless object.date_created.blank?
+        solr_doc[Solrizer.solr_name("date_created", :stored_sortable)] = object.date_created.first unless object.date_created.blank?
 
         object.index_collection_ids(solr_doc) unless Sufia.config.collection_facet.nil?
       end
