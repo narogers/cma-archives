@@ -40,7 +40,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.log_tags = [ :uuid ]
-  config.log_level = :info
+  config.log_level = :debug
   config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"))
 
   # Reroute STDERR to a log file in the same directory for easier

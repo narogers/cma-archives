@@ -14,15 +14,16 @@ module CMA
         # between files on disk (in fcrepo.binary-store-path) and objects
         # in the repository.
         solr_doc[Solrizer.solr_name('digest', :symbol)] = digest_from_content
+        solr_doc[Solrizer.solr_name('photographer')] = object.photographer
+        solr_doc[Solrizer.solr_name('accession_number', :stored_searchable)] = object.accession_number
+
         # Put the thumbnail and access copies into Solr for faster retrieval if they are
         # present
         solr_doc["thumbnail_uri_ssm"] = object.thumbnail.uri.to_s
         solr_doc["preview_uri_ssm"] = object.access.uri.to_s
         # Sorting fields cannot be multivalued
         solr_doc[Solrizer.solr_name("primary_title", :stored_sortable)] = object.title.first unless object.title.empty?
-        # TODO: Figure out how to reliably cast to a date for better
-        #       sorting
-        solr_doc[Solrizer.solr_name("date_created", :stored_sortable)] = object.date_created.first unless object.date_created.blank?
+        solr_doc[Solrizer.solr_name("date_created", :stored_sortable, type: :date)] = object.date_created.first unless object.date_created.blank?
 
         object.index_collection_ids(solr_doc) unless Sufia.config.collection_facet.nil?
       end

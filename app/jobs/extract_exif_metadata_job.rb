@@ -50,6 +50,11 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
     generic_file[:language] += ["en"]
     generic_file[:language].uniq!		
 
+    # TODO: Actually set this dynamically based on MIME type instead of
+    #       being hard coded
+    generic_file[:resource_type] += ["Image"]
+    generic_file[:resource_type].uniq!
+
     generic_file
   end
     

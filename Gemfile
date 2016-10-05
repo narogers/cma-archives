@@ -54,6 +54,7 @@ gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 # branch
 gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: 'cc031e7'
 gem 'active-fedora', '~> 9'
+gem 'blacklight_range_limit'
 
 # Once Sufia's references are updated use v2.0 instead
 #gem 'hydra-derivatives', '~> 2.0'

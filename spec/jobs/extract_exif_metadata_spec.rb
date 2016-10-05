@@ -37,6 +37,7 @@ RSpec.describe ExtractExifMetadataJob do
       expect(gf.rights).to eq ["Copyright, The Cleveland Museum of Art"]
       expect(gf.contributor).to eq ["Cleveland Museum of Art"]
       expect(gf.language).to eq ["en"]
+      expect(gf.resource_type).to contain_exactly "Image"
     end
  end
 
