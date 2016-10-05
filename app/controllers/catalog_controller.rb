@@ -149,8 +149,6 @@ class CatalogController < ApplicationController
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
-    # creator, title, description, publisher, date_created,
-    # subject, language, resource_type, format, identifier, based_near,
     config.add_search_field('contributors') do |field|
       # solr_parameters hash are sent to Solr as ordinary url query params.
       #field.solr_parameters = { :"spellcheck.dictionary" => "contributor" }
@@ -172,9 +170,6 @@ class CatalogController < ApplicationController
 
     config.add_search_field('description') do |field|
       field.label = "Description"
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "description"
-      }
       solr_name = solr_name("description", :stored_searchable)
       field.solr_local_parameters = {
         qf: solr_name,
@@ -184,9 +179,6 @@ class CatalogController < ApplicationController
     
     config.add_search_field('identifier') do |field|
       field.include_in_advanced_search = false
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "identifier"
-      }
       solr_name = solr_name("id", :stored_searchable)
       field.solr_local_parameters = {
         qf: solr_name,
@@ -216,7 +208,6 @@ class CatalogController < ApplicationController
       }
     end
 
-    
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
