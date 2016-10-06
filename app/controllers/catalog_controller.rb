@@ -20,7 +20,7 @@ class CatalogController < ApplicationController
   def self.global_fields_with_scores
     global_fields ||= {
       Solrizer.solr_name("title", :stored_searchable) => 10,
-      Solrizer.solr_name("accession_number", :symbol) => 5,
+      Solrizer.solr_name("accession_number", :stored_searchable) => 5,
       Solrizer.solr_name("id", :stored_searchable) => 5,
       Solrizer.solr_name("label", :stored_searchable) => 3,
       Solrizer.solr_name("description", :stored_searchable) => 1.5,
