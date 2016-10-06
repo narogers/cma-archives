@@ -34,6 +34,7 @@ pickle-email-*.html
 # Do not accidentally put live configuration files into the repo (!)
 .env
 config/analytics.yml
+config/blacklight.yml
 config/database.yml
 config/fedora.yml
 config/jetty.yml

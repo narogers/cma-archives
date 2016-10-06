@@ -20,7 +20,7 @@ class CatalogController < ApplicationController
   def self.global_fields_with_scores
     global_fields ||= {
       Solrizer.solr_name("title", :stored_searchable) => 10,
-      Solrizer.solr_name("accession_numbers", :stored_searchable) => 5,
+      Solrizer.solr_name("accession_number", :symbol) => 5,
       Solrizer.solr_name("id", :stored_searchable) => 5,
       Solrizer.solr_name("label", :stored_searchable) => 3,
       Solrizer.solr_name("description", :stored_searchable) => 1.5,
@@ -63,10 +63,9 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field solr_name("contributor", :facetable), label: "Contributor", limit: 5
-    config.add_facet_field solr_name("date_created", :facetable), label: "Date Created", range: true
+    config.add_facet_field solr_name("contributor_facet", :facetable), label: "Contributor", limit: 5
+    config.add_facet_field solr_name("date_created", :dateable), label: "Date Created", range: true
     config.add_facet_field solr_name("file_format", :facetable), label: "File Format", limit: 5
-    config.add_facet_field solr_name("photographer", :facetable), label: "Photographer", limit: 5
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("resource_type", :facetable), label: "Resource type", limit: 5
 

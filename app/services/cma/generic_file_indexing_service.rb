@@ -15,8 +15,12 @@ module CMA
         # in the repository.
         solr_doc[Solrizer.solr_name('digest', :symbol)] = digest_from_content
         solr_doc[Solrizer.solr_name('photographer')] = object.photographer
-        solr_doc[Solrizer.solr_name('accession_number', :stored_searchable)] = object.accession_number
+        solr_doc[Solrizer.solr_name('accession_number', :stored_searchable)] = accession_number_ranges
 
+        # For faceting and discovery
+        # TODO: Add technician once the data is loaded
+        solr_doc[Solrizer.solr_name('contributor_facet', :facetable)] = object.contributor + object.photographer 
+          
         # Put the thumbnail and access copies into Solr for faster retrieval if they are
         # present
         solr_doc["thumbnail_uri_ssm"] = object.thumbnail.uri.to_s
@@ -30,6 +34,22 @@ module CMA
     end
 
     private
+      def accession_number_ranges
+        return unless object.accession_number.present?
+
+        values = []
+        object.accession_number.each do |an|
+          parts = an.split(".")
+          value = parts.shift
+    
+          parts.each do |fragment|
+            value += ".#{fragment}"
+            values << value
+          end
+        end
+  
+        values
+      end
 
       def digest_from_content
         return unless object.content.has_content?
