@@ -1,6 +1,6 @@
 <% html_class = current_page.last? ? "disabled" : "" %>
 
 <li>
-  <%= link_to fa_icon("step-forward"), url, class: html_class,
-        remote: remote %>
+  <%= link_to t('blacklight.search.pagination_info.last'), url, 
+    class: html_class, remote: remote %>
 </li>

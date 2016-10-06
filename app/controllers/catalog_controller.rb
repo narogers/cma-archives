@@ -34,7 +34,7 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|          
-    config.per_page = [25, 50, 100, 250]
+    config.per_page = [2, 25, 50, 100, 250]
 
     config.view.gallery.partials = [:gallery_header, :gallery_details]
     config.view.gallery.icon_class = 'glyphicon-th-large'
@@ -212,12 +212,12 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     # label is key, solr field is value
-    config.add_sort_field "date_created_ssi ASC", label: "Date Created \u25BC"
-    config.add_sort_field "date_created_ssi DESC", label: "Date Created \u25B2"
-    config.add_sort_field "primary_title_ssi ASC", label: "Title \u25BC", 
+    config.add_sort_field "date_created_ssi ASC", label: "Date Created \u25bc"
+    config.add_sort_field "date_created_ssi DESC", label: "Date Created \u25b2"
+    config.add_sort_field "primary_title_ssi ASC", label: "Title \u25bc", 
       default: true
-    config.add_sort_field "primary_title_ssi DESC", label: "Title \u25B2"
-    config.add_sort_field "score DESC, #{uploaded_field} DESC \u25B2", label: "Relevance"
+    config.add_sort_field "primary_title_ssi DESC", label: "Title \u25b2"
+    config.add_sort_field "score DESC, #{uploaded_field} DESC \u25b2", label: "Relevance"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.

@@ -19,21 +19,6 @@ module CMA
         "No description available"
     end
 
-    def thumbnail
-      icon = ""
-      if model.has_audio?
-        icon = "fa-volume-up"
-      elsif model.has_images?
-        icon = "fa-photo"
-      elsif model.has_video?
-        icon = "fa-video-camera"
-      elsif model.has_pdfs?
-        icon = "fa-archive"
-      else
-        # NoOp
-      end
-    end
-
     def date_created
       return model.date_created.first 
     end
@@ -43,24 +28,17 @@ module CMA
     end
 
     def summary
-      return "#{self.member_count} members (#{number_to_human_size(model.bytes)})"  
+      return "#{number_to_human_size(model.bytes)}"  
     end
 
     def member_count
       return model.member_ids.count
     end
 
-    # Retrieve a list of members from Solr for faster performance.
-    #
-    # TODO: Figure out how to do ranged based queries and refresh only part
-    #       of the interface
     def member_presenters
       @member_presenters ||= build_presenters
     end
 
-    # Path to any includes
-    #
-    # TODO: Figure out where to refactor this so that it makes more sense
     def partial_path
       return model.class.to_s.underscore
     end

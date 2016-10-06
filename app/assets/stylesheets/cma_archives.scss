@@ -93,6 +93,8 @@
 .pager li > span,
 .pager li > a {
   border-radius: 0;
+  padding-left: 10px;
+  padding-right: 10px; 
 }
 
 /**
@@ -108,4 +110,13 @@
   background: transparent;
   border: none;
   width: 20ch;
+}
+
+/**
+ * Visual break for sorting / filters vs result sets
+ */
+.for-sort-and-display {
+  margin-bottom: 0.75em;
+  padding-bottom: 0.75em;
+  border-bottom: 0.1em $cma-gray solid;
 }
