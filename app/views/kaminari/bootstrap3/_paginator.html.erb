@@ -5,11 +5,11 @@
     <% each_page do |page| -%>
       <% if page.left_outer? %>
         <%= page_tag page %>
-        <%= gap_tag %>
+        <%= gap_tag unless page.inside_window? %>
       <% elsif page.inside_window? %>
         <%= page_tag page %>
       <% elsif page.right_outer? %>
-        <%= gap_tag %>
+        <%= gap_tag unless page.inside_window? %>
         <%= page_tag page %>
       <% end %>      
     <% end -%>

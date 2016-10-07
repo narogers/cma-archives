@@ -1,13 +1,16 @@
 <div id="sortAndPerPage" class="row">
   <div class="col-xs-12 col-sm-5">
+    <%= render "paginate" %>
+  </div>
+
+  <div class="col-xs-12 col-sm-5">
     <div class="btn-group" id="per_page-dropdown" role="group">
       <%= render "per_page_widget" %>
       <%= render "sort_widget" %>
     </div>
   </div>
  
-  <div class="col-xs-12 col-sm-offset-1 col-sm-6 pull-right">
-     <%= render "paginate" %>
+  <div class="col-xs-12 col-sm-2 pull-right">
      <%= render "view_type_group" %>
   </div>
 </div>
