@@ -34,7 +34,7 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|          
-    config.per_page = [2, 25, 50, 100, 250]
+    config.per_page = [25, 50, 100, 250]
 
     config.view.gallery.partials = [:gallery_header, :gallery_details]
     config.view.gallery.icon_class = 'glyphicon-th-large'

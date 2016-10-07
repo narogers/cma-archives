@@ -88,6 +88,7 @@
 .pager, .pagination {
   margin: 0;
   border-radius: 0;
+  text-align: left;
 }
 
 .pager li > span,
@@ -97,6 +98,9 @@
   padding-right: 10px; 
 }
 
+.pager-centered {
+  text-align: center;
+}
 /**
  * Custom styling to make global search look more like base Blacklight
  * Can be deleted if code is brought closer to source
