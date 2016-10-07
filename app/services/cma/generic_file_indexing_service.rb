@@ -1,14 +1,12 @@
 module CMA
   class GenericFileIndexingService < ActiveFedora::IndexingService
-    STORED_INDEXED_INTEGER = Solrizer::Descriptor.new(:integer, :stored, :indexed)
-
     def generate_solr_document
       super.tap do |solr_doc|
         solr_doc[Solrizer.solr_name('label')] = object.label
         solr_doc[Solrizer.solr_name('file_format')] = object.file_format
         solr_doc[Solrizer.solr_name('file_format', :facetable)] = object.file_format
         # Enable if full text indexing is ever required
-        solr_doc[Solrizer.solr_name('file_size', STORED_INDEXED_INTEGER)] = object.content.size.to_i
+        solr_doc[Solrizer.solr_name('file_size', :stored_sortable, type: :long)] = object.content.size.to_i
         solr_doc[Solrizer.solr_name('mime_type', :symbol)] = object.mime_type
         # Index the Fedora-generated SHA1 digest to create a linkage
         # between files on disk (in fcrepo.binary-store-path) and objects

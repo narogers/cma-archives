@@ -65,7 +65,7 @@ module CMA
         end
  
         def file_size_field
-          "file_size_isi"
+          @file_size_field ||= Solrizer.solr_name("file_size", :stored_sortable, type: :long)
         end
     end
   end  
