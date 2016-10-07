@@ -1,0 +1,8 @@
+<% if show_pagination? %>
+  <div class="pager">
+    <%= paginate @response, 
+         theme: 'bootstrap3',
+         window: 1 %>
+  </div><!-- /pager -->
+<% end %>
+

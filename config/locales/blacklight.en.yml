@@ -1,3 +1,17 @@
 en:
   blacklight:
-    application_name: 'Blacklight'
+    application_name: 'Cleveland Museum of Art Archival Repository'
+
+    search:
+      pagination_info:
+        last: "%{total}"
+        no_items_found: "No %{entry_name} found"
+        single_item_found: "1 of 1 %{entry_name}"
+        pages:
+          one: "%{start_num} to %{end_num} of %{total_num}"
+          other: "%{start_num} to %{end_num} of %{total_num}"
+      entry_pagination_info:
+        one: "1 of 1"
+        other: "%{current} of %{total}"
+      
+

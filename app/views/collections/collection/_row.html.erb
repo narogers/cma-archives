@@ -1,5 +1,5 @@
 <tr id="document_<%= model.id %>" %>
-  <td><%= link_to render_collection_thumbnail(model.thumbnail, model.model), collections.collection_path(model.id) %></td>
+  <td><%= link_to collection_thumbnail_for(model.model), collections.collection_path(model.id) %></td>
   <td>
     <%= render_partial_for 'metadata', model %>
   </td>
