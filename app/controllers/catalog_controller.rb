@@ -212,12 +212,11 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     # label is key, solr field is value
-    config.add_sort_field "date_created_ssi ASC", label: "Date Created \u25bc"
-    config.add_sort_field "date_created_ssi DESC", label: "Date Created \u25b2"
-    config.add_sort_field "primary_title_ssi ASC", label: "Title \u25bc", 
-      default: true
-    config.add_sort_field "primary_title_ssi DESC", label: "Title \u25b2"
-    config.add_sort_field "score DESC, #{uploaded_field} DESC \u25b2", label: "Relevance"
+    config.add_sort_field "date_created_ssi ASC", label: "Date Created <i class=\"fa fa-chevron-down\"></i>"
+    config.add_sort_field "date_created_ssi DESC", label: "Date Created <i class=\"fa fa-chevron-up\"></i>"
+    config.add_sort_field "primary_title_ssi ASC", label: "Title <i class=\"fa fa-chevron-down\"></i>", default: true
+    config.add_sort_field "primary_title_ssi DESC", label: "Title <i class=\"fa fa-chevron-up\"></i>"
+    config.add_sort_field "score DESC, #{uploaded_field} DESC <i class=\"fa fa-chevron-down\"></i>", label: "Relevance"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
