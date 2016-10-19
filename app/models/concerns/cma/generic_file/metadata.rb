@@ -30,18 +30,20 @@ module CMA
         property :credit_line, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#creditline") do |index|
           index.as :stored_searchable
         end
+        # TODO: Migrate this property to a MARC Relator field (pht)
         property :photographer, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#photographer") do |index|
           index.as :stored_searchable
         end
         property :photographer_title, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#photographerTitle") do |index|
           index.as :stored_searchable
         end
-        property :accession_number, predicate: ::RDF::URI.new("http://vocab.getty.edu/aat/300312355") do |index|
+        property :technician, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#technician") do |index|
           index.as :stored_searchable
         end
 
-        property :accession_number, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns#accession") do |index|
-          index.as :stored_searchable
+        #property :accession_number, predicate: ::RDF::URI.new("http://vocab.getty.edu/aat/300312355") do |index|
+        property :accession_number, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#accession") do |index|
+         index.as :stored_searchable
         end
      end
     end

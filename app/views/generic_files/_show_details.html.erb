@@ -31,6 +31,11 @@
   </tr>
 
   <tr>
+     <th>Capture Device</th>
+     <td itemprop="captureDevice"><%= @generic_file.capture_device %></td>
+  </tr>
+  
+  <tr>
     <th>Characterization</th>
     <td>
     <%= "Not yet characterized" if @generic_file.characterization_terms.values.flatten.map(&:empty?).reduce(true) { |sum, value| sum && value } %>
