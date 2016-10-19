@@ -32,7 +32,11 @@
 
   <tr>
      <th>Capture Device</th>
-     <td itemprop="captureDevice"><%= @generic_file.capture_device %></td>
+     <td itemprop="device">
+       <% @generic_file.device.each do |val| %>
+         <%= val %><br />
+       <% end %>
+     </td>
   </tr>
   
   <tr>

@@ -45,6 +45,10 @@ module CMA
         property :accession_number, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#accession") do |index|
          index.as :stored_searchable
         end
+
+        property :device, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#capture_device") do |index|
+          index.as :stored_searchable
+        end
      end
     end
   end

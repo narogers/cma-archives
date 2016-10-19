@@ -16,8 +16,8 @@ module CMA
         solr_doc[Solrizer.solr_name('accession_number', :stored_searchable)] = accession_number_ranges
 
         # For faceting and discovery
-        # TODO: Add technician once the data is loaded
         solr_doc[Solrizer.solr_name('contributor_facet', :facetable)] = object.contributor + object.photographer 
+        solr_doc[Solrizer.solr_name('umbrella_collection', :facetable)] = object.collections.first.collections.first.title unless object.collections.empty? 
           
         # Put the thumbnail and access copies into Solr for faster retrieval if they are
         # present

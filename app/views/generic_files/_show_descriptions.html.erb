@@ -4,7 +4,17 @@
     <% if r.value(term).present? %>
     <tr>
       <th><%= r.label(term) %></th>
-      <td><%= r.value(term) %></td>
+      <td>
+        <% if r.value(term).is_a? Array %>
+          <ul>
+          <% r.value(term).each do |val| %>
+            <li><%= val %></li>
+          <% end %>
+          </ul>
+        <% else %>
+          <%= r.value(term) %>
+        <% end %>
+      </td>
     </tr>
     <% end %>
   <% end %>
