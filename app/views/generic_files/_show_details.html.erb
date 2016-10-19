@@ -31,6 +31,15 @@
   </tr>
 
   <tr>
+     <th>Capture Device</th>
+     <td itemprop="device">
+       <% @generic_file.device.each do |val| %>
+         <%= val %><br />
+       <% end %>
+     </td>
+  </tr>
+  
+  <tr>
     <th>Characterization</th>
     <td>
     <%= "Not yet characterized" if @generic_file.characterization_terms.values.flatten.map(&:empty?).reduce(true) { |sum, value| sum && value } %>

@@ -24,9 +24,9 @@ class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
 
     	if (generic_file[field].is_a? Array)
           if metadata.is_a? Array
-            generic_file[field] += metadata
+            generic_file[field] = metadata + generic_file[field]
           else
-            generic_file[field] += [metadata]
+            generic_file[field] = [metadata] + generic_file[field]
           end
         else
           generic_file[field] = 

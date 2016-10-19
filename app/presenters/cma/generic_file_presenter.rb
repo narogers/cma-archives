@@ -15,14 +15,18 @@ module CMA
 
     def date_created
       return model.date_created.present? ? 
-        [Date.parse(model.date_created.first).strftime("%B %e, %Y")] :
-        ["-"]
+        model.date_created.sort : 
+        "-"
     end
 
     def description
       return model.description.present? ?
         model.description.first :
         ""
+    end
+
+    def device
+      return model.device.sort 
     end
 
     def id
