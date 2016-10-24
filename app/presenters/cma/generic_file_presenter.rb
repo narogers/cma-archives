@@ -16,7 +16,7 @@ module CMA
     def date_created
       return model.date_created.present? ? 
         model.date_created.sort : 
-        "-"
+        ["-"]
     end
 
     def description
