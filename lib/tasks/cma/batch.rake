@@ -14,6 +14,17 @@ namespace :cma do
 	  	    end
         end
 
+        desc "Batch update metadata"
+        task :update, [:base_directory] => :environment do |t, args|
+          full_path = File.expand_path(args[:base_directory])
+          csv_files = FileList.new("#{full_path}/**/batch.csv")
+          csv_files.each do |path|
+            directory = File.split(path)[0]
+            puts "Batch updating #{directory}\n"
+            Sufia.queue.push BatchUpdateJob.new path
+          end
+        end
+
         desc "Report failures in the background jobs"
         task :failures => :environment do 
             # TODO: Make this more configurable and not hard coded into the
