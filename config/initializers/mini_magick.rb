@@ -7,4 +7,5 @@ MiniMagick.configure do |config|
   config.cli_path = "/usr/local/bin"
   # Patch from upstream Sufia
   config.shell_api = "posix-spawn"
+  config.whiny = false
 end
