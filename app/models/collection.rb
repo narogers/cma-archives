@@ -44,7 +44,11 @@ class Collection < Sufia::Collection
   def find_children_by(fields)
     queries = []
     fields.each_pair do |k, v|
-      queries << "#{Solrizer.solr_name(k)}:\"#{v}\""
+      solr_field = GenericFile.index_config[k.to_sym]
+      next if solr_field.nil?
+
+      index = Solrizer.solr_name(k, solr_field.behaviors.first)
+      queries << "#{index}:\"#{v}\"" 
     end 
     query = queries.join(" ")
     limits = {

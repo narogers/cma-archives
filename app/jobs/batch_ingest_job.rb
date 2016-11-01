@@ -76,11 +76,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
       metadata.each do |resource|
         filename = resource.shift
-        current_children_ids = @collection.find_children_by(label: filename)
+        expanded_file_uri = "file://#{@root_directory}/#{filename}"
+
+        current_children_ids = @collection.find_children_by(import_url: expanded_file_uri)
 
         if current_children_ids.empty?
 	      gf = GenericFile.new(
-            import_url: "file://#{@root_directory}/#{filename}",
+            import_url: expanded_file_uri,
             label: filename,
             batch: batch
 	      )
