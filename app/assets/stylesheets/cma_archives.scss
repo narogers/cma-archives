@@ -81,7 +81,18 @@
   flex-basis: 20vh;
   margin: 1em 2vh;
   min-width: 240px;
-  text-align: center;
+  text-align: left;
+}
+
+.flex-gallery {
+  h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    max-width: 20em;
+  }
+
+  .collection-icon {
+    text-align: left;
+  }
 }
 
 /* Reset over Sufia's defaults */
