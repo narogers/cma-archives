@@ -146,6 +146,17 @@ class CatalogController < ApplicationController
        }
     end
 
+    # Search field for deeplinks when verifying the contents of a batch.
+    # Hidden from the search dropdown
+    config.add_search_field("batch") do |field|
+      solr_name = solr_name("isPartOf", :symbol)
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+      field.include_in_simple_select = false
+    end
+
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.

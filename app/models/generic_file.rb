@@ -20,5 +20,11 @@ class GenericFile < ActiveFedora::Base
     include CMA::GenericFile::MimeTypes
     include CMA::GenericFile::Metadata
 
+    include Rails.application.routes.url_helpers
+
     before_save :verify_mime_type
+
+    def base_uri
+      generic_file_path(self)
+    end
 end
