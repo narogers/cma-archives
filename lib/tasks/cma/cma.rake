@@ -32,4 +32,20 @@ namespace :cma do
       end
     end
   end
+
+  # Lifted from https://github.com/avalonmediasystem/avalon/blob/develop/lib/tasks/avalon.rake#L138-L152
+  desc "Reindex all objects"
+  task :reindex, [:threads] => :environment do |t, args|
+    descendants = ActiveFedora::Base.descendant_uris("#{ActiveFedora.fedora.host}#{ActiveFedora.fedora.base_path}")
+    descendants.shift
+    Parallel.map(descendants, in_threads: args[:threads].to_i || 1) do |uri|
+      begin
+        ActiveFedora::Base.find(ActiveFedora::Base.uri_to_id(uri)).update_index
+        puts "#{uri} reindexed"
+      rescue => error
+        puts "Error reindexing #{uri}"
+        puts error.inspect
+      end
+    end
+  end
 end
