@@ -11,7 +11,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
   end
 
   def run
-    user = User.find_by_user_key(generic_file.depositor)
+    user = User.find_by_user_key(generic_file.depositor) || User.first
     uri = Addressable::URI.parse(generic_file.import_url)
 
     spec = {
@@ -22,6 +22,8 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     Rails.logger.info "[IMPORT URL] Preparing #{generic_file.import_url} for processing"
     mime_types = MIME::Types.of(uri.basename)
     generic_file.mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
+    generic_file.save
+
     tmp_file = [id] 
     tmp_file << ".#{mime_types.first.extensions.first}" unless mime_types.blank?   
     # Can't use TempfileService here because we are trying to
