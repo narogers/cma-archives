@@ -7,4 +7,11 @@ FactoryGirl.define do
 
     initialize_with { attributes }
   end
+
+  factory :collection do
+    depositor "test"
+    edit_users ["test"]
+    title { Faker::Lorem.words(3).join(" ") }
+    description { Faker::Lorem.paragraph }
+  end
 end

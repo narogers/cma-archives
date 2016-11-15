@@ -1,3 +1,5 @@
+require 'pry'
+
 class Fixity
   def initialize(id)
     solr_resource = GenericFile.load_instance_from_solr(id)
@@ -20,8 +22,9 @@ class Fixity
             end
           end
         end
-      rescue IOError
+      rescue IOError => error
         puts "ERROR: Could not retrieve fixity data from Fedora"
+        puts error
         @remote_digest[:checksum] = false
         @remote_digest[:algorithm] = nil
       end

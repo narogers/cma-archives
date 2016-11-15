@@ -38,7 +38,7 @@ group :development, :test do
   gem 'highline'
 end
 
-gem 'sufia', '~> 6.6.1'
+gem 'sufia', '~> 6.7.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'parallel'
 
@@ -74,6 +74,7 @@ group :test do
   gem 'faker'
   gem 'rspec-rails'
   gem 'simplecov', require: false
+  gem 'webmock'
 end
 
 # Enhance background job support and logging of jobs
