@@ -3,7 +3,6 @@ set :branch, :master
 set :deploy_to, "/var/www/sites/archives/rails/cma-archives/"
 set :log_level, :debug
 
-
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
@@ -18,3 +17,4 @@ server 'appdev01.clevelandart.org', user: 'railsapps', roles: %w{app db web work
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 fetch(:default_env).merge!(rails_env: :staging)
+set :passenger_restart_with_touch, true
