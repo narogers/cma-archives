@@ -86,5 +86,17 @@ RSpec.describe Collection, type: :model do
       expect(collection.has_images?).to be false
     end
   end
+
+  describe "#featured?" do
+    let(:collection) { FactoryGirl.create :collection }
+    let(:featured_collection) { FactoryGirl.create :collection }
+
+    it "reports featured status" do
+      FeaturedCollection.create(collection_id: featured_collection.id)
+    
+      expect(featured_collection.featured?).to be true
+      expect(collection.featured?).to be false
+    end
+  end
 end
 

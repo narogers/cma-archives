@@ -8,29 +8,35 @@ Sufia.config do |config|
 
   # Exif to Dublin Core mappings
   config.exif_to_desc_mapping = {
-    subject: :subject,
-    hierarchicalSubject: :subject,
-    personInImage: :subject,
-    keywords: :subject,
+    Subject: :subject,
+    HierarchicalSubject: :subject,
+    PersonInImage: :subject,
+    Keywords: :subject,
     SourceFile: :source,
-    sourcefile: :source,
     JobID: :identifier,
-    headline: :abstract,
-    description: :description,
-    sublocation: :spatial,
-    location: :spatial,
+    Headline: :abstract,
+    Description: :description,
+    Sublocation: :spatial,
+    Location: :spatial,
     DateTimeOriginal: :date_created,
     CreateDate: :date_created,
-    datetimecreated: :date_created,
+    DateTimeCreated: :date_created,
     DateTime: :date_modified,
     ModifyDate: :date_modified,
-    datetimemodifed: :date_modified,
+    DateTimeModifed: :date_modified,
     # These are CMA specific fields
     'by-linetitle' => :photographer_title,
     AuthorsPosition: :photographer_title,
     'by-line' => :photographer,
-    creator: :photographer,
-    credit: :credit_line
+    Creator: :photographer,
+    Credit: :credit_line
+  }
+  # Default fields for images
+  config.default_metadata_fields = {
+    rights: "Copyright, The Cleveland Museum of Art",
+    contributor: "Cleveland Museum of Art",
+    language: "en",
+    resource_type: "Image"
   }
 
   config.max_days_between_audits = 7
@@ -103,6 +109,10 @@ Sufia.config do |config|
 
   # Specify how many seconds back from the current time that we should show by default of the user's activity on the user's dashboard
   config.activity_to_show_default_seconds_since_now = 24*60*60
+
+  # Cutoff for using web based characterization versus the command line
+  # Tailor for performance and load
+  config.characterization_service_limit = 500*(2**20)
 
   # Specify a date you wish to start collecting Google Analytic statistics for.
   # Leaving it blank will set the start date to when ever the file was uploaded by

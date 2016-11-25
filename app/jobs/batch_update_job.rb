@@ -3,9 +3,11 @@ require 'csv'
 class BatchUpdateJob < ActiveFedoraIdBasedJob
 	attr_accessor :batch_file 
 
+    # :nocov:
 	def queue_name
 		:batch_update
 	end
+    # :nocov:
 
 	def initialize(csv_path)
 		self.batch_file = csv_path

@@ -5,9 +5,11 @@ class InstallFeaturedCollectionsJob
     self.collections = collections
   end
 
+  # :nocov:
   def queue_name
     :collections
   end
+  # :nocov:
 
   def run
     featured_collections = collections.is_a?(String) ?

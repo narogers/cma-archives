@@ -17,18 +17,21 @@ RSpec.describe Fixity do
     end
 
     it "should have a valid checksum" do
-     expect(fixity.remote[:checksum]).to eq "f4bdeae4040d68a3977dee8d9a31a0137e741c44"
-    end
-    
-    it "should encode checksum in SHA1" do
-       expect(fixity.remote[:algorithm]).to eq "sha1"
-    end
-
-    it "should validate against Fedora's fixity service" do
-      expect(fixity.remote[:uri]).to end_with("/content/fcr:fixity")
+     expect(fixity.remote).to eq "f4bdeae4040d68a3977dee8d9a31a0137e741c44"
     end
   end
 
   describe "#local" do
+    it "should be able to recover from bad file paths" do
+      file = FactoryGirl.create(:generic_file, 
+        import_url: "file://dev/null/badFilePath.png")
+      fixity = Fixity.new file.id
+      expect(fixity.local).to eq false
+    end
+
+    it "should use SHA1 checksums" do
+      fixity = Fixity.new generic_file.id
+      expect(fixity.local).to eq "d5dec89bed8b8ca7555ba7c947809bf28720b08c"
+    end
   end
 end

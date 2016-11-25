@@ -4,9 +4,11 @@ require 'csv'
 class UpdateCollectionMembersJob < ActiveFedoraIdBasedJob
   attr_accessor :csv_source
   
+  # :nocov:
   def queue_name
     :batch_update
   end
+  # :nocov:
 
   def initialize(csv_source)
     self.csv_source = File.expand_path(csv_source)

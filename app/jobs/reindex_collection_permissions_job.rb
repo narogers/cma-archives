@@ -3,9 +3,11 @@
 # before_save method in the Collection class that triggers the resolution of
 # permissions
 class ReindexCollectionPermissionsJob 
+  # :nocov:
   def queue_name
     :permissions
   end
+  # :nocov:
 
   def run
     # Collection.find_each is marginally faster than the alternatives for

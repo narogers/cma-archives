@@ -11,12 +11,12 @@ module CMA
     		obj.transform_file :content, { 
               access: { 
                 format: 'jpg',    						
-                size: '1200x1000>',
+                size: '@1200000',
     		    datastream: 'access'
     		  },
               thumbnail: { 
                 format: 'jpg',                
-                size: '200x150>',
+                size: '@30000',
                 datastream: 'thumbnail'
               },
     		}, processor: :exif_image
