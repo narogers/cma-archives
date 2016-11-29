@@ -6,9 +6,11 @@
 # It might be wise to only encode if the URL is file:///
 # based.
 class ImportUrlJob < ActiveFedoraIdBasedJob
+  # :nocov:
   def queue_name
     :import
   end
+  # :nocov:
 
   def run
     user = User.find_by_user_key(generic_file.depositor) || User.first
@@ -38,7 +40,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
       # Don't pass a message through Mailboxer any more; if the status
       # fails it can be handled differently in a future refactor of the
       # jobs workflow
-      Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', generic_file.mime_type)
+      CMA::GenericFile::Actor.new(generic_file, user).create_content(f, uri.basename, 'content', generic_file.mime_type)
     end
   end
 end

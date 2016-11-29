@@ -3,9 +3,11 @@ require 'csv'
 class BatchIngestJob < ActiveFedoraIdBasedJob
 	attr_accessor :batch_file 
 
+    # :nocov:
 	def queue_name
 		:batch_ingest
 	end
+    # :nocov:
 
 	def initialize(csv_path, batch_id = nil)
 		self.batch_file = csv_path
@@ -101,7 +103,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
           Rails.logger.info "[#{log_prefix}] Ingesting #{gf.id} (#{filename})"
           resources_to_import << gf.id
 	    else
-          # Defer checksumming to the BatchIngestJob
           gf_id = current_children_ids.first
           fixity = Fixity.new(gf_id)
           unless fixity.equal?

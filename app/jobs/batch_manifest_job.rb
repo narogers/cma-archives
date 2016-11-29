@@ -5,9 +5,11 @@ class BatchManifestJob
 
   attr_reader :batch, :file
 
+  # :nocov:
   def queue_name
     :batch_manifest
   end
+  # :nocov:
 
   def initialize id
     @batch = Batch.find id if Batch.exists? id
@@ -38,7 +40,7 @@ class BatchManifestJob
     csv_file << [:file, :local_path, :fedora_uri, :local_checksum, :remote_checksum]
     @batch.generic_files.each do |gf|
       fixity = Fixity.new gf.id
-      csv_file << [gf.label, gf.import_url, gf.uri, fixity.local[:checksum], fixity.remote[:checksum]]
+      csv_file << [gf.label, gf.import_url, gf.uri, fixity.local, fixity.remote]
     end
   end
 end
