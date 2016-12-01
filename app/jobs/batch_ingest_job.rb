@@ -95,11 +95,11 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	      )
           gf = apply_metadata_properties(gf, fields, resource)
 	      gf = apply_default_acls(gf)
-          @collection.members << gf
-          
-          gf.save 
-          @collection.save
+          gf.save
 
+          @collection.member_ids += [gf.id]
+          gf.collection_ids = [@collection.id]
+ 
           Rails.logger.info "[#{log_prefix}] Ingesting #{gf.id} (#{filename})"
           resources_to_import << gf.id
 	    else
