@@ -1,0 +1,37 @@
+@prefix premis: <http://www.loc.gov/premis/rdf/v1#> .
+@prefix nt: <http://www.jcp.org/jcr/nt/1.0> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns004: <http://www.w3.org/ns/auth/acl#> .
+@prefix ns003: <http://id.loc.gov/vocabulary/relators/> .
+@prefix ns002: <http://purl.org/dc/terms/> .
+@prefix ns001: <info:fedora/fedora-system:def/model#> .
+@prefix xsi: <http://www.w3.org/2001/XMLSchema-instance> .
+@prefix ns008: <info:fedora/fedora-system:def/relations-external#> .
+@prefix mode: <http://www.modeshape.org/1.0> .
+@prefix ns007: <http://scholarsphere.psu.edu/ns#> .
+@prefix ns006: <http://library.clevelandart.org/ns#> .
+@prefix ns005: <http://pcdm.org/models#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix ns009: <http://library.clevelandart.org/ns/#> .
+@prefix jcr: <http://www.jcp.org/jcr/1.0> .
+@prefix fedoraconfig: <http://fedora.info/definitions/v4/config#> .
+@prefix mix: <http://www.jcp.org/jcr/mix/1.0> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix authz: <http://fedora.info/definitions/v4/authorization#> .
+@prefix image: <http://www.modeshape.org/images/1.0> .
+@prefix sv: <http://www.jcp.org/jcr/sv/1.0> .
+@prefix test: <info:fedora/test/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fedora: <http://fedora.info/definitions/v4/repository#> .
+@prefix ebucore: <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#> .
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix xs: <http://www.w3.org/2001/XMLSchema> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+
+<http://192.168.56.102:8888/fedora/rest/cma-archives/zw/12/z5/29/zw12z529z/content> premis:hasFixity <http://192.168.56.102:8888/fedora/rest/cma-archives/zw/12/z5/29/zw12z529z/content#fixity/1478800039400> .
+
+<http://192.168.56.102:8888/fedora/rest/cma-archives/zw/12/z5/29/zw12z529z/content#fixity/1478800039400> a premis:Fixity , premis:EventOutcomeDetail ;
+	premis:hasEventOutcome "SUCCESS"^^<http://www.w3.org/2001/XMLSchema#string> ;
+	premis:hasMessageDigest <urn:sha1:f4bdeae4040d68a3977dee8d9a31a0137e741c44> ;
+	premis:hasSize "151014820"^^<http://www.w3.org/2001/XMLSchema#long> .

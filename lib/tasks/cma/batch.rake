@@ -12,6 +12,26 @@ namespace :cma do
               puts "Queuing #{directory} for ingest\n"
               Sufia.queue.push BatchIngestJob.new(path, batch.id)
 	  	    end
+
+            collections = csv_files.map { |path| File.split(path)[0].sub(args[:base_directory], "") }
+            recipients = User.where(login: RoleMapper.map["batch-admin"])
+            BatchMailer.batch_started_email(recipients, batch, collections).deliver_now
+        end
+
+        desc "Batch update metadata"
+        task :update, [:base_directory] => :environment do |t, args|
+          full_path = File.expand_path(args[:base_directory])
+          csv_files = FileList.new("#{full_path}/**/batch.csv")
+          csv_files.each do |path|
+            directory = File.split(path)[0]
+            puts "Batch updating #{directory}\n"
+            Sufia.queue.push BatchUpdateJob.new path
+          end
+        end
+
+        desc "Create archival manifest"
+        task :manifest, [:batch_id] => :environment do |t, args|
+          BatchManifestJob.new(args[:batch_id]).run
         end
 
         desc "Report failures in the background jobs"

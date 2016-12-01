@@ -7,7 +7,6 @@ class SolrDocument
   include Sufia::SolrDocumentBehavior
   # TODO: Refactor this out from under GenericFile
   include CMA::GenericFile::MimeTypes
-  include CMA::GenericFile::ImageBehavior
   # Likewise
   include CMA::Collection::CollectionSize
   include CMA::Collection::CollectionType

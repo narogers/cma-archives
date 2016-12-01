@@ -47,6 +47,7 @@ config/solr.yml
 config/initializers/secret_token.rb
 config/initializers/blacklight_initializer.rb
 config/initializers/devise.rb
+config/initializers/mini_magick.rb
 
 # These should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset

@@ -35,6 +35,8 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|          
     config.per_page = [25, 50, 100, 250]
+    config.default_per_page = 50
+    config.max_per_page = 250
 
     config.view.gallery.partials = [:gallery_header, :gallery_details]
     config.view.gallery.icon_class = 'glyphicon-th-large'
@@ -144,6 +146,17 @@ class CatalogController < ApplicationController
          qf: solr_name,
          pf: solr_name
        }
+    end
+
+    # Search field for deeplinks when verifying the contents of a batch.
+    # Hidden from the search dropdown
+    config.add_search_field("batch") do |field|
+      solr_name = solr_name("isPartOf", :symbol)
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+      field.include_in_simple_select = false
     end
 
     # Now we see how to over-ride Solr request handler defaults, in this

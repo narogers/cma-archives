@@ -3,9 +3,11 @@ require 'csv'
 class BatchIngestJob < ActiveFedoraIdBasedJob
 	attr_accessor :batch_file 
 
+    # :nocov:
 	def queue_name
 		:batch_ingest
 	end
+    # :nocov:
 
 	def initialize(csv_path, batch_id = nil)
 		self.batch_file = csv_path
@@ -45,6 +47,9 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  @collection = find_or_create_collection(collection_title, creator)
       set_creation_date(metadata.shift.first)
       add_collection_relationships(metadata.shift.first)
+      @collection = apply_default_acls(@collection)
+      @collection.save
+
       # Ignore the blank line
       metadata.shift.first
 	  process_files(metadata, batch)
@@ -81,21 +86,23 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
         current_children_ids = @collection.find_children_by(import_url: expanded_file_uri)
 
         if current_children_ids.empty?
-	      gf = GenericFile.new(
+	      gf = GenericFile.create(
             import_url: expanded_file_uri,
             label: filename,
-            batch: batch
+            batch: batch,
+            edit_users: @collection.edit_users,
+            depositor: @collection.depositor
 	      )
           gf = apply_metadata_properties(gf, fields, resource)
 	      gf = apply_default_acls(gf)
-	      gf.save
           @collection.members << gf
+          
+          gf.save 
           @collection.save
 
           Rails.logger.info "[#{log_prefix}] Ingesting #{gf.id} (#{filename})"
           resources_to_import << gf.id
 	    else
-          # Defer checksumming to the BatchIngestJob
           gf_id = current_children_ids.first
           fixity = Fixity.new(gf_id)
           unless fixity.equal?
@@ -164,12 +171,17 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     end
 
 	def apply_default_acls(resource)
-		resource.depositor = @collection.depositor
-		resource.edit_users = @collection.edit_users
-		# Group defaults
-		resource.edit_groups = [:admin]
-		resource.discover_groups = [:admin]
-		resource.read_groups = [:admin]
+        resource.edit_users += ["admin"]
+		resource.edit_groups += [:admin]
+  
+        unless resource.collections.empty?
+          resource.collections.each do |c|
+            resource.edit_users += c.edit_users
+            resource.edit_groups += c.edit_groups
+            resource.discover_groups += c.discover_groups
+            resource.read_groups += c.read_groups
+          end
+        end
 
 		resource
 	end
@@ -179,7 +191,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
     # being associated to any grouping
     def find_batch(id)
       begin
-        id.blank? ? nil : Batch.find(id) 
+        id.blank? ? nil : ::Batch.find(id) 
       rescue ActiveFedora::ObjectNotFoundError
         nil
       end  

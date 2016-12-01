@@ -33,7 +33,6 @@ RSpec.describe ExtractExifMetadataJob do
       expect(gf.subject).to eq ["Cubism", "Installation", "Exhibition -- Picasso's Early Years"]
       expect(gf.description).to eq ["A retrospective look at the creative development of Picasso"]     
       expect(gf.date_created).to eq ["2015-12-03T00:00:00+00:00"]
-      # TODO: Refactor into its own test?
       expect(gf.rights).to eq ["Copyright, The Cleveland Museum of Art"]
       expect(gf.contributor).to eq ["Cleveland Museum of Art"]
       expect(gf.language).to eq ["en"]
@@ -42,21 +41,25 @@ RSpec.describe ExtractExifMetadataJob do
  end
 
   describe "#normalize" do
-    let(:job) { ExtractExifMetadataJob.new(nil) }
+    let(:file) { FactoryGirl.create :generic_file, mime_type: "image/tiff" }
+    let(:fields) { {subject: :subject, description: :description} }
+    let(:exif) { {
+      subject: ["Art|20th Century", "Picasso", "Monet", "Van Gogh"],
+      description: "\u0012This string is inva\u0001lid\u0004"
+    } }
 
-    it "converts pipes to dashes" do
-      output = job.normalize("One|Two")
-      expect(output).to eq "One--Two"
+    before(:each) do
+      allow(Sufia.config).to receive(:exif_to_desc_mapping).and_return(fields)
+      allow(MiniExiftool).to receive(:new).and_return(exif)
+      allow_any_instance_of(CMAFileContentDatastream).to receive(:has_content?).and_return(true)  
+
+      file.import_exif_metadata
     end
 
-    it "handles Arrays as well as Strings" do
-      output = job.normalize(["Red Fish", "Blue Fish", "One Fish", "Two Fish"])
-      expect(output).to eq ["Red Fish","Blue Fish","One Fish","Two Fish"]
-    end
-
-    it "escapes control characters" do
-      output = job.normalize("\u0012This string is inva\u0001lid\u0004")
-      expect(output).to eq "This string is invalid"
+    it "normalizes input according to specifications" do
+      expect(file.subject).to include "Art--20th Century"
+      expect(file.subject.count).to be 4
+      expect(file.description).to eq ["This string is invalid"]
     end
   end
 end

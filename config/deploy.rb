@@ -33,6 +33,7 @@ set :linked_files, fetch(:linked_files, []).push(
 	'config/secrets.yml',
 	'config/solr.yml',
 	'config/initializers/hydra_derivatives.rb',
+    'config/initializers/mini_magick.rb',
 	'config/initializers/resque_admin.rb',)
 
 # Default value for linked_dirs is []

@@ -1,0 +1,7 @@
+<%= @batch.title.first %> has been started at <%= @batch.create_date %>. Check <%= catalog_index_url(q: @batch.id, search_field: "batch") %> regularly for status updates.
+
+Directories
+===========
+<% @directories.each do |path| %>
+* <%= path %>
+<% end %>

@@ -39,8 +39,6 @@ module CMA
       end  
     end
 
-    # Not to be confused with the date that the Collection object was created
-    # this returns the date according to the metadata during batch ingest
     def date_created
       Array(self[Solrizer.solr_name("date_created")]).first
     end

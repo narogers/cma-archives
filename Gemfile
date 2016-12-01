@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-# Use dotenv to manage settings instead of fiddling with things across
-# lots of files
 gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -12,25 +10,20 @@ gem 'sqlite3'
 group :staging, :production do
   gem 'mysql2', '~> 0.4'
 end
-# Use Font Awesome icon set
 gem 'font-awesome-rails'
-# Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 
-# Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+# Pin sprocket-rails to the 2.3 branch until some bugs affecting tiny-mce
+# are worked out
+gem 'sprockets-rails', '~> 2.3'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -45,8 +38,9 @@ group :development, :test do
   gem 'highline'
 end
 
-gem 'sufia', '~> 6.6.1'
+gem 'sufia', '~> 6.7.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
+gem 'parallel'
 
 #gem 'browse-everything', github: 'narogers/browse-everything'
 # Peg to this version to avoid any future changes as PCDM Implementation
@@ -54,6 +48,7 @@ gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 # branch
 gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: 'cc031e7'
 gem 'active-fedora', '~> 9'
+gem 'rsolr', '~> 1.0.6'
 gem 'blacklight_range_limit'
 
 # Once Sufia's references are updated use v2.0 instead
@@ -79,12 +74,10 @@ group :test do
   gem 'faker'
   gem 'rspec-rails'
   gem 'simplecov', require: false
+  gem 'webmock'
 end
 
 # Enhance background job support and logging of jobs
-#
-# Try using Resque Pool 0.7.0 to see if the ability to hotswap pools simplifies
-# management at all
 gem 'resque-pool', github: "nevans/resque-pool", branch: "master"
 gem 'resque-status' 
 gem 'resque-dynamic-queues'
@@ -94,12 +87,6 @@ gem 'resque-logger'
 # unless there are major problems
 gem 'pry'
 gem 'pry-rails'
-
-gem 'rsolr', '~> 1.0.6'
-
-# Pin sprocket-rails to the 2.3 branch until some bugs affecting tiny-mce
-# are worked out
-gem 'sprockets-rails', '~> 2.3'
 
 # For performace in production
 group :production do
