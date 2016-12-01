@@ -83,4 +83,7 @@ Rails.application.configure do
   ActiveSupport::Deprecation.silenced = true
   Deprecation.default_deprecation_behavior = :silence
   ActiveFedora::Base.logger.level = :warn if ActiveFedora::Base.logger
+
+  # Production host should reflect stability of environment
+  config.action_mailer.default_url_options = {host: "archive.clevelandart.org"}
 end
