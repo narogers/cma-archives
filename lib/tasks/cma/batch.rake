@@ -12,6 +12,10 @@ namespace :cma do
               puts "Queuing #{directory} for ingest\n"
               Sufia.queue.push BatchIngestJob.new(path, batch.id)
 	  	    end
+
+            collections = csv_files.map { |path| File.split(path)[0].sub(args[:base_directory], "") }
+            recipients = User.where(login: RoleMapper.map["batch-admin"])
+            BatchMailer.batch_started_email(recipients, batch, collections).deliver_now
         end
 
         desc "Batch update metadata"

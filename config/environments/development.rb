@@ -51,5 +51,8 @@ Rails.application.configure do
   # Suppress whiny output from the web console
   config.web_console.whiny_requests = false
   config.web_console.whitelisted_ips = "192.168.56.1"
+
+  # Default host should be local
+  config.action_mailer.default_url_options = { host: "192.168.56.102", port: 82 }
 end
 
