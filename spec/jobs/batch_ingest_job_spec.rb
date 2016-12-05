@@ -38,7 +38,7 @@ RSpec.describe BatchIngestJob do
       expect(coll.title).to eq "Test Batch Ingest"
       expect(coll.date_created).to contain_exactly "2016-03"
       expect(coll.collections).to contain_exactly @parent
-      expect(coll.members.count).to be 3
+      expect(coll.members.count).to eq 3
       expect(coll.resource_type).to contain_exactly "Collection"
       expect(coll.edit_groups).to contain_exactly "admin", "rspec"
     end
@@ -48,7 +48,7 @@ RSpec.describe BatchIngestJob do
       allow(Sufia.queue).to receive(:push)
 
       count = get_count("Test Batch Ingest") 
-      expect(count).to be 0
+      expect(count).to eq 0
 
       BatchIngestJob.new("spec/fixtures/batch.csv").run
       coll = find_by_title "Test Batch Ingest"
