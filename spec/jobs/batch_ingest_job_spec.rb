@@ -4,7 +4,7 @@ RSpec.describe BatchIngestJob do
   before(:all) do
     @parent = Collection.new(title: "Batch Tests", id: "umbrella-coll")
     @parent.edit_users = ["admin"]
-    @parent.edit_groups = ["rspec"]
+    @parent.edit_groups = ["rspec", "pry"]
     @parent.depositor = "admin"
     @parent.save
  end
@@ -40,7 +40,7 @@ RSpec.describe BatchIngestJob do
       expect(coll.collections).to contain_exactly @parent
       expect(coll.members.count).to eq 3
       expect(coll.resource_type).to contain_exactly "Collection"
-      expect(coll.edit_groups).to contain_exactly "admin", "rspec"
+      expect(coll.edit_groups).to contain_exactly "admin", "rspec", "pry"
     end
 
     it "does not reprocess existing content" do

@@ -5,7 +5,7 @@ RSpec.describe User do
 
   describe "#groups" do
     it "should use the role map for access control" do
-      expect(user.groups).to contain_exactly "archivist"
+      expect(user.groups).to contain_exactly "archives"
     end
   end
 

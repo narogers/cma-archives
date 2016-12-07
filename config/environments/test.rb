@@ -26,11 +26,6 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
-  # Tell Action Mailer not to deliver emails to the real world.
-  # The :test delivery method accumulates sent emails in the
-  # ActionMailer::Base.deliveries array.
-  config.action_mailer.delivery_method = :test
-
   # Randomize the order test cases are executed.
   config.active_support.test_order = :random
 
@@ -41,6 +36,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # For tests just use localhost
+  config.default_url_options = { host: "localhost", port: 3000 }
   config.action_mailer.delivery_method = :test
-  config.action_mailer.default_url_options = {host: "localhost"}
+  config.action_mailer.default_url_options = config.default_url_options
 end

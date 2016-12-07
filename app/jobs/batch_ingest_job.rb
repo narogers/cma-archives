@@ -1,5 +1,4 @@
 require 'csv'
-require 'pry'
 
 class BatchIngestJob < ActiveFedoraIdBasedJob
   include Sufia::Lockable
@@ -80,13 +79,14 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       
 	  # The rest of the file should be a list of files and associated
 	  # properties
-      new_resources = []
-      updated_resources = []
+      resources = []
 
       metadata.each do |resource|
         filename = resource.shift
         expanded_file_uri = "file://#{@root_directory}/#{filename}"
-
+  
+        # TODO: Modify search to be unique across entire repository not just
+        #       scoped to a collection
         current_children_ids = @collection.find_children_by(import_url: expanded_file_uri)
 
         if current_children_ids.empty?
@@ -97,40 +97,36 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
             edit_users: @collection.edit_users,
             depositor: @collection.depositor
 	      )
-          apply_metadata_properties(gf, fields, resource).save
-          gf.reload
 
           Rails.logger.info "[#{log_prefix}] Ingesting #{gf.id} (#{filename})"
-          new_resources << gf
 	    else
           gf = GenericFile.find current_children_ids.first
           fixity = Fixity.new(gf.id)
-          unless fixity.equal?
-            Rails.logger.info "[#{log_prefix}] Updating #{gf.id} (#{filename})"
-            apply_metadata_properties(gf, fields, resource).save
-            updated_resource << gf
-          else
+          if fixity.equal?
             Rails.logger.info "[#{log_prefix}] Skipping #{gf.id} (#{filename})"
+            next
+          else
+            Rails.logger.info "[#{log_prefix}] Updating #{gf.id} (#{filename})"
           end
         end
+
+        apply_metadata_properties(gf, fields, resource).save
+        gf.reload
+        resources << gf
       end
 
       acquire_lock_for(@collection.id) do
         @collection = apply_default_acls(@collection)
-        unless new_resources.empty?
-          new_resource_ids = new_resources.map { |gf| gf.id }
-          @collection.add_members [new_resource_ids]
+        unless resources.empty?
+          @collection.members += resources
         end
         @collection.save
       end
 
-      new_resources.each do |gf|
+      resources.each do |gf|
         # Chain and save
         apply_default_acls(gf).save
-        Sufia.queue.push(ImportUrlJob.new(gf.id))
-      end
-      updated_resources.each do |gf|
-        Sufia.queue.push(ImportUrlJob.new(gf.id))
+        Sufia.queue.push(IngestLocalFileJob.new(gf.id))
       end
 	end
 

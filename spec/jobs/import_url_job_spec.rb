@@ -18,6 +18,7 @@ RSpec.describe ImportUrlJob do
       expect(generic_file.content.has_content?).to be true
       expect(generic_file.content.size).to eq 9610
       expect(generic_file.mime_type).to eq "image/jpeg"
+      expect(File.exists? generic_file.local_file).to be false
     end
   end
 end
