@@ -1,6 +1,8 @@
 require 'csv'
 
 class BatchIngestJob < ActiveFedoraIdBasedJob
+  include Sufia::Lockable
+
 	attr_accessor :batch_file 
 
     # :nocov:
@@ -47,8 +49,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  @collection = find_or_create_collection(collection_title, creator)
       set_creation_date(metadata.shift.first)
       add_collection_relationships(metadata.shift.first)
-      @collection = apply_default_acls(@collection)
-      @collection.save
 
       # Ignore the blank line
       metadata.shift.first
@@ -57,6 +57,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
     def set_creation_date(date)
       @collection.date_created = [date]
+      @collection.save
     end
 
  	def add_collection_relationships(parent_title)
@@ -65,7 +66,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       if parent_collection.nil?
         Rails.logger.warn("[#{log_prefix}] Could not locate #{parent_title}")
       else
-        @collection.collections += [parent_collection]
+        @collection.collections = [parent_collection]
+        @collection.save
       end
 	end
 
@@ -77,12 +79,14 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       
 	  # The rest of the file should be a list of files and associated
 	  # properties
-      resources_to_import = []
+      resources = []
 
       metadata.each do |resource|
         filename = resource.shift
         expanded_file_uri = "file://#{@root_directory}/#{filename}"
-
+  
+        # TODO: Modify search to be unique across entire repository not just
+        #       scoped to a collection
         current_children_ids = @collection.find_children_by(import_url: expanded_file_uri)
 
         if current_children_ids.empty?
@@ -93,41 +97,45 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
             edit_users: @collection.edit_users,
             depositor: @collection.depositor
 	      )
-          gf = apply_metadata_properties(gf, fields, resource)
-	      gf = apply_default_acls(gf)
-          @collection.members << gf
-          
-          gf.save 
-          @collection.save
 
           Rails.logger.info "[#{log_prefix}] Ingesting #{gf.id} (#{filename})"
-          resources_to_import << gf.id
 	    else
-          gf_id = current_children_ids.first
-          fixity = Fixity.new(gf_id)
-          unless fixity.equal?
-            Rails.logger.info "[#{log_prefix}] Updating #{gf_id} (#{filename})"
-            resources_to_import << gf_id
+          gf = GenericFile.find current_children_ids.first
+          fixity = Fixity.new(gf.id)
+          if fixity.equal?
+            Rails.logger.info "[#{log_prefix}] Skipping #{gf.id} (#{filename})"
+            next
           else
-            Rails.logger.info "[#{log_prefix}] Skipping #{gf_id} (#{filename})"
-
+            Rails.logger.info "[#{log_prefix}] Updating #{gf.id} (#{filename})"
           end
         end
+
+        apply_metadata_properties(gf, fields, resource).save
+        gf.reload
+        resources << gf
       end
 
-      resources_to_import.each do |gf_id|
-        Sufia.queue.push(ImportUrlJob.new(gf_id))
+      acquire_lock_for(@collection.id) do
+        @collection = apply_default_acls(@collection)
+        unless resources.empty?
+          @collection.members += resources
+        end
+        @collection.save
+      end
+
+      resources.each do |gf|
+        # Chain and save
+        apply_default_acls(gf).save
+        Sufia.queue.push(IngestLocalFileJob.new(gf.id))
       end
 	end
 
 	def create_collection(title, creator)
 		Rails.logger.info "[#{log_prefix}] Creating a new collection - #{title}"
-		collection = Collection.create(title: title,
+		Collection.create(title: title,
           depositor: creator,
           edit_users: [creator],
           resource_type: ["Collection"])
-
-		collection
 	end
 
 	# Iterate over all the collections found looking for an exact match.
@@ -174,12 +182,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
         resource.edit_users += ["admin"]
 		resource.edit_groups += [:admin]
   
-        unless resource.collections.empty?
-          resource.collections.each do |c|
-            resource.edit_users += c.edit_users
-            resource.edit_groups += c.edit_groups
-            resource.discover_groups += c.discover_groups
-            resource.read_groups += c.read_groups
+        unless resource.collection_ids.empty?
+          resource.collection_ids.each do |id|
+            coll = Collection.load_instance_from_solr id
+            resource.edit_users += coll.edit_users
+            resource.edit_groups += coll.edit_groups
+            resource.discover_groups += coll.discover_groups
+            resource.read_groups += coll.read_groups
           end
         end
 

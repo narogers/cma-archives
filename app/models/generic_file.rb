@@ -27,4 +27,9 @@ class GenericFile < ActiveFedora::Base
     def base_uri
       generic_file_path(self)
     end
+
+    def local_file
+      pairs = id.scan(/..?/).first(4)
+      File.join(CMA.config["repository"]["root"], *pairs, id)
+    end
 end

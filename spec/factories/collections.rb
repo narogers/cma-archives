@@ -13,5 +13,17 @@ FactoryGirl.define do
     edit_users ["test"]
     title { Faker::Lorem.words(3).join(" ") }
     description { Faker::Lorem.paragraph }
+
+    factory :editorial_collection do
+      read_groups ["photostudio"]
+    end
+   
+    factory :object_photography_collection do
+      read_groups ["photostudio", "conservation"]
+    end
+
+    factory :conservation_collection do
+      edit_groups ["conservation"]
+    end
   end
 end

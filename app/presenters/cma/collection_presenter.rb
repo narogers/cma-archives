@@ -28,7 +28,7 @@ module CMA
     end
 
     def summary
-      return "#{number_to_human_size(model.bytes)}"  
+      return "#{member_count} Items"
     end
 
     def member_count

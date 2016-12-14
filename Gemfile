@@ -29,7 +29,6 @@ gem 'sprockets-rails', '~> 2.3'
 # gem 'bcrypt', '~> 3.1.7'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
   gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-bundler'
@@ -42,17 +41,14 @@ gem 'sufia', '~> 6.7.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'parallel'
 
-#gem 'browse-everything', github: 'narogers/browse-everything'
 # Peg to this version to avoid any future changes as PCDM Implementation
 # continues. This code has the RAW fix merged into the main development
 # branch
-gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: 'cc031e7'
 gem 'active-fedora', '~> 9'
 gem 'rsolr', '~> 1.0.6'
 gem 'blacklight_range_limit'
 
 # Once Sufia's references are updated use v2.0 instead
-#gem 'hydra-derivatives', '~> 2.0'
 gem 'mini_exiftool'
 gem 'exiftool'
 

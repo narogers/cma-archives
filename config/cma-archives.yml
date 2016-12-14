@@ -1,0 +1,15 @@
+development:
+  repository:
+    root: "/opt/fedora/repository"
+    owner: "nrogers"
+    group: "jetty"
+test:
+  repository:
+     root: "/tmp/rspec/repository"
+     owner: "nrogers"
+     group: "nrogers"
+production:
+  repository:
+    root: "/opt/fedora/repository"
+    owner: "railsapps"
+    group: "railsapps"

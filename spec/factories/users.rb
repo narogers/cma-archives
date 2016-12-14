@@ -4,7 +4,7 @@ FactoryGirl.define do
     password 'password'
 
     trait :photographer do
-      login "photostudio"
+      login "photographer"
       display_name "Photography Studio"
     end
 
@@ -20,7 +20,7 @@ FactoryGirl.define do
  
     trait :conservationist do
       login "conservationist"
-      display_name "Conservation"
+      display_name "Conservation Department"
     end
   end
 end

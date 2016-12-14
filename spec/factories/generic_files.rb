@@ -15,7 +15,16 @@ FactoryGirl.define do
       mime_type "video/mp4"
     end
 
+    trait :with_content do
+      before(:create) do |file|
+        file.add_file(File.new(File::NULL), {path: 'content',
+          original_name: "lagoon.jpg",
+          mime_type: "image/jpg"})
+      end
+    end
+
     factory :generic_image, traits: [:image]
+    factory :generic_image_with_content, traits: [:image, :with_content]
     factory :generic_audio, traits: [:audio]
     factory :generic_video, traits: [:video]
   end
