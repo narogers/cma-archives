@@ -11,7 +11,7 @@ en:
           one: "%{start_num} to %{end_num} of %{total_num}"
           other: "%{start_num} to %{end_num} of %{total_num}"
       entry_pagination_info:
-        one: "1 of 1"
-        other: "%{current} of %{total}"
+        one: ""
+        other: ""
       
 

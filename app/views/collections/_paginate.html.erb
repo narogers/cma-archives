@@ -1,8 +1,6 @@
-<div class="pager">
-  <% if @response.total_pages > 1 %>
-      <%= paginate @response, window: 2, outer_window: 1,
-        route_set: collections, theme: 'bootstrap3' %>
-  <% else %>
-    <span class="pagination"><%= page_entries_info(@response, entry_name: "items") %></span>
-  <% end %>
-</div><!-- /pager -->
+<% if @response.total_pages > 1 %>
+  <div class="pager">
+    <%= paginate @response, window: 2, outer_window: 1,
+          route_set: collections, theme: 'bootstrap3' %>
+  </div><!-- /pager -->
+<% end %>
