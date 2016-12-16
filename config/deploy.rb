@@ -1,9 +1,8 @@
 # config valid only for current version of Capistrano
-lock '3.4.1'
+lock '3.7.0'
 
 set :application, 'cma-archives'
 set :app_path, "#{deploy_to}/current"
-set :scm, :git
 set :repo_url, 'git@github.com:ClevelandArtGIT/cma-archives.git'
 
 # Default branch is :master
