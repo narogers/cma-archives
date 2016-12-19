@@ -9,6 +9,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'NEO'
   inflect.acronym "DVD"
   inflect.acronym "DVDs"
+  inflect.acronym "WIB"
 end
 
 # These inflection rules are supported but not enabled by default:

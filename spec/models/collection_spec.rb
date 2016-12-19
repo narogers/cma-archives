@@ -5,17 +5,24 @@ RSpec.describe Collection, type: :model do
     let(:lower_coll) { Collection.new(title: "test title 123.45") }
     let(:upper_coll) { Collection.new(title: "UPPER CASE TITLE") }
     let(:mixed_coll) { Collection.new(title: "Cma galleries on MlK Day 2015") }
-
+    let(:weekly_ingest) { Collection.new(title: "WIB219") }
+   
     it "normalizes a lower case title" do
-      expect(lower_coll.normalize_title).to eq "Test Title 123.45"
+      lower_coll.normalize_title
+      expect(lower_coll.title).to eq "Test Title 123.45"
     end
 
     it "normalizes an upper case title" do
-      expect(upper_coll.normalize_title).to eq "Upper Case Title"
+      upper_coll.normalize_title
+      expect(upper_coll.title).to eq "Upper Case Title"
     end
 
     it "normalizes acronyms properly" do
-      expect(mixed_coll.normalize_title).to eq "CMA Galleries On MLK Day 2015"
+      mixed_coll.normalize_title
+      expect(mixed_coll.title).to eq "CMA Galleries On MLK Day 2015"
+
+      weekly_ingest.normalize_title
+      expect(weekly_ingest.title).to eq "WIB219"
     end
   end
 

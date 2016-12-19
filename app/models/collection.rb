@@ -17,7 +17,9 @@ class Collection < Sufia::Collection
   def normalize_title
     # Shift everything to lower case first so that improperly cased acronyms
     # don't split into two words and then apply the titlecase
-    self.title = self.title.downcase.titlecase
+    #
+    # Kludge since WIBxxxx can't be handled properly as an inflection
+    self.title = self.title.downcase.titlecase unless self.title.match(/^WIB\d+$/)
   end
 
   # Override default behaviour of making everything public to inherit the

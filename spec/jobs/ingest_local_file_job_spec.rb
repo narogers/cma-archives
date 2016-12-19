@@ -14,14 +14,18 @@ RSpec.describe IngestLocalFileJob do
     it "copies the file into the local repository" do
       allow(Sufia.queue).to receive(:push)
       expect(File.exists? resource_path).to eq false
-    
+   
       IngestLocalFileJob.new(file.id).run
+      file.reload
 
       expect(File.exists? resource_path).to eq true
       expect(file.content.mime_type).to eq "message/external_body; access-type=URL; url=\"http://localhost:3000/downloads/#{file.id}\""
       expect(file.content.original_name).to eq "lagoon.tif"
       expect(file.content.size).to eq 0
+
       expect(file.mime_type).to eq "image/tiff"
+      expect(file.label).to eq "lagoon.tif"
+      expect(file.title).to contain_exactly "lagoon.tif"
     end
   end
 end
