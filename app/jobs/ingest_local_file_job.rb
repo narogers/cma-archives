@@ -16,6 +16,8 @@ class IngestLocalFileJob < ActiveFedoraIdBasedJob
     local_file.mime_type = "message/external_body; access-type=URL; url=\"#{local_file_url(generic_file)}\""
 
     generic_file.add_file(local_file, {path: 'content', original_name: uri.basename, mime_type: local_file.mime_type})
+    generic_file.label ||= uri.basename
+    generic_file.title += [generic_file.label] if generic_file.title.empty?
     generic_file.save
 
     # TODO: Copy file into local repository using a configurable module instead

@@ -85,5 +85,6 @@ Rails.application.configure do
   ActiveFedora::Base.logger.level = :warn if ActiveFedora::Base.logger
 
   # Production host should reflect stability of environment
-  config.action_mailer.default_url_options = {host: "archive.clevelandart.org"}
+  config.default_url_options = { host: "archive.clevelandart.org" }
+  config.action_mailer.default_url_options = config.default_url_options
 end
