@@ -49,7 +49,12 @@ module CMA
         property :device, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#capture_device") do |index|
           index.as :stored_searchable
         end
-     end
+
+        # TODO: Give this field a better RDF mapping
+        property :stored_mime_type, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#mime_type") do |index|
+          index.as :stored_searchable
+        end
+      end
     end
   end
 end

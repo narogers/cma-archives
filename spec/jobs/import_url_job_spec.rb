@@ -9,8 +9,8 @@ RSpec.describe ImportUrlJob do
 
     it "should ingest the bitstream(s) into Fedora" do
       expect(job.queue_name).to eq :import
-      expect(generic_file.content.has_content?).to be nil
-      expect(generic_file.content.size).to be_nil
+      expect(generic_file.content.has_content?).to be false
+      expect(generic_file.content.size).to eq 0
 
       job.run
       generic_file.reload

@@ -3,7 +3,8 @@ Sufia.config do |config|
 
   config.fits_to_desc_mapping= {
     file_title: :title,
-    file_author: :creator
+    file_author: :creator,
+    stored_mime_type: :mime_type
   }
 
   # Exif to Dublin Core mappings

@@ -16,7 +16,7 @@ FactoryGirl.define do
     end
 
     trait :with_content do
-      before(:create) do |file|
+      after(:create) do |file|
         file.add_file(File.new(File::NULL), {path: 'content',
           original_name: "lagoon.jpg",
           mime_type: "image/jpg"})

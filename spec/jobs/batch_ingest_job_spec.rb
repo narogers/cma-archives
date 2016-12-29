@@ -28,6 +28,11 @@ RSpec.describe BatchIngestJob do
       expect { job.run }.to raise_error(CMA::Exceptions::FileNotFoundError)
     end
 
+    it "raises an exception if batches do not exist" do
+      job = BatchIngestJob.new nil
+      expect(job.find_batch "bad-id").to be_nil
+    end
+
     it "creates a new collection" do
       allow(ImportUrlJob).to receive(:new)
       allow(Sufia.queue).to receive(:push)
