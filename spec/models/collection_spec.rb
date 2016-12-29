@@ -38,7 +38,7 @@ RSpec.describe Collection, type: :model do
   end
 
   describe "#bytes" do
-    let(:collection_ids) { [ {"id": "rspec-mock"} ] }
+    let(:collection_ids) { [ {id: "rspec-mock"} ] }
     let(:empty_result) { { "stats" => { "stats_fields" => {} }}} 
     let(:collection) { create :collection }
 
