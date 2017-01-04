@@ -41,7 +41,7 @@ group :development, :test do
 end
 
 gem 'sufia', '~> 6.7.0'
-gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
+gem 'kaminari', git: 'https://github.com/jcoyne/kaminari', branch: 'sufia'
 gem 'parallel'
 
 gem 'active-fedora', '~> 9'
@@ -73,7 +73,7 @@ group :test do
 end
 
 # Enhance background job support and logging of jobs
-gem 'resque-pool', github: "nevans/resque-pool", branch: "master"
+gem 'resque-pool', git: "https://github.com/nevans/resque-pool", branch: "master"
 gem 'resque-status' 
 gem 'resque-dynamic-queues'
 gem 'resque-logger'
