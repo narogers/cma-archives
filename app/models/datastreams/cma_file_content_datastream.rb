@@ -6,9 +6,15 @@ class CMAFileContentDatastream < FileContentDatastream
   def container
     @container ||= GenericFile.load_instance_from_solr id.split("/").first
   end
-    
+  
   def stream(range = nil)
+    return nil if new_record?
     local_file? ? LocalFileBody.new(container.local_file) : super
+  end
+
+  def size
+    return 0 if new_record?
+    local_file? ? File.size(container.local_file) : super
   end
 
   private
@@ -20,4 +26,3 @@ class CMAFileContentDatastream < FileContentDatastream
       File.exists? container.local_file
     end
 end
-
