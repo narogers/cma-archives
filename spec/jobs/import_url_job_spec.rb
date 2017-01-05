@@ -4,7 +4,7 @@ RSpec.describe ImportUrlJob do
   describe "#run" do
     let(:file_path) { File.expand_path("spec/fixtures/lagoon.jpg") }
     let(:uri) { "file://#{file_path}" }
-    let(:generic_file) { create(:generic_file, depositor: "rspec", edit_users: ["rspec"], import_url: uri) }
+    let(:generic_file) { create(:generic_file, depositor: "rspec", import_url: uri) }
     let(:job) { ImportUrlJob.new generic_file.id }
 
     it "should ingest the bitstream(s) into Fedora" do

@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :generic_file do
     depositor "FactoryGirl"
-    edit_users ["FactoryGirl"]
 
     trait :image do
       mime_type "image/tiff"
@@ -17,9 +16,12 @@ FactoryGirl.define do
 
     trait :with_content do
       after(:create) do |file|
-        file.add_file(File.new(File::NULL), {path: 'content',
+        file.add_file(File.new(File::NULL), {
+          path: 'content',
           original_name: "lagoon.jpg",
           mime_type: "image/jpg"})
+        file.import_url = "file://" + File.expand_path("spec/fixtures/lagoon.jpg")
+        file.save   
       end
     end
 

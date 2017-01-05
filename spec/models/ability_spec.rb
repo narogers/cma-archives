@@ -4,9 +4,9 @@ require 'cancan/matchers'
 RSpec.describe Ability do
   subject { described_class.new current_user }
 
-  let(:file) { FactoryGirl.build :generic_image_with_content,
-    edit_groups: ["photostudio"] }
-  let(:collection) { FactoryGirl.build :collection }
+  let(:file) { FactoryGirl.create :generic_image_with_content,
+     administrative_collection: FactoryGirl.create(:editorial_policy) }
+  let(:collection) { FactoryGirl.create :collection }
 
   let(:editorial) { FactoryGirl.create :editorial_collection }
   let(:object_photography) { FactoryGirl.create :object_photography_collection }
@@ -44,12 +44,11 @@ RSpec.describe Ability do
     let(:current_user) { photographer }
 
     it {
-      should be_able_to :discover, editorial
       should be_able_to :read, editorial
       should_not be_able_to :edit, editorial
+      photographer.can? :download, file.content
       should be_able_to :download, file.content
     
-      should be_able_to :discover, object_photography
       should be_able_to :read, object_photography
       should_not be_able_to :edit, object_photography
     }
@@ -60,12 +59,10 @@ RSpec.describe Ability do
     let(:current_user) { conservationist }
 
     it {
-      should_not be_able_to :discover, editorial
       should_not be_able_to :read, editorial
       should_not be_able_to :edit, editorial
       should_not be_able_to :download, file.content
     
-      should be_able_to :discover, object_photography
       should be_able_to :read, object_photography
       should_not be_able_to :edit, object_photography
     }

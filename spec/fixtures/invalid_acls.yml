@@ -3,8 +3,7 @@
 # name: Title for collection
 # description: Brief description
 # group: LDAP group(s) that should have access
-- title: Editorial Photography
-  description: Born digital photographs of people, events, exhibitions, and the building.
+- description: Born digital photographs of people, events, exhibitions, and the building.
   groups: photostudio
 - title: Object Photography
   description: Born digital photographs of objects in the CMA collection.  

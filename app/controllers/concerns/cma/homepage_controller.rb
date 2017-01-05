@@ -6,7 +6,7 @@ module CMA
     include Sufia::HomepageController
 
     def index
-      @featured_collection_list = FeaturedCollectionList.new
+      @collection_list = AdministrativeCollection.all.sort { |a, b| a.title.first <=> b.title.first }
     end
   end
 end

@@ -17,7 +17,7 @@ module CMA
 
         # For faceting and discovery
         solr_doc[Solrizer.solr_name('contributor_facet', :facetable)] = object.contributor + object.photographer 
-        solr_doc[Solrizer.solr_name('umbrella_collection', :facetable)] = umbrella_collection
+        solr_doc[Solrizer.solr_name('umbrella_collection', :facetable)] = object.administrative_collection.title unless object.administrative_collection.nil?
           
         # Put the thumbnail and access copies into Solr for faster retrieval if they are
         # present
@@ -52,19 +52,6 @@ module CMA
       def digest_from_content
         return unless object.content.has_content?
         object.content.digest.first.to_s
-      end
-
-      def umbrella_collection
-        return nil if object.collections.first.nil?
-
-        maximum_depth = 2
-        pointer = object
-        while (maximum_depth > 0 and not pointer.collections.first.nil?)
-          pointer = pointer.collections.first
-          maximum_depth = maximum_depth - 1
-        end 
-
-        return pointer.title
       end
   end
 end

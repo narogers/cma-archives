@@ -40,6 +40,12 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.around :each, type: :feature do |example|
+    run_background_jobs_immediately do
+      example.run
+    end
+  end
+  config.include BackgroundJobs
   config.include Devise::TestHelpers, type: :controller
   config.include FactoryGirl::Syntax::Methods
 

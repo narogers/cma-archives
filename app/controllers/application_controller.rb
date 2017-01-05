@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Hydra::PolicyAwareAccessControlsEnforcement
+
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
   end

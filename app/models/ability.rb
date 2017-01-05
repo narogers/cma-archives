@@ -1,7 +1,6 @@
 class Ability
-  include Hydra::Ability
+  include Hydra::PolicyAwareAbility
   include Sufia::Ability
-
   
   # Define any customized permissions here.
   def custom_permissions

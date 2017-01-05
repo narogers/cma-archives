@@ -1,16 +1,18 @@
 class GenericFile < ActiveFedora::Base
+    include Hydra::AccessControls::Permissions
 	include Hydra::Derivatives
+
     include Sufia::ModelMethods
     include Sufia::Noid
     include Sufia::GenericFile::MimeTypes
     include Sufia::GenericFile::Export
     include Sufia::GenericFile::Characterization
-    include Sufia::GenericFile::Permissions
     include Sufia::GenericFile::Versions
     include Sufia::GenericFile::ProxyDeposit
     include Hydra::Collections::Collectible
     include Sufia::GenericFile::Batches
 
+    include CMA::AdminPolicyBehavior
     include CMA::GenericFile::Characterization
     include CMA::GenericFile::Content
     include CMA::GenericFile::Derivatives
