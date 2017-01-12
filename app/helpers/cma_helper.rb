@@ -63,5 +63,10 @@ module CMAHelper
   def fa_icon(icon)
     content_tag :i, class: "fa fa-{icon}"
   end
+
+  def collection_params_for_catalog value
+    facet = ActiveFedora::SolrQueryBuilder.solr_name("administrative_collection", :facetable)
+    {"f[#{facet}][]" => value }
+  end
 end
 

@@ -60,6 +60,11 @@ group :development do
   gem 'any_login'
   gem 'web-console', '~> 2.0'
   gem 'ruby-prof'
+  gem 'awesome_print', require: 'ap'
+  gem 'meta_request'
+  gem 'quiet_assets'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :test do 

@@ -4,8 +4,7 @@ module CMA
       super.tap do |solr_doc|
         solr_doc[Solrizer.solr_name("date_created", :stored_sortable)] = object.date_created.first unless object.date_created.blank?
         solr_doc[Solrizer.solr_name("primary_title", :stored_sortable)] = object.title unless object.title.blank?
-        solr_doc[Solrizer.solr_name("umbrella_collection", :facetable)] = object.administrative_collection.title unless object.administrative_collection.nil?
-        # TODO: Index resource type here?
+        solr_doc[Solrizer.solr_name("administrative_collection", :facetable)] = object.administrative_collection.title unless object.administrative_collection.nil?
       end
     end
   end

@@ -5,6 +5,7 @@ class Ability
   # Define any customized permissions here.
   def custom_permissions
     if current_user.groups.include? :admin.to_s
+       can [:discover, :read, :edit], AdministrativeCollection
        can [:discover, :read, :edit], Collection
        can [:discover, :read, :edit], GenericFile
        can [:download], FileContentDatastream

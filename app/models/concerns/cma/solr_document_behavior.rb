@@ -27,7 +27,7 @@ module CMA
       when "Collection"
         super
       else
-        fetch("file_size_isi")
+        fetch(Solrizer.solr_name("file_size", :stored_sortable, type: :long))
       end  
     end
 

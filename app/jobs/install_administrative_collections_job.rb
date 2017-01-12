@@ -47,6 +47,7 @@ class InstallAdministrativeCollectionsJob
       apply_default_permissions(collection, role, 
         permissions[role].split(" "))
     end 
+    apply_default_permissions(collection, "edit", ["admin"])
     collection.save
   end
 

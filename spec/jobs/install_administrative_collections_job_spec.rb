@@ -40,7 +40,7 @@ RSpec.describe InstallAdministrativeCollectionsJob do
       expect(editorial_policy).to_not be_nil
       expect(editorial_policy.discover_groups).to be_empty
       expect(editorial_policy.read_groups).to contain_exactly "photostudio"
-      expect(editorial_policy.edit_groups).to be_empty
+      expect(editorial_policy.edit_groups).to contain_exactly "admin"
 
       permission = editorial_policy.default_permissions.first
       expect(permission.agent_name).to eq "photostudio"

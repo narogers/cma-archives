@@ -17,7 +17,7 @@ module CMA
 
         # For faceting and discovery
         solr_doc[Solrizer.solr_name('contributor_facet', :facetable)] = object.contributor + object.photographer 
-        solr_doc[Solrizer.solr_name('umbrella_collection', :facetable)] = object.administrative_collection.title unless object.administrative_collection.nil?
+        solr_doc[Solrizer.solr_name('administrative_collection', :facetable)] = object.administrative_collection.title unless object.administrative_collection.nil?
           
         # Put the thumbnail and access copies into Solr for faster retrieval if they are
         # present
