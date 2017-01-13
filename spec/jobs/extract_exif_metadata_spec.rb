@@ -2,12 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ExtractExifMetadataJob do
   describe "#run" do
-    let(:gf) do
-      GenericFile.create(title: ["RSpec test (run)"], 
-        depositor: "RSpec", 
-        edit_users: ["RSpec"],
-        mime_type: "image/tiff")
-    end
+    let(:gf) { FactoryGirl.create(:generic_image, title: ["RSpec test (run)"], depositor: "RSpec") }
     let(:file) { File.read("spec/fixtures/lagoon.jpg") }
     let(:fields) { { subject: :subject, description: :description, date_created: :date_created } }
     let(:exif) do 

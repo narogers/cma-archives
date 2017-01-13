@@ -1,0 +1,22 @@
+# Entries should follow the template below
+# 
+# name: Title for collection
+# description: Brief description
+# discover: LDAP group(s) that should have discover access
+# read: LDAP group(s) with read access
+# edit: LDAP group(s) with full access
+- title: Editorial Photography
+  description: Born digital photographs of people, events, exhibitions, and the building.
+  discover:
+  read: photostudio
+  edit: 
+- title: Object Photography
+  description: Born digital photographs of objects in the CMA collection.  
+  discover:
+  read: photostudio
+  edit: 
+- title: Conservation Photography
+  description: Photographs taken by conservation department staff such as before and after treatment photographs
+  discover:
+  read: conservation 
+  edit: 

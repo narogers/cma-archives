@@ -5,6 +5,13 @@
 # Pair it with ActiveFedora::Base.reindex_everything for best results as 
 # audit is not aware of thing that do not exist in Solr yet
 namespace :cma do
+  # If there are any jobs which need to be run before the repository can
+  # be considered "ready" put them here
+  desc "Install required components"
+  task :install => :environment do
+    InstallAdministrativeCollectionsJob.new("config/default_acls.yml").run
+  end
+ 
   desc "Audit Solr index and update against Fedora"
   task :audit => :environment do
     healthy_records = []
@@ -57,7 +64,6 @@ namespace :cma do
           puts "#{node} reindexed"
         end
       rescue => error
-        #puts "Error occured while reindexing #{node}"
         puts error.inspect
       end
     end

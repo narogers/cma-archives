@@ -26,40 +26,31 @@ RSpec.describe Collection, type: :model do
     end
   end
 
-  describe "#update_permissions" do
-    let(:parent_collection) { Collection.new(title: "Parent Collection", edit_groups: [:foo], read_groups: [:bar]) }
-    let(:subcollection) { Collection.new(title:"Subcollection", collections: [parent_collection]) }
-
-    it "assigns descending permissions" do
-      subcollection.update_permissions
-      expect(subcollection.read_groups).to eq(parent_collection.read_groups)
-      expect(subcollection.edit_groups).to eq(parent_collection.edit_groups)
-    end
-  end
-
   describe "#bytes" do
-    let(:collection_ids) { [ {id: "rspec-mock"} ] }
-    let(:empty_result) { { "stats" => { "stats_fields" => {} }}} 
-    let(:collection) { create :collection }
+    let(:empty_collection) { FactoryGirl.create :collection }
+    let(:collection_with_member) do
+      c = FactoryGirl.create :collection
+      m = FactoryGirl.create :generic_image_with_content
+      IngestLocalFileJob.new(m.id).run
+      c.members += [m]
+      c.save
+      m.save
+
+      c 
+    end
 
     it "reports 0 for an empty collection" do
-      allow(ActiveFedora::SolrService).to receive(:query).
-        with("*:*", anything).
-        and_return(collection_ids, empty_result)
-      expect(collection.bytes).to eq 0           
+      expect(empty_collection.bytes).to eq 0           
     end
 
-    let(:solr_response) { { "stats" => { "stats_fields" => { "file_size_ltsi" => { "sum" => 45921 }}}}}
     it "reports an accurate total for members" do
-      allow(ActiveFedora::SolrService).to receive(:query).
-        with("*:*", anything).
-        and_return(collection_ids, solr_response)
-      expect(collection.bytes).to eq 45921
+      allow(Sufia.queue).to receive(:push)
+      expect(collection_with_member.bytes).to eq 9610
     end
   end
 
   describe "MIME type detection" do
-    let(:collection) { create :collection }
+    let(:collection) { FactoryGirl.create :collection }
     let(:image) { create :generic_image }
     let(:audio) { create :generic_audio }
     let(:video) { create :generic_video }
@@ -94,6 +85,8 @@ RSpec.describe Collection, type: :model do
     end
   end
 
+  # TODO: Remove Featured Collections after all objects are migrated to
+  #       to new administrative collections structure
   describe "#featured?" do
     let(:collection) { FactoryGirl.create :collection }
     let(:featured_collection) { FactoryGirl.create :collection }

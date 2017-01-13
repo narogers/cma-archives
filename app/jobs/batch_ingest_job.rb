@@ -7,13 +7,13 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
     # :nocov:
 	def queue_name
-		:batch_ingest
+      :batch_ingest
 	end
     # :nocov:
 
 	def initialize(csv_path, batch_id = nil)
-		self.batch_file = csv_path
-        @batch_id = batch_id
+	  self.batch_file = csv_path
+      @batch_id = batch_id
 	end
 	
     def run
@@ -47,8 +47,11 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	  end
 
 	  @collection = find_or_create_collection(collection_title, creator)
-      set_creation_date(metadata.shift.first)
-      add_collection_relationships(metadata.shift.first)
+      @created_on = metadata.shift.first
+      @administrative_collection = metadata.shift.first
+
+      set_creation_date(@created_on)
+      add_collection_relationships(@administrative_collection)
 
       # Ignore the blank line
       metadata.shift.first
@@ -60,13 +63,14 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       @collection.save
     end
 
- 	def add_collection_relationships(parent_title)
-      parent_title = parent_title.titleize
-      parent_collection = find_collection(parent_title)
-      if parent_collection.nil?
-        Rails.logger.warn("[#{log_prefix}] Could not locate #{parent_title}")
+    # TODO: Mark as deprecated
+ 	def add_collection_relationships(administrative_collection)
+      title = administrative_collection.titleize
+      admin_coll = find_collection(title)
+      if admin_coll.nil?
+        Rails.logger.warn("[#{log_prefix}] Could not locate #{title}")
       else
-        @collection.collections = [parent_collection]
+        @collection.collections = [admin_coll]
         @collection.save
       end
 	end
@@ -76,7 +80,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       # only the mandatory :file attribute
       fields = metadata.shift
       fields.map! { |field| field.to_sym }.delete(:file)
-      
+     
 	  # The rest of the file should be a list of files and associated
 	  # properties
       resources = []
@@ -94,7 +98,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
             import_url: expanded_file_uri,
             label: filename,
             batch: batch,
-            edit_users: @collection.edit_users,
             depositor: @collection.depositor
 	      )
 
@@ -115,8 +118,9 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
         resources << gf
       end
 
+      admin_coll = find_administrative_collection(@administrative_collection)
       acquire_lock_for(@collection.id) do
-        @collection = apply_default_acls(@collection)
+        @collection.administrative_collection = admin_coll
         unless resources.empty?
           @collection.members += resources
         end
@@ -124,8 +128,8 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       end
 
       resources.each do |gf|
-        # Chain and save
-        apply_default_acls(gf).save
+        gf.administrative_collection = admin_coll
+        gf.save
         Sufia.queue.push(IngestLocalFileJob.new(gf.id))
       end
 	end
@@ -138,13 +142,24 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
           resource_type: ["Collection"])
 	end
 
-	# Iterate over all the collections found looking for an exact match.
-	# There may be a better way of doing this but it will at least get the 
-	# process bootstrapped until time permits an incremental improvement
     def find_collection(title)
       collection_id = ActiveFedora::SolrService.query("primary_title_ssi:\"#{title}\"", {fq: "has_model_ssim:Collection", fl: "id"})
 
       (collection_id.count > 0) ? Collection.find(collection_id.first["id"]) : nil
+    end
+
+    def find_administrative_collection(title)
+      field = ActiveFedora::SolrQueryBuilder.solr_name("title")
+      policy_id = ActiveFedora::SolrService.query("#{field}:\"#{title}\"", {fq: "has_model_ssim:AdministrativeCollection", fl: "id", rows: 1})
+
+      if policy_id.empty?
+        Rails.logger.warn "[#{log_prefix}] Administrative collection '#{title}' could not be found"
+        Rails.logger.warn "[#{log_prefix}] Run bin/rake cma:install and try again"
+        nil
+      else
+        policy_id = policy_id.first["id"]
+        AdministrativeCollection.find(policy_id)
+      end
     end
 
     def find_or_create_collection(title, creator)
@@ -177,23 +192,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 
       resource
     end
-
-	def apply_default_acls(resource)
-        resource.edit_users += ["admin"]
-		resource.edit_groups += [:admin]
-  
-        unless resource.collection_ids.empty?
-          resource.collection_ids.each do |id|
-            coll = Collection.load_instance_from_solr id
-            resource.edit_users += coll.edit_users
-            resource.edit_groups += coll.edit_groups
-            resource.discover_groups += coll.discover_groups
-            resource.read_groups += coll.read_groups
-          end
-        end
-
-		resource
-	end
 
     # Attempt to load the batch which all resources should belong to.
     # If not found fall back to nil and proceed without the resources

@@ -1,7 +1,9 @@
 # Copied from Sufia::GenericFilePresenter
 module CMA
   class GenericFilePresenter
+    include ActionView::Helpers::NumberHelper
     include Hydra::Presenter
+
     self.model_class = ::GenericFile
 
     self.terms = [:date_created,
@@ -10,7 +12,7 @@ module CMA
       :credit_line, :contributor, :rights]
 
     def bytes
-      return "#{number_to_human_size(model.bytes)} bytes"
+      return "#{number_to_human_size(model.bytes)}"
     end
 
     def date_created
@@ -21,7 +23,7 @@ module CMA
 
     def description
       return model.description.present? ?
-        model.description.first :
+        model.description :
         ""
     end
 
@@ -38,7 +40,7 @@ module CMA
     end
 
     def title
-      return model.title.first
+      return model.title
     end
 
     def member_presenters

@@ -25,7 +25,7 @@ RSpec.describe BatchUpdateJob do
     end
 
     it "handles nil, single, and multivalued properties" do
-      coll = find_by_title "Test Batch Ingest"
+      coll = find_collection_by_title "Test Batch Ingest"
       expect(coll.members.count).to be 3
 
       first_image = coll.members.first

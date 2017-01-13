@@ -49,11 +49,13 @@ Rails.application.configure do
   Deprecation.default_deprecation_behavior = :silence
 
   # Suppress whiny output from the web console
-  config.web_console.whiny_requests = false
-  config.web_console.whitelisted_ips = "192.168.56.1"
+  #config.web_console.whiny_requests = false
+  #config.web_console.whitelisted_ips = "192.168.56.1"
+  if defined? ::BetterErrors
+    ::BetterErrors::Middleware.allow_ip! '192.168.56.0/24'
+  end
 
   # Default hosts for services
   config.default_url_options = { host: "192.168.56.102", port: 82 }
   config.action_mailer.default_url_options = config.default_url_options
 end
-

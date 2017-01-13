@@ -9,21 +9,22 @@ FactoryGirl.define do
   end
 
   factory :collection do
-    depositor "test"
-    edit_users ["test"]
     title { Faker::Lorem.words(3).join(" ") }
     description { Faker::Lorem.paragraph }
+    depositor { "test" }
+    edit_users {["test"]}
+    administrative_collection
 
     factory :editorial_collection do
-      read_groups ["photostudio"]
+      association :administrative_collection, factory: :editorial_policy
     end
    
     factory :object_photography_collection do
-      read_groups ["photostudio", "conservation"]
+      association :administrative_collection, factory: :object_photography_policy
     end
 
     factory :conservation_collection do
-      edit_groups ["conservation"]
+      association :administrative_collection, factory: :conservation_policy
     end
   end
 end

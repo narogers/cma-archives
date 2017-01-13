@@ -1,0 +1,10 @@
+<div class="col-xs-6 col-sm-4 featured-collection">
+  <div class="collection-icon <% if current_user.cannot? :read, administrative_collection %>disabled<% end %>">
+    <span class="fa-stack fa-5x">
+      <i class="fa fa-folder fa-stack-2x"></i>
+    </span>
+  </div>
+  <h3><%= link_to_if current_user.can?(:read, administrative_collection), 
+    administrative_collection.title, catalog_index_path(collection_params_for_catalog administrative_collection.title) %></h3>
+  <p class="description"><%= administrative_collection.description %></p>
+</div>
