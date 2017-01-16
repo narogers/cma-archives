@@ -14,7 +14,7 @@ RSpec.describe BatchMailer do
 
     deliveries = ActionMailer::Base.deliveries
     expect(deliveries.count).to eq 1
-    expect(deliveries.first.from).to eq ["batches@archives.clevelandart.org"]
+    expect(deliveries.first.from).to eq ["cmaarchives.notifications@clevelandart.org"]
     expect(deliveries.first.to).to eq ["rspec@test.org"]
     expect(deliveries.first.subject).to include "RSpec Mock Test"
   end

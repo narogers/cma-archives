@@ -23,6 +23,7 @@ set :log_level, :debug
 # Default value for :linked_files is []
 set :linked_files, fetch(:linked_files, []).push(
 	'config/browse_everything_providers.yml',
+    'config/cma-archives.yml',
 	'config/database.yml', 
 	'config/fedora.yml',
 	'config/ldap.yml',
