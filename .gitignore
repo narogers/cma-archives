@@ -35,6 +35,7 @@ pickle-email-*.html
 .env
 config/analytics.yml
 config/blacklight.yml
+config/cma-archives.yml
 config/database.yml
 config/fedora.yml
 config/jetty.yml

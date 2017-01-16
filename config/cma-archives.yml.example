@@ -1,0 +1,12 @@
+# Defines properties unique to the Cleveland Museum of Art Archival
+# Repository. Values for development are provided as a template for other
+# environments
+development:
+  # Path to where external files should be stored
+  # 
+  # Use a fully qualifed path whose subdirectories are readable and writable
+  # by the application
+  repository:
+    root: "/opt/fedora/repository"
+    owner: "railsapp"
+    group: "railsapp"
