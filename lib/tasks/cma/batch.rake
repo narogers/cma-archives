@@ -15,7 +15,12 @@ namespace :cma do
 
             collections = csv_files.map { |path| File.split(path)[0].sub(args[:base_directory], "") }
             recipients = User.where(login: RoleMapper.map["batch-admin"])
-            BatchMailer.batch_started_email(recipients, batch, collections).deliver_now
+   
+            if recipients.empty?
+              puts "WARNING: No recipients specified for ingest notifications. Check the batch-admin group in config/role_map.yml"
+            else
+              BatchMailer.batch_started_email(recipients, batch, collections).deliver_now
+            end
         end
 
         desc "Batch update metadata"
