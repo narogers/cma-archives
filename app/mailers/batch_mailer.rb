@@ -1,5 +1,5 @@
 class BatchMailer < ActionMailer::Base
-  default from: 'batches@archives.clevelandart.org'
+  default from: 'cmaarchives.notifications@clevelandart.org'
    
   def batch_started_email users, batch, directories
     @users = users
