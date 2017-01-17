@@ -40,7 +40,11 @@ module CMA
     end
 
     def title
-      return model.title
+      if model.title.is_a? Array
+        model.title.first
+      else
+        model.title
+      end
     end
 
     def member_presenters
