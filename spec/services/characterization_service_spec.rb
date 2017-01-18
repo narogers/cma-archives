@@ -8,9 +8,16 @@ RSpec.describe CMA::CharacterizationService do
     import_url: "file://#{Rails.root}/spec/fixtures/lagoon.jpg") }
   
   describe "#characterize" do
+    before(:each) do
+      @default_timeout = CMA.config["fits"]["timeout"]
+    end
+   
+    after(:each) do
+      CMA.config["fits"]["timeout"] = @default_timeout
+    end
+
     it "gracefully recovers from timeout errors" do
-      pending "To be implemented later"
-      stub_request(:any, /\/fits/).to_timeout
+      CMA.config["fits"]["timeout"] = 0
       allow(Sufia.queue).to receive(:push)
       IngestLocalFileJob.new(file.id).run
 
