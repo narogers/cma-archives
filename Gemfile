@@ -40,11 +40,13 @@ group :development, :test do
   gem 'highline'
 end
 
-gem 'sufia', '~> 6.7.0'
+gem 'sufia', '~> 7.2.0'
+gem 'active-fedora', '~> 10'
+gem 'active_fedora-noid'
+
 gem 'kaminari', git: 'https://github.com/jcoyne/kaminari', branch: 'sufia'
 gem 'parallel'
 
-gem 'active-fedora', '~> 9'
 gem 'rsolr', '~> 1.0.6'
 gem 'blacklight_range_limit'
 

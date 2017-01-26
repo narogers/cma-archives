@@ -1,5 +1,5 @@
 class AdministrativeCollection < Hydra::AdminPolicy
-  include Sufia::Noid
+  include ActiveFedora::Noid
 
   def self.permission_groups
     [:discover, :read, :edit]
