@@ -48,7 +48,7 @@ gem 'kaminari_route_prefix'
 gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
 gem 'parallel'
 
-gem 'rsolr', '~> 1.0.6'
+gem 'rsolr', '~> 1.0'
 gem 'blacklight_range_limit'
 
 # Once Sufia's references are updated use v2.0 instead
@@ -56,7 +56,7 @@ gem 'mini_exiftool'
 gem 'exiftool'
 
 gem 'devise'
-gem 'devise-guests', '~> 0.3'
+gem 'devise-guests', '~> 0.5'
 gem 'devise_ldap_authenticatable'
 
 group :development do
@@ -94,4 +94,8 @@ gem 'pry-rails'
 # For performace in production
 group :production do
   gem 'dalli'
+end
+
+group :development, :test do
+  gem 'solr_wrapper', '>= 0.3'
 end
