@@ -803,7 +803,7 @@ DEPENDENCIES
   dalli
   database_cleaner
   devise
-  devise-guests (~> 0.3)
+  devise-guests (~> 0.5)
   devise_ldap_authenticatable
   dotenv-rails
   exiftool

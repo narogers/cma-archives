@@ -1,44 +1,38 @@
 require 'csv'
 
-class BatchIngestJob < ActiveFedoraIdBasedJob
+class BatchIngestJob < ActiveJob::Base
   include Sufia::Lockable
 
-	attr_accessor :batch_file 
+  attr_accessor :batch_id, :batch_file 
 
-    # :nocov:
-	def queue_name
-      :batch_ingest
-	end
-    # :nocov:
+  queue_as :batch_ingest
 
-	def initialize(csv_path, batch_id = nil)
-	  self.batch_file = csv_path
-      @batch_id = batch_id
-	end
-	
-    def run
-	  @root_directory = File.dirname(File.expand_path(self.batch_file))
+  def perform(csv_file, batch_id = nil)
+    self.batch_file = csv_file
+    self.batch_id = batch_id
+
+	@root_directory = File.dirname(File.expand_path(self.batch_file))
  
-	  if !File.exists?(batch_file) then
-		Rails.logger.info "[#{log_prefix}] Warning: unable to locate a manifest file"
-		raise CMA::Exceptions::FileNotFoundError.new "Could not resolve #{batch_file} to a valid path"  
-	  end
-
-	  process_batch
+    if !File.exists?(batch_file) then
+	  Rails.logger.info "[#{log_prefix}] Warning: unable to locate a manifest file"
+	  raise CMA::Exceptions::FileNotFoundError.new "Could not resolve #{batch_file} to a valid path"  
     end
+
+	process_batch
+  end
 	
-	# Read in the CSV file which should follow the following format
-	#
-	# [title]
-    # [creator]
-	# [creation date]
-	# [parent collection]
-	# [blank line]
-	# [file, tag, tag, ...]
-	# [01.tif, nrogers@clevelandart.org, ...]  
+  # Read in the CSV file which should follow the following format
+  #
+  # [title]
+  # [creator]
+  # [creation date]
+  # [parent collection]
+  # [blank line]
+  # [file, tag, tag, ...]
+  # [01.tif, nrogers@clevelandart.org, ...]  
     def process_batch
-      batch = find_batch(@batch_id)
-  	  metadata = CSV.read(@batch_file)
+      batch = find_batch(self.batch_id)
+  	  metadata = CSV.read(self.batch_file)
   
       collection_title = metadata.shift.first.titleize
 	  creator = metadata.shift.first
