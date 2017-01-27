@@ -20,7 +20,7 @@ module CMA
         Hydra::Derivatives::TempfileService.create(content) do |f|
           exif = MiniExiftool.new f.path
         
-          Sufia.config.exif_to_desc_mapping.each_pair do |node, field|
+          Rails.configuration.exif.field_mappings do |node, field|
             next if exif[node].nil?
 
             metadata = normalize(exif[node])
@@ -32,7 +32,7 @@ module CMA
           end
         end
 
-        Sufia.config.default_metadata_fields.each_pair do |property, value|
+        Rails.configuration.exif.default_metadata do |property, value|
           self[property] += [value].flatten unless self[property].include? value
         end
         save

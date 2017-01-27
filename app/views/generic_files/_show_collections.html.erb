@@ -13,6 +13,6 @@
           <% end %>
         <% end %>
 
-        <%= link_to @generic_file.administrative_collection.title, catalog_index_path(collection_params_for_catalog(@generic_file.administrative_collection.title)) if @generic_file.administrative_collection.present? %>
+        <%= link_to @generic_file.administrative_collection.title, search_catalog_path(collection_params_for_catalog(@generic_file.administrative_collection.title)) if @generic_file.administrative_collection.present? %>
       </ul>
     <% end %>

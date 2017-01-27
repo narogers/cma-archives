@@ -44,7 +44,8 @@ gem 'sufia', '~> 7.2.0'
 gem 'active-fedora', '~> 10'
 gem 'active_fedora-noid'
 
-gem 'kaminari', git: 'https://github.com/jcoyne/kaminari', branch: 'sufia'
+gem 'kaminari_route_prefix'
+gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
 gem 'parallel'
 
 gem 'rsolr', '~> 1.0.6'

@@ -1,67 +1,34 @@
 # Returns an array containing the vhost 'CoSign service' value and URL
 Sufia.config do |config|
 
-  config.fits_to_desc_mapping= {
-    file_title: :title,
-    file_author: :creator,
-    stored_mime_type: :mime_type
-  }
-
-  # Exif to Dublin Core mappings
-  config.exif_to_desc_mapping = {
-    Subject: :subject,
-    HierarchicalSubject: :subject,
-    PersonInImage: :subject,
-    Keywords: :subject,
-    SourceFile: :source,
-    JobID: :identifier,
-    Headline: :abstract,
-    Description: :description,
-    Sublocation: :spatial,
-    Location: :spatial,
-    DateTimeOriginal: :date_created,
-    CreateDate: :date_created,
-    DateTimeCreated: :date_created,
-    DateTime: :date_modified,
-    ModifyDate: :date_modified,
-    DateTimeModifed: :date_modified,
-    # These are CMA specific fields
-    'by-linetitle' => :photographer_title,
-    AuthorsPosition: :photographer_title,
-    'by-line' => :photographer,
-    Creator: :photographer,
-    Credit: :credit_line
-  }
-  # Default fields for images
-  config.default_metadata_fields = {
-    rights: "Copyright, The Cleveland Museum of Art",
-    contributor: "Cleveland Museum of Art",
-    language: "en",
-    resource_type: "Image"
-  }
+  #config.fits_to_desc_mapping= {
+  #  file_title: :title,
+  #  file_author: :creator,
+  #  stored_mime_type: :mime_type
+  #}
 
   config.max_days_between_audits = 7
   config.max_notifications_for_dashboard = 5
 
-  config.cc_licenses = {
-    'All rights reserved' => 'All rights reserved'
-  }
+  #config.cc_licenses = {
+  #  'All rights reserved' => 'All rights reserved'
+  #}
 
-  config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
+  #config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
 
-  config.resource_types = {
-    "Image" => "Image",
-    "Map or Cartographic Material" => "Map or Cartographic Material",
-    "Poster" => "Poster",
-    "Other" => "Other",
-  }
+  #config.resource_types = {
+  #  "Image" => "Image",
+  #  "Map or Cartographic Material" => "Map or Cartographic Material",
+  #  "Poster" => "Poster",
+  #  "Other" => "Other",
+  #}
 
-  config.resource_types_to_schema = {
-    "Image" => "http://schema.org/ImageObject",
-    "Map or Cartographic Material" => "http://schema.org/Map",
-    "Poster" => "http://schema.org/CreativeWork",
-    "Other" => "http://schema.org/CreativeWork",
-  }
+  #config.resource_types_to_schema = {
+  # "Image" => "http://schema.org/ImageObject",
+  #  "Map or Cartographic Material" => "http://schema.org/Map",
+  #  "Poster" => "http://schema.org/CreativeWork",
+  #  "Other" => "http://schema.org/CreativeWork",
+  #}
 
   config.permission_levels = {
     "Choose Access"=>"none",
@@ -73,7 +40,7 @@ Sufia.config do |config|
     "Edit" => "edit"
   }
 
-  config.queue = Sufia::Resque::Queue
+  #config.queue = Sufia::Resque::Queue
 
   # Enable displaying usage statistics in the UI
   # Defaults to FALSE
@@ -111,10 +78,6 @@ Sufia.config do |config|
   # Specify how many seconds back from the current time that we should show by default of the user's activity on the user's dashboard
   config.activity_to_show_default_seconds_since_now = 24*60*60
 
-  # Cutoff for using web based characterization versus the command line
-  # Tailor for performance and load
-  config.characterization_service_limit = 500*(2**20)
-
   # Specify a date you wish to start collecting Google Analytic statistics for.
   # Leaving it blank will set the start date to when ever the file was uploaded by
   # NOTE: if you have always sent analytics to GA for downloads and page views leave this commented out
@@ -130,7 +93,7 @@ Sufia.config do |config|
     if defined? BrowseEverything
       config.browse_everything = BrowseEverything.config
     else
-      Rails.logger.warn "BrowseEverything is not installed"
+      Rails.logger.info "BrowseEverything is not installed"
     end
   rescue Errno::ENOENT
     config.browse_everything = nil

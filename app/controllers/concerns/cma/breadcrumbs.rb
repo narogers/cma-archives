@@ -41,7 +41,7 @@ module CMA
 
     def add_breadcrumb_for_administrative_collection id, label
       facet = ActiveFedora::SolrQueryBuilder.solr_name(:administrative_collection, :facetable)
-      add_breadcrumb label, catalog_index_path("f[#{facet}][]": label)
+      add_breadcrumb label, search_catalog_path("f[#{facet}][]": label)
     end
 
     def add_breadcrumb_trail_for_resource id
