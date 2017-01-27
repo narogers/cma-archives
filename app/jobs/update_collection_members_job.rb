@@ -1,14 +1,10 @@
 # Batch updates the metadata for members of a collection 
 require 'csv'
 
-class UpdateCollectionMembersJob < ActiveFedoraIdBasedJob
+class UpdateCollectionMembersJob < ActiveJob::Base
   attr_accessor :csv_source
   
-  # :nocov:
-  def queue_name
-    :batch_update
-  end
-  # :nocov:
+  queue_as :batch_update
 
   def initialize(csv_source)
     self.csv_source = File.expand_path(csv_source)
@@ -16,7 +12,7 @@ class UpdateCollectionMembersJob < ActiveFedoraIdBasedJob
     @failed_updates = [] 
   end
 
-  def run
+  def perform
     collections = CSV.read(csv_source, encoding: "UTF-8", headers: true, 
       header_converters: :symbol)
     collections.each_with_index do |collection, i|

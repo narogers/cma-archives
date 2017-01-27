@@ -1,11 +1,8 @@
-class ProcessImportedFileJob < ActiveFedoraIdBasedJob
-  # :nocov:
-  def queue_name
-    :process
-  end
-  # :nocov:
+class ProcessImportedFileJob < ActiveJob::Base
+  queue_as :process
 
-  def run
+  def perform(file_id)
+    generic_file = GenericFile.find file_id
     Rails.logger.info "[PROCESS] Characterizing #{generic_file.id}"
     generic_file.characterize
 

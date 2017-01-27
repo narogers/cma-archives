@@ -1,19 +1,12 @@
 require 'csv'
 
-class BatchUpdateJob < ActiveFedoraIdBasedJob
+class BatchUpdateJob < ActiveJob::Base
 	attr_accessor :batch_file 
 
-    # :nocov:
-	def queue_name
-		:batch_update
-	end
-    # :nocov:
+	queue_as :batch_update
 
-	def initialize(csv_path)
-		self.batch_file = csv_path
-	end
-	
-    def run
+    def perform(path_to_csv)
+      self.batch_file = path_to_csv
 	  @root_directory = File.dirname(File.expand_path(self.batch_file))
  
 	  if !File.exists?(batch_file) then

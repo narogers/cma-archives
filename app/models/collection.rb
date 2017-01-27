@@ -1,12 +1,13 @@
-class Collection < Sufia::Collection
-  include Hydra::Collection
+class Collection < ActiveFedora::Base
+  include CurationConcerns::CollectionBehavior
+  include CurationConcerns::BasicMetadata
 
   include CMA::AdminPolicyBehavior
   include CMA::Collection::Featured
   include CMA::Collection::CollectionSize
   include CMA::Collection::CollectionType
   include CMA::Collection::Indexing
-  include CMA::Collection::Metadata
+  #include CMA::Collection::Metadata
 
   before_save :normalize_title
 

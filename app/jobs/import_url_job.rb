@@ -5,14 +5,10 @@
 #
 # It might be wise to only encode if the URL is file:///
 # based.
-class ImportUrlJob < ActiveFedoraIdBasedJob
-  # :nocov:
-  def queue_name
-    :import
-  end
-  # :nocov:
+class ImportUrlJob < ActiveJob::Base
+  queue_as :import
 
-  def run
+  def perform(generic_file)
     user = User.find_by_user_key(generic_file.depositor) || User.first
     uri = Addressable::URI.parse(generic_file.import_url)
 

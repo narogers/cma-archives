@@ -4,15 +4,18 @@
 #
 # If this is not set, or the content is not recognized as an image,
 # then nothing exciting will happen
-class ExtractExifMetadataJob < ActiveFedoraIdBasedJob
-  # :nocov:
-  def queue_name
-    return :exif_metadata
-  end
-  # :nocov:
+class ExtractExifMetadataJob < ActiveJob::Base
+  queue_as :exif_metadata
   
-  def run
-    Rails.logger.info "[EXIF] Extracting EXIF headers for #{generic_file.id}"
+  def perform(file_id)
+    Rails.logger.info "[EXIF] Extracting EXIF headers for #{file_id}"
+    begin
+      generic_file = GenericFile.find file_id
+    rescue Ldp::Gone => error
+      Rails.logger.info "[EXIF] Found a tombstone for #{file_id} instead of a file"
+      raise error
+    end
+
     return unless generic_file.content.has_content?
     return unless generic_file.image?
 

@@ -1,11 +1,7 @@
-class IngestLocalFileJob < ActiveFedoraIdBasedJob
-  # :nocov:
-  def queue_name
-    :ingest
-  end
-  # :nocov:
+class IngestLocalFileJob < ActiveJob::Base
+  queue_as :ingest
 
-  def run
+  def perform(generic_file)
     uri = Addressable::URI.parse(generic_file.import_url)
 
     Rails.logger.info "[INGEST] Preparing #{generic_file.import_url} for processing"

@@ -1,7 +1,7 @@
 require 'csv'
 
 class BatchIngestJob < ActiveJob::Base
-  include Sufia::Lockable
+  include CurationConcerns::Lockable
 
   attr_accessor :batch_id, :batch_file 
 

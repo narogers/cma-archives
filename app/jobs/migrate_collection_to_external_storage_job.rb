@@ -1,18 +1,12 @@
 # Deletes old versions of the resource and copies them from internal
 # Fedora storage to an external location. If all objects already exist in
 # the external storage no action is taken
-class MigrateCollectionToExternalStorageJob 
+class MigrateCollectionToExternalStorageJob < ActiveJob::Base
   attr :collection
 
-  def initialize collection_id
-    @collection ||= Collection.load_instance_from_solr collection_id
-  end
+  queue_as :migrate
 
-  def queue_name
-    :migrate
-  end
-
-  def run
+  def perform(collection)
     collection.members.each_with_index do |gf|
       next if File.exists? gf.local_file
 
