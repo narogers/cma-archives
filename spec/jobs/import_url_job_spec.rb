@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ImportUrlJob do
+  let!(:user) { FactoryGirl.create(:user, login: "FactoryGirl") }
+
   describe "#run" do
     let(:file_path) { File.expand_path("spec/fixtures/lagoon.jpg") }
     let(:uri) { "file://#{file_path}" }

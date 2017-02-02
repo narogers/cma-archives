@@ -5,6 +5,7 @@ RSpec.describe MigrateCollectionToExternalStorageJob do
     let(:file) { FactoryGirl.create(:generic_image_with_content,
       import_url: "file://#{File.expand_path("spec/fixtures/lagoon.jpg")}") }
     let(:collection) { FactoryGirl.create(:collection, members: [file]) }
+    let!(:user) { FactoryGirl.create(:user, login: "FactoryGirl") }
 
     it "leaves existing external content in place" do
       IngestLocalFileJob.new(file.id).run

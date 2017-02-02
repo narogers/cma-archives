@@ -50,7 +50,15 @@ class MigrateCollectionToExternalStorageJob
   def migrate_content gf
     if gf.content.versions.all.count > 0
       logger.info "[MIGRATE #{gf.id}] Removing expired versions"
-      gf.content.delete(eradicate: true)
+      begin
+        gf.content.delete(eradicate: true)
+      rescue Ldp::Gone
+        # This is not advised as general practice but is used to clean up
+        # partially migrated objects
+        uri = gf.content.uri + "/fcr:tombstone"
+        logger.warn "[MIGRATE #{gf.id}] Removing tombstone from Fedora at #{uri}"
+        ActiveFedora.fedora.connection.delete(uri)
+      end
     end
       
     logger.info "[MIGRATE #{gf.id}] Moving content to external storage"
