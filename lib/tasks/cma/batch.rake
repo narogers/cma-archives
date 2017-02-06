@@ -35,8 +35,11 @@ namespace :cma do
         end
 
         desc "Create archival manifest"
-        task :manifest, [:batch_id] => :environment do |t, args|
-          BatchManifestJob.new(args[:batch_id]).run
+        task :manifest, [:path] => :environment do |t, args|
+          puts "Initiating manifest for #{args[:path]}"
+          manifest = BatchManifest.new(args[:path]).generate
+ 
+          puts "Manifest written to #{manifest}"
         end
 
         desc "Report failures in the background jobs"

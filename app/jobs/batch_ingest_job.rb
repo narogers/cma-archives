@@ -37,7 +37,7 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
 	# [file, tag, tag, ...]
 	# [01.tif, nrogers@clevelandart.org, ...]  
     def process_batch
-      batch = find_batch(@batch_id)
+      batch = find_or_create_batch(@batch_id)
   	  metadata = CSV.read(@batch_file)
   
       collection_title = metadata.shift.first.titleize
@@ -193,15 +193,15 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       resource
     end
 
-    # Attempt to load the batch which all resources should belong to.
-    # If not found fall back to nil and proceed without the resources
-    # being associated to any grouping
-    def find_batch(id)
+    def find_or_create_batch(id)
       begin
-        id.blank? ? nil : ::Batch.find(id) 
-      rescue ActiveFedora::ObjectNotFoundError
-        nil
-      end  
+        batch = id.blank? ? Batch.create(title: ["Batch #{DateTime.now.strftime("%Y.%m.%d.%H%M")}"]) : Batch.find(id)
+      rescue ActiveFedora::ObjectNotFoundError => notFoundError
+        Rails.logger.warn "[#{log_prefix}] Could not find batch with ID #{id}"
+        raise notFoundError
+      end
+
+      batch 
     end
 
     def log_prefix

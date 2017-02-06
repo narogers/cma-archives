@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe BatchIngestJob do
+  let(:batch) { "spec/fixtures/batch.csv" }
+
+  before(:each) do
+    Batch.destroy_all
+  end
+
   after(:all) do
     AdministrativeCollection.destroy_all
     Collection.destroy_all
@@ -8,11 +14,7 @@ RSpec.describe BatchIngestJob do
 
   describe "#run" do
     before(:each) do
-      policy = FactoryGirl.create(:administrative_collection, 
-        title: ["Batch Tests"])
-      policy.default_permissions.create(type: "group", access: "read", name: "photostudio")
-      policy.default_permissions.create(type: "group", access: "edit", name: "rspec")
-      policy.default_permissions.create(type: "group", access: "edit", name: "conservation")
+      FactoryGirl.create(:administrative_collection, title: ["Batch Tests"])
     end
     
     after(:each) { teardown "Test Batch Ingest" }
@@ -22,18 +24,21 @@ RSpec.describe BatchIngestJob do
       expect { job.run }.to raise_error(CMA::Exceptions::FileNotFoundError)
     end
 
-    it "raises an exception if batches do not exist" do
-      job = BatchIngestJob.new nil
-      expect(job.find_batch "bad-id").to be_nil
+    it "fails if the batch id is invalid" do
+      job = BatchIngestJob.new batch, "bad-id"
+      expect { job.run }.to raise_error ActiveFedora::ObjectNotFoundError
     end
 
     it "creates a new collection" do
       allow(IngestLocalFileJob).to receive(:new)
       allow(Sufia.queue).to receive(:push)
 
-      BatchIngestJob.new("spec/fixtures/batch.csv").run      
+      expect(Batch.count).to eq 0
+
+      BatchIngestJob.new(batch).run      
       coll = find_collection_by_title "Test Batch Ingest"
 
+      expect(Batch.count).to eq 1
       expect(coll.title).to eq "Test Batch Ingest"
       expect(coll.date_created).to contain_exactly "2016-03"
       expect(coll.members.count).to eq 3
@@ -48,7 +53,7 @@ RSpec.describe BatchIngestJob do
       count = get_count("Test Batch Ingest") 
       expect(count).to eq 0
 
-      BatchIngestJob.new("spec/fixtures/batch.csv").run
+      BatchIngestJob.new(batch).run
       coll = find_collection_by_title "Test Batch Ingest"
       count = get_count("Test Batch Ingest")
 
