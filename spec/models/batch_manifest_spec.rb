@@ -28,7 +28,7 @@ RSpec.describe BatchManifest do
       expect(csv[4][1]).to eq "01.tif"
       expect(csv[4][5]).to start_with "http://localhost:3000"
       expect(csv[5][1]).to eq "02.tif"
-      expect(csv[5][4]).to eq "false"
+      expect(csv[5][4]).to be_nil
       expect(csv[6][1]).to eq "03.tif"
     end
 

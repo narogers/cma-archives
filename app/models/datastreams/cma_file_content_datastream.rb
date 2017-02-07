@@ -17,6 +17,12 @@ class CMAFileContentDatastream < FileContentDatastream
     local_file? ? File.size(container.local_file) : super
   end
 
+  def checksum
+    @checksum ||= local_file? ?
+      Digest::SHA1.file(container.local_file).hexdigest :
+      super
+  end
+
   private
     def retrieve_content
       local_file? ? File.binread(@container.local_file) : ldp_source.get.body
