@@ -14,4 +14,10 @@ RSpec.describe CMAFileContentDatastream do
       expect(file_content.container).to eq file
     end
   end
+
+  describe "#checksum" do
+    it "does not return the default null checksum" do
+      expect(file_content.checksum).to_not eq "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    end
+  end
 end 
