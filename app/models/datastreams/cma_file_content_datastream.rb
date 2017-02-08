@@ -19,8 +19,7 @@ class CMAFileContentDatastream < FileContentDatastream
 
   def checksum
     @checksum ||= local_file? ?
-      Digest::SHA1.file(container.local_file).hexdigest :
-      super
+      CMA::ExternalChecksum.new(self) : super
   end
 
   private
