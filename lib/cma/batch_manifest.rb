@@ -64,7 +64,7 @@ class BatchManifest
     
             uri = generic_file_url(options)
             batch_id = file.batch.present? ? file.batch.id : "N/A" 
-            fixity = file.content.has_content? ? file.content.checksum : nil
+            fixity = file.content.has_content? ? file.content.checksum.value : nil
             output << [file.id, file.label, collection.title, batch_id, fixity, uri]
             batch -= [file.label] 
           end
