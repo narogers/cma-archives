@@ -20,18 +20,11 @@ class IngestLocalFileJob < ActiveFedoraIdBasedJob
     generic_file.title += [generic_file.label] if generic_file.title.empty?
     generic_file.save
 
-    # TODO: Copy file into local repository using a configurable module instead
-    #       of a hard coded one
     IngestFileIntoLocalRepositoryService.ingest(generic_file)
     Sufia.queue.push(ProcessImportedFileJob.new(generic_file.id)) 
   end
 
   def local_file_url resource
-    download_url(generic_file)
-  end
-
-  def download_url resource
-    # TODO: Make this configurable in a YAML file and using a service
-    LocalFileUrlService.new.download_url(generic_file)
+    LocalFileUrlService.download_url resource
   end
 end

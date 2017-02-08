@@ -15,6 +15,7 @@ RSpec.describe IngestLocalFileJob do
       allow(Sufia.queue).to receive(:push)
       expect(File.exists? resource_path).to eq false
    
+
       IngestLocalFileJob.new(file.id).run
       file.reload
 
