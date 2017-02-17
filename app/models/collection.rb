@@ -2,7 +2,6 @@ class Collection < Sufia::Collection
   include Hydra::Collection
 
   include CMA::AdminPolicyBehavior
-  include CMA::Collection::Featured
   include CMA::Collection::CollectionSize
   include CMA::Collection::CollectionType
   include CMA::Collection::Indexing
