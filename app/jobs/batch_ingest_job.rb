@@ -51,7 +51,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       @administrative_collection = metadata.shift.first
 
       set_creation_date(@created_on)
-      add_collection_relationships(@administrative_collection)
 
       # Ignore the blank line
       metadata.shift.first
@@ -62,18 +61,6 @@ class BatchIngestJob < ActiveFedoraIdBasedJob
       @collection.date_created = [date]
       @collection.save
     end
-
-    # TODO: Mark as deprecated
- 	def add_collection_relationships(administrative_collection)
-      title = administrative_collection.titleize
-      admin_coll = find_collection(title)
-      if admin_coll.nil?
-        Rails.logger.warn("[#{log_prefix}] Could not locate #{title}")
-      else
-        @collection.collections = [admin_coll]
-        @collection.save
-      end
-	end
 
 	def process_files(metadata, batch)
       # We need to remember the list of metadata fields for later. Ignore
