@@ -47,7 +47,7 @@ class BatchManifest
     output << [@base_path]
     output << [Time.now.strftime("%B %d, %Y %H:%M")]
     output << []
-    output << [:file, :id, :collection, :batch, :fixity, :uri]
+    output << [:id, :file, :collection, :batch, :fixity, :uri]
   end
 
   def generate_manifest output

@@ -23,7 +23,6 @@ RSpec.describe MigrateCollectionToExternalStorageJob do
 
     it "migrates bitstreams from Fedora" do
       ImportUrlJob.new(file.id).run
-
       expect(File.exists?(file.local_file)).to be false
       expect(file.content.size).to be 9610
 
