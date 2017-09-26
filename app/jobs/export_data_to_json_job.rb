@@ -1,0 +1,2 @@
+class ExportDataToJsonJob
+end

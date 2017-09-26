@@ -68,4 +68,9 @@ namespace :cma do
       end
     end
   end
+
+  desc "Export batches, collections, and image metadata as JSON"
+  task :export, [:export_base] => :environment do |t, args|
+    ExportDataToJsonJob.new(base_path: args[:export_base]).run
+  end
 end
