@@ -1,13 +1,13 @@
 set :rails_env, :staging
-set :branch, :master
-set :deploy_to, "/var/www/sites/archives/rails/cma-archives/"
+set :branch, ENV.fetch("CAPISTRANO_BRANCH", "master")
+set :deploy_to, "/var/www/sites/arapp-test/apps/cma-archives/"
 set :log_level, :info
 
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
-server 'appdev01.clevelandart.org', user: 'railsapps', roles: %w{app db web workers}
+server 'arapp-test.clevelandart.org', user: 'railsapp', roles: %w{app db web workers}
 
 # Configuration
 # =============
