@@ -41,7 +41,7 @@ module CMA
           index.as :stored_searchable
         end
 
-        #property :accession_number, predicate: ::RDF::URI.new("http://vocab.getty.edu/aat/300312355") do |index|
+        #property :accession_number, predicate: ::RDF::URI.new("https://vocab.getty.edu/aat/300312355") do |index|
         property :accession_number, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#accession") do |index|
          index.as :stored_searchable
         end
@@ -52,6 +52,42 @@ module CMA
 
         # TODO: Give this field a better RDF mapping
         property :stored_mime_type, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#mime_type") do |index|
+          index.as :stored_searchable
+        end
+
+        # Conservation specific metadata fields
+        #
+        # These terms should be using Getty AAT but due to an issue with
+        # numeric identifiers and Jena that will cause instant exceptions deep
+        # in the Java stack. For now the workaround is to use a local term
+        # instead
+        #property :division, predicate: ::RDF::URI.new("https://vocab.getty.edu/aat/300263526") do |index|
+        property :division, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#division") do |index|
+          index.as :stored_searchable
+        end
+
+        property :conservation_type, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#conservation_type") do |index|
+          index.as :stored_searchable
+        end
+
+        property :conservation_state, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#conservation_state") do |index|
+          index.as :stored_searchable
+        end
+
+        #property :component, predicate: ::RDF::URI.new("https://vocab.getty.edu/aat/300190691") do |index|
+        property :component, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#component") do |index|
+          index.as :stored_searchable
+        end
+
+        #property :lighting, predicate: ::RDF::URI.new("https://vocab.getty.edu/aat/300191389") do |index|
+        property :lighting, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#lighting") do |index|
+          index.as :stored_searchable
+        end
+
+        property :sample_id, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#sample_id")
+
+        #property :technique, predicate: ::RDF::URI.new("https://vocab.getty.edu/aat/300081683") do |index|
+        property :technique, predicate: ::RDF::URI.new("http://library.clevelandart.org/ns/#technique") do |index|
           index.as :stored_searchable
         end
       end
