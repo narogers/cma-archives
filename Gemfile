@@ -33,6 +33,7 @@ group :development, :production do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-passenger', '~> 0.2'
+  gem 'capistrano-rbenv'
 end
 
 group :development, :test do
@@ -60,7 +61,7 @@ group :development do
   gem 'any_login'
   gem 'web-console', '~> 2.0'
   gem 'ruby-prof'
-  gem 'awesome_print', require: 'ap'
+  gem 'awesome_print'
   gem 'meta_request'
   gem 'quiet_assets'
   gem 'better_errors'

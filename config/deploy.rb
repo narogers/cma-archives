@@ -1,9 +1,9 @@
 # config valid only for current version of Capistrano
-lock '3.7.0'
+lock '3.10.0'
 
 set :application, 'cma-archives'
 set :app_path, "#{deploy_to}/current"
-set :repo_url, 'git@github.com:ClevelandArtGIT/cma-archives.git'
+set :repo_url, 'git@github.com:ClevelandMuseumArt/cma-archives.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -11,10 +11,14 @@ set :repo_url, 'git@github.com:ClevelandArtGIT/cma-archives.git'
 # Default deploy_to directory is /var/www/my_app_name
 #set :deploy_to, '/var/www/sites/archives/rails/cma-archives'
 
+# rbenv settings
+set :rbenv_type, :system
+#set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}"
+#set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all
+
 # Default value for :format is :pretty
 set :format, :pretty
-
-# Default value for :log_level is :debug
 set :log_level, :debug
 
 # Default value for :pty is false
