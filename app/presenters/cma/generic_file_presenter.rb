@@ -6,10 +6,7 @@ module CMA
 
     self.model_class = ::GenericFile
 
-    self.terms = [:date_created,
-      :date_modified, :language, :abstract, :category, :accession_number, 
-      :subject, :coverage, :creator, :photographer, :photographer_title, 
-      :credit_line, :contributor, :rights]
+    self.terms = CMA::ResourceTerms.general_terms + CMA::ResourceTerms.conservation_terms
 
     def bytes
       return "#{number_to_human_size(model.bytes)}"

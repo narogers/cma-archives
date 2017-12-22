@@ -18,6 +18,11 @@ module CMA
         # For faceting and discovery
         solr_doc[Solrizer.solr_name('contributor_facet', :facetable)] = object.contributor + object.photographer 
         solr_doc[Solrizer.solr_name('administrative_collection', :facetable)] = object.administrative_collection.title unless object.administrative_collection.nil?
+        solr_doc[Solrizer.solr_name('division', :facetable)] = object.division
+        solr_doc[Solrizer.solr_name('conservation_type', :facetable)] = object.conservation_type
+        solr_doc[Solrizer.solr_name('conservation_state', :facetable)] = object.conservation_state
+        solr_doc[Solrizer.solr_name('lighting', :facetable)] = object.lighting
+        solr_doc[Solrizer.solr_name('technique', :facetable)] = object.technique
           
         # Put the thumbnail and access copies into Solr for faster retrieval if they are
         # present

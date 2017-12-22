@@ -70,7 +70,12 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name("date_created", :dateable), label: "Date Created", range: true
     config.add_facet_field solr_name("file_format", :facetable), label: "File Format", limit: 5
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
-    config.add_facet_field solr_name("resource_type", :facetable), label: "Resource type", limit: 5
+    config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5, helper_method: :resource_type_facet_value
+    config.add_facet_field solr_name("division", :facetable), label: "Department", limit: 10
+    config.add_facet_field solr_name("conservation_type", :facetable), label: "Conservation Type", limit: 5
+    config.add_facet_field solr_name("conservation_state", :facetable), label: "State", limit: 5
+    config.add_facet_field solr_name("lighting", :facetable), label: "Lighting", limit: 5
+    config.add_facet_field solr_name("technique", :facetable), label: "Technique", limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
