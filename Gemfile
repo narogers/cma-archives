@@ -39,6 +39,8 @@ end
 group :development, :test do
   gem 'pry-byebug'
   gem 'highline'
+  gem 'fcrepo_wrapper'
+  gem 'solr_wrapper'
 end
 
 gem 'sufia', '~> 6.7.0'

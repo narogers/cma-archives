@@ -1,6 +1,7 @@
+<h2>Conservation History</h2>
 <table class="table table-striped">
   <tbody>
-  <% present_terms(@presenter, CMA::ResourceTerms.general_terms) do |r, term| %>
+  <% present_terms(@presenter, CMA::ResourceTerms.conservation_terms) do |r, term| %> 
     <% if r.value(term).present? %>
     <tr>
       <th><%= r.label(term) %></th>

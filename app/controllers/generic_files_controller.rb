@@ -6,6 +6,10 @@ class GenericFilesController < ApplicationController
   # Patches for local features
   include CMA::Breadcrumbs
 
+  def self.presenter_class
+    CMA::GenericFilePresenter
+  end
+
   def show
     super
     @current_search_session = current_search_session
