@@ -53,5 +53,9 @@ config/initializers/mini_magick.rb
 # These should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
 
+# Ignore local bins
+bin/cap
+bin/fcrepo_wrapper
+
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
