@@ -1,3 +1,5 @@
+require 'pry'
+
 module CMA
 	module GenericFile
 		module Derivatives
@@ -6,20 +8,44 @@ module CMA
       included do
       	makes_derivatives do |obj|
           logger.info("[DERIVATIVES] Preparing to convert a(n) #{obj.mime_type}")
+ 
      	  case obj.mime_type
+          when *layered_image_mime_types
+    	    obj.transform_file :content, 
+              { 
+                access: { 
+                  format: 'jpg',    						
+                  height: 800,
+                  width: 1200,
+                  datastream: 'access'
+                },
+                thumbnail: { 
+                  format: 'jpg',                
+                  height: 200,
+                  width: 300,
+                  crop: true,
+                  strip_metadata: true,
+                  datastream: 'thumbnail'
+                }
+             }, processor: :vips_layered_image
           when *image_mime_types
-    		obj.transform_file :content, { 
-              access: { 
-                format: 'jpg',    						
-                size: '@1200000',
-    		    datastream: 'access'
-    		  },
-              thumbnail: { 
-                format: 'jpg',                
-                size: '@30000',
-                datastream: 'thumbnail'
-              },
-    		}, processor: :exif_image
+    	    obj.transform_file :content, 
+              { 
+                access: { 
+                  format: 'jpg',    						
+                  height: 800,
+                  width: 1200,
+                  datastream: 'access'
+                },
+                thumbnail: { 
+                  format: 'jpg',                
+                  height: 200,
+                  width: 300,
+                  crop: true,
+                  strip_metadata: true,
+                  datastream: 'thumbnail'
+                }
+             }, processor: :vips_image
           end
         end
 
