@@ -1,5 +1,4 @@
 require 'ruby-vips'
-require 'pry'
 
 module Hydra::Derivatives
   class VipsImage < Image
