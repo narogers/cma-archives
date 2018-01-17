@@ -4,7 +4,6 @@ class ExternalFileContentDatastream < FileContentDatastream
 
   def initialize uri, *args
     @path = uri.start_with?("file://") ? uri.sub("file://", "") : uri  
-    binding.pry
   end
 
   def has_content?

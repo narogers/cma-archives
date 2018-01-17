@@ -1,5 +1,3 @@
-require 'pry'
-
 module CMA
   class FixityService < ActiveFedora::FixityService
     attr_accessor :file
