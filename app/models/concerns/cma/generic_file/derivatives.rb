@@ -1,5 +1,3 @@
-require 'pry'
-
 module CMA
 	module GenericFile
 		module Derivatives
