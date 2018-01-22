@@ -85,9 +85,7 @@ group :test do
   gem 'webmock'
 end
 
-# Gems for development - not really needed or welcome in production
-# unless there are major problems
-# For performace in production
+# For performance in production
 group :production do
   gem 'dalli'
 end
